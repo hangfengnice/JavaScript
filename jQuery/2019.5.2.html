@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>轮播图</title>
+    <link rel="stylesheet" href="2019.5.2.css" />
+    <script src="jQuery.js"></script>
+  </head>
+  <body>
+    <div class="v_show">
+      <div class="v_caption">
+        <h2 class="cartoon" title="卡通动漫">卡通动漫</h2>
+        <div class="highlight_tip">
+          <span class="current">1</span>
+          <span>2</span>
+          <span>3</span>
+          <span>4</span>
+        </div>
+        <div class="change_btn">
+          <span class="prev">上一页</span>
+          <span class="next">下一页</span>
+        </div>
+        <em><a href="#">更多>></a></em>
+      </div>
+
+      <div class="v_content">
+        <div class="v_content_list">
+          <ul>
+            <li>
+              <a href="#"><img src="WechatIMG19.jpeg" alt="重庆李子"/></a>
+              <h4><a href="">重庆李子</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+            <li>
+              <a href="#"><img src="WechatIMG20.jpeg" alt="重庆李子"/></a>
+              <h4><a href="">重庆李子</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+            <li>
+              <a href="#"><img src="WechatIMG21.jpeg" alt="重庆李子"/></a>
+              <h4><a href="">重庆李子</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+            <li>
+              <a href="#"><img src="WechatIMG22.jpeg" alt="重庆李子"/></a>
+              <h4><a href="">重庆李子</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+
+            <li>
+              <a href="#"><img src="WechatIMG23.jpeg" alt="贰厂"/></a>
+              <h4><a href="">贰厂</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+            <li>
+              <a href="#"><img src="WechatIMG24.jpeg" alt="贰厂"/></a>
+              <h4><a href="">贰厂</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+            <li>
+              <a href="#"><img src="WechatIMG25.jpeg" alt="贰厂"/></a>
+              <h4><a href="">贰厂</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+            <li>
+              <a href="#"><img src="WechatIMG26.jpeg" alt="贰厂"/></a>
+              <h4><a href="">贰厂</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+
+            <li>
+              <a href="#"><img src="WechatIMG27.jpeg" alt="九华里"/></a>
+              <h4><a href="">九华里</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+            <li>
+              <a href="#"><img src="WechatIMG28.jpeg" alt="九华里"/></a>
+              <h4><a href="">九华里</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+            <li>
+              <a href="#"><img src="WechatIMG29.jpeg" alt="九华里"/></a>
+              <h4><a href="">九华里</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+            <li>
+              <a href="#"><img src="WechatIMG30.jpeg" alt="九华里"/></a>
+              <h4><a href="">九华里</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+
+            <li>
+              <a href="#"><img src="WechatIMG31.jpeg" alt="凤巢"/></a>
+              <h4><a href="">凤巢</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+            <li>
+              <a href="#"><img src="WechatIMG32.jpeg" alt="凤巢"/></a>
+              <h4><a href="">凤巢</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+            <li>
+              <a href="#"><img src="WechatIMG33.jpeg" alt="凤巢"/></a>
+              <h4><a href="">凤巢</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+            <li>
+              <a href="#"><img src="WechatIMG34.jpeg" alt="凤巢"/></a>
+              <h4><a href="">凤巢</a></h4>
+              <span>播放：<em>1314</em></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script>
+     $(function(){
+      var page = 1;
+      //每版4个图片
+      var i = 4;
+     
+      $("span.next").click(function() {
+        var $parent = $(this).parents("div.v_show");
+        var $v_show = $parent.find("div.v_content_list");
+        var $v_content = $parent.find("div.v_content");
+        //获取区域内容的宽度，带单位
+        var v_width = $v_content.width();
+        //总的视频图片数
+        var len = $v_show.find('li').length;
+        //往大取整
+        var page_count = Math.ceil(len/i);
+       if(!$v_show.is(':animated')){
+        if(page == page_count){
+          $v_show.animate({left:'0px'},'slow');
+          page = 1;
+        }else{
+          $v_show.animate({left:"-="+v_width},'slow');
+          page ++ ;
+        }
+       }
+       $parent.find('span').eq((page-1)).addClass('current').siblings().removeClass('current');
+      });
+
+      $("span.prev").click(function() {
+        var $parent = $(this).parents("div.v_show");
+        var $v_show = $parent.find("div.v_content_list");
+        var $v_content = $parent.find("div.v_content");
+        //获取区域内容的宽度，带单位
+        var v_width = $v_content.width();
+        //总的视频图片数
+        var len = $v_show.find('li').length;
+        //往大取整
+        var page_count = Math.ceil(len/i);
+       if(!$v_show.is(':animated')){
+        if(page == 1){
+          $v_show.animate({left:'-=' +v_width*(page_count - 1)},'slow');
+          page = page_count;
+        }else{
+          $v_show.animate({left:"+="+v_width},'slow');
+          page -- ;
+        }
+       }
+       $parent.find('span').eq((page-1)).addClass('current').siblings().removeClass('current');
+      });
+     })
+    </script>
+  </body>
+</html>
