@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="jQuery.js"></script>
+    <style>
+      .msg {
+        width: 600px;
+        height: 600px;
+        border: 1px solid aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="msg">
+      <div class="msg_caption">
+        <span class="bigger">放大</span>
+        <span class="smaler">缩小</span>
+      </div>
+      <div class="para">
+        <p id="para">
+          我心中有猛虎，可细嗅蔷薇！
+        </p>
+      </div>
+    </div>
+    <script>
+      $(function() {
+        $("span").click(function() {
+          var thisEle = $("#para").css("font-size");
+          var textFontSize = parseInt(thisEle, 10);
+          //取单位
+          var unit = thisEle.slice(-2);
+          var cName = $(this).attr("class");
+          if (cName == "bigger") {
+            if (textFontSize <= 30) {
+              textFontSize += 2;
+            }
+          } else if (cName == "smaler") {
+            if (textFontSize >= 10) {
+              textFontSize -= 2;
+            }
+          }
+          $("#para").css("fontSize", textFontSize + unit);
+        });
+      });
+    </script>
+  </body>
+</html>
