@@ -1,11 +1,11 @@
-# jQuery  
-#### []()  
-+2019.5.2html的主要内容
-#### 轮播图基础切图
+# js
 
-#### [2019.5.4复选框demo](https://jsbin.com/fowigil/edit?html,js,output)    
-
-
-
-### js小知识点 主要记录一些与平时认识有细微出入的小知识点
+## array对象方法和string对象方法  
+- 汇总了可以使用的方法
+   + 对是否改变原始数据有加以区分  
+   
+## Array.prototype.slice  
+- 能够理解类数组为什么会变成真的数组 比如：
+   + Array.prototype.slice.call(arguments)  
+   + 
 
