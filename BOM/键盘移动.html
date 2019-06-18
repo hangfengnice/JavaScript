@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      #app {
+        width: 50px;
+        height: 50px;
+        background-color: red;
+        position: absolute;
+      }
+    </style>
+    <script>
+      window.onload = function() {
+        var box = document.getElementById('app')
+        var speed = 5;
+        var dir;
+        setInterval(function(){
+         
+          switch (dir) {
+            case 37:
+              box.style.left = box.offsetLeft - speed + 'px';
+              break;
+            case 38:
+            box.style.top = box.offsetTop - speed + 'px';
+
+              break;
+            case 39:
+            box.style.left = box.offsetLeft + speed + 'px';
+
+              break;
+            case 40:
+            box.style.top = box.offsetTop + speed + 'px';
+
+              break;
+          }
+        },40)
+        document.onkeydown = function(e) {
+         
+          if(event.ctrlKey){
+            speed = 100
+          }
+         dir = e.keyCode
+        };
+        document.onkeyup = function(){
+          dir = 0;
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>

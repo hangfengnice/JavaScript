@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script>
+    window.onload = function () {
+      var btn = document.getElementById('btn01')
+      btn.onclick =function(){
+        var li = document.createElement('li')
+        li.innerHTML='<a href="javascript:;">超链接1</a>'
+        ul.appendChild(li)
+      }
+      var ul = document.getElementById('ul')
+      ul.onclick = function (e){
+        console.log(e.target)
+      }
+    }
+  
+  </script>
+</head>
+<body>
+  <button id='btn01'>添加超链接</button>
+  <ul id='ul'>
+    <li><a href="javascript:;">超链接1</a></li>
+    <li><a href="javascript:;">超链接2</a></li>
+    <li><a href="javascript:;">超链接3</a></li>
+
+  </ul>
+</body>
+</html>

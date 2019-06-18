@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #app{
+      width: 100px;
+      height: 100px;
+      background-color: red;
+    }
+  </style>
+
+  <script>
+  
+  window.onload =function(){
+    var box1 = document.getElementById("app");
+    box1.onmousewheel= function(e){
+      if(e.wheelDelta > 0){
+        box1.style.height = box1.clientHeight - 5 + 'px';
+      }else{
+        box1.style.height = box1.clientHeight + 5 + 'px';
+
+      }
+    }
+
+    // function bind(obj, eventStr, callback) {
+    //       if (obj.addEventListener) {
+    //         obj.addEventListener(eventStr, callback, false);
+    //       } else {
+    //         obj.attachEvent("on" + eventStr, function(){
+    //           callback.call(obj)
+    //         });
+    //       }
+    //     }
+
+}
+  </script>
+</head>
+<body>
+  <div id="app">
+
+  </div>
+
+</body>
+</html>
