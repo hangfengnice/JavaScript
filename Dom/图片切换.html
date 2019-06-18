@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      img {
+        display: block;
+        width: 300px;
+        height: 300px;
+        margin: 20px auto;
+      }
+      p {
+        width: 150px;
+        margin: 10px auto;
+      }
+      span {
+        display: inline-block;
+        width: 50px;
+        margin: auto;
+        text-align: center;
+        margin-left: 10px;
+        border: 1px solid #000;
+        cursor: pointer;
+      }
+      #app {
+        text-align: center;
+      }
+    </style>
+    <script>
+      window.onload = function() {
+        var app = document.getElementById("app");
+        var pre = document.getElementsByTagName("span")[0];
+        var next = document.getElementsByTagName("span")[1];
+        var img = document.getElementsByTagName("img")[0];
+        var arr = [
+          "./img/a.jpeg",
+          "./img/a1.jpeg",
+          "./img/a2.jpeg",
+          "./img/a3.jpeg",
+          "./img/a4.jpeg"
+        ];
+
+        var count = 0;
+        app.innerText =
+          "一共有" + arr.length + "张图片,这是第" + (count + 1) + "张";
+          img.src = arr[count];
+
+        pre.onclick = function() {
+          count--;
+          if (count < 0) {
+            count = arr.length - 1;
+          }
+          img.src = arr[count];
+          app.innerText =
+            "一共有" + arr.length + "张图片,这是第" + (count + 1) + "张";
+          // console.log(arr[count])
+        };
+        next.onclick = function() {
+          count++;
+          if (count > arr.length - 1) {
+            count = 0;
+          }
+          img.src = arr[count];
+          app.innerText =
+            "一共有" + arr.length + "张图片,这是第" + (count + 1) + "张";
+        };
+      };
+    </script>
+  </head>
+  <body>
+    <div>
+      <p id="app"></p>
+      <img src="./img/a4.jpeg" alt="" />
+      <p>
+        <span>pre</span>
+        <span>next</span>
+      </p>
+    </div>
+  </body>
+</html>
