@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      #info {
+        width: 300px;
+        height: 500px;
+        background-color: #bfa;
+        overflow: auto;
+      }
+    </style>
+    <script>
+      window.onload = function() {
+        var info = document.querySelector('#info');
+        var inputs = document.querySelectorAll('input')
+        info.onscroll = function() {
+          if(info.scrollHeight - info.scrollTop == info.clientHeight){
+            // console.log('a')
+            inputs[0].disabled = false;
+            inputs[1].disabled = false;
+          }
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <h3>用户注册</h3>
+    <p id="info">
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+      亲爱的用户,请仔细阅读一下协议,如果你不仔细
+    </p>
+    <input type="checkbox" disabled />我已仔细阅读
+    <input type="submit" value="注册" disabled />
+  </body>
+</html>
