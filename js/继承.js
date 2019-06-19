@@ -19,3 +19,10 @@ function inherit(son,parent){
   
 
 }
+
+var obj = {
+  fn : function(){
+    console.log(obj.fn)
+  }
+}
+obj.fn()
