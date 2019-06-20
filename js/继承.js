@@ -22,7 +22,7 @@ function inherit(son,parent){
 
 var obj = {
   fn : function(){
-    console.log(obj.fn)
+    console.log(this.fn)
   }
 }
 obj.fn()

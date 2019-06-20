@@ -8,3 +8,5 @@ Person.prototype.sayName = function() {
 }
 
 man.sayName()
+
+742076038

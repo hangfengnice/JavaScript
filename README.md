@@ -13,6 +13,8 @@
     console.log(null == undefined) // true
 
     prompt() 用户输入
+
+    typeof null // object
 ```
 
 - 测试代码运行时间 console.time('名称') console.timeEnd('名称')
