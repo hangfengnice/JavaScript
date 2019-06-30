@@ -106,6 +106,63 @@ var arr = ['java', 'c', 'php', 'html'];
 function output(item, index) {
     console.log(index + ': ' + item)
 }
-each(arr, output)
+// each(arr, output)
+
+function hasClass(element, className){
+  var classNames = element.className;
+  if(!classNames){
+    return false
+  }
+  classNames = classNames.split(/\s+/);
+  for(var i = 0, len = classNames.length; i < len; i ++){
+    if(classNames[i] === className){
+      return true
+    }
+  }
+  return false
+}
+
+function addClass(element, className){
+  if(!hasClass(element, className)){
+    element.className = element.className ? [element.className, className].join(' ') : className
+  }
+}
+
+function removeClass(element, className){
+  if(className && hasClass(element, className)){
+    var classNames = element.className.split(/\s+/);
+    for(var i = 0, len = classNames.length; i < len; i ++){
+      if(classNames[i] === className){
+        classNames.splice(i, 1)
+        break
+      }
+    }
+  }
+  element.className = classNames.join(' ')
+}
+
+function isSiblingNode(element, siblingNode) {
+  for(var node = element.parentNode.firstChild; node; node = node.nextSibling){
+    if( node === siblingNode){
+      return true
+    }
+  }
+  return false
+}
+
+
+
+
+var foo = {
+  name: 'Selina'
+}
+var name = 'Chirs';
+function bar(job, age) {
+  console.log(this.name);
+  console.log(job, age);
+}
+bar.call(foo, 'programmer', 20);
+// Selina programmer 20
+bar.call(null, 'teacher', 25);
 
 
