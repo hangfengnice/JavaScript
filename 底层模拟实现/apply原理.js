@@ -1,8 +1,5 @@
 Function.prototype.apply = function (context, rest) {
-  if (!context) {
-      //context为null或者是undefined时,设置默认值
-      context = typeof window === 'undefined' ? global : window;
-  }
+  context = Object(context) || window
   context.fn = this;
   let result;
   if(rest === undefined || rest === null) {

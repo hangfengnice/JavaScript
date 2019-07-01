@@ -15,24 +15,3 @@ var person = new Person();
 //constructor
 // console.log(Person === Person.prototype.constructor); // true
 
-function foo() {
-  console.log(this)
-}
-
-foo(); // MemberExpression 是 foo
-
-function foo() {
-  return function() {
-      console.log(this)
-  }
-}
-
-foo()(); // MemberExpression 是 foo()
-
-var foo = {
-  bar: function () {
-      return this;
-  }
-}
-
-foo.bar();

@@ -27,7 +27,7 @@ console.log(person.strength) // 60
 
 person.sayYourName(); // I am Kevin
 
-//  调优
+//  根据返回值判断
 
 function objectFactory() {
 

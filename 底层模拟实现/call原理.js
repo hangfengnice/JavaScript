@@ -1,10 +1,10 @@
 Function.prototype.call = function (context) {
   /** 如果第一个参数传入的是 null 或者是 undefined, 那么指向this指向 window/global */
   /** 如果第一个参数传入的不是null或者是undefined, 那么必须是一个对象 */
-  if (!context) {
+  
       //context为null或者是undefined
-      context = context || window
-  }
+   var context = context || window
+  
   context.fn = this; //this指向的是当前的函数(Function的实例)
   let rest = [...arguments].slice(1);//获取除了this指向对象以外的参数, 空数组slice后返回的仍然是空数组
   let result = context.fn(...rest); //隐式绑定,当前函数的this指向了context.
