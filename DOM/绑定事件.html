@@ -7,23 +7,62 @@
     <title>Document</title>
   </head>
   <body>
+    <div id="div1">
+      <a href="https://cn.bing.com/dict/search?q=agent&FORM=HDRSC6" id="link"
+        >bing</a
+      >
+      <p id="p1">激活</p>
+      <p id="p2">取消</p>
+    </div>
+    <div id="div2">
+      <p id="p3">取消</p>
+      <p id="p4">取消</p>
+      <p id="p4">取消</p>
+
+    </div>
     <script>
-      window.onload = function() {
-        var btn = document.getElementById("btn");
-        function bind(obj, eventStr, callback) {
-          if (obj.addEventListener) {
-            obj.addEventListener(eventStr, callback, false);
-          } else {
-            obj.attachEvent("on" + eventStr, function(){
-              callback.call(obj)
-            });
+
+    function bindEvent(elem, type, selector, fn){
+      if(fn == null){
+        fn = selector
+        selector = null
+      }
+      elem.addEventListener(type, function(e){
+        var target
+
+        if(selector){
+          target = e.target
+          if(target.matches(selector)){
+            fn.call(target, e)
           }
+        }else{
+          fn(e)
         }
-        bind(btn,"click",() => {
-          console.log("a")
-        })
-      };
+      })
+
+    }
+
+
+      // function bindEvent(elem, type, fn) {
+      //   elem.addEventListener(type, fn);
+      // }
+
+      // // bindEvent(link, "click", function(e) {
+      // //   e.preventDefault();
+      // //   console.log(123);
+      // // });
+
+      // var p1 =  document.getElementById('p1')
+      // console.log(p1)
+      // bindEvent(p1, 'click', function (e){
+      //   e.stopPropagation()
+      //   console.log('jihuo')
+      // })
+
+      // var body = document.body
+      // bindEvent(body, 'click', function (e){
+      //   console.log('quxiao')
+      // })
     </script>
-    <button id="btn">点我一下</button>
   </body>
 </html>
