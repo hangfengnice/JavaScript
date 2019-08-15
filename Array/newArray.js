@@ -1,1 +1,0 @@
-const arr = new Array(10) // 数组长度为10
