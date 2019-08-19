@@ -1,1 +1,2 @@
-import '../learnBooks/javascript 3rd edition/基本数据/index'
+// import '../learnBooks/javascript edition 3/basicData'
+import '../learnBooks/javascript edition 3/variableScope'

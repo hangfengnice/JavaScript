@@ -53,3 +53,34 @@ console.log(parseInt(num1, 10), parseInt(num1, 10).toString(2))
 
 let o = new Object()
 console.log(o.constructor === Object)
+
+// 3.5 操作符
+let num2 = 25
+let num3 = ~num2
+console.log(num3)
+
+console.log(!NaN)
+console.log("+12" * '1')
+console.log(Infinity / Infinity)
+console.log(0 / 0)
+console.log(0 - 0);
+
+// let i = 0
+
+// do {
+//   i += 2
+//   console.log(i);
+// } while (i < 10)
+
+// function test() {
+//   console.log(Object.prototype.toString.call(arguments))
+// }
+
+// test(1,2,3)
+
+function test1(num1, num2) {
+  arguments[1] = 10
+  console.log(num1, num2, arguments[0], arguments[1])
+}
+
+test1(0)
