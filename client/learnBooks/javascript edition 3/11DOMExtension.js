@@ -1,0 +1,6 @@
+const div = document.querySelector('div')
+console.log(div.classList, div.classList.contains('hangfeng'))
+const btn = document.querySelector('#btn')
+btn.focus()
+console.log(document.activeElement === btn, document.hasFocus())  
+console.log(document.head)
