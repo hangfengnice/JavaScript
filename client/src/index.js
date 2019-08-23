@@ -16,5 +16,7 @@
 // import '../learnBooks/ECMAScript 6/6 number'
 // import '../learnBooks/ECMAScript 6/7 function'
 // import '../learnBooks/ECMAScript 6/8 array'
-import '../learnBooks/ECMAScript 6/9 object'
+// import '../learnBooks/ECMAScript 6/9 object'
+// import '../learnBooks/ECMAScript 6/10 symbol'
+import '../learnBooks/ECMAScript 6/11 set map'
 
