@@ -19,15 +19,20 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env", 
+            presets: [
+              "@babel/preset-env"
               // {
               //   "modules": "commonjs",  //设置ES6 模块转译的模块格式 默认是 commonjs
-              //   "useBuiltIns": "usage", 
+              //   "useBuiltIns": "usage",
               // }
             ],
             plugins: ["@babel/plugin-transform-runtime"]
           }
         }
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
       }
     ]
   },
