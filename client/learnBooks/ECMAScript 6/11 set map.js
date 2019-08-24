@@ -1,3 +1,4 @@
+
 // Set 和 Map 数据结构
 
 // 1 set
@@ -26,7 +27,7 @@
   console.log(set1, set.size); // {NaN, 1} 4
 
   // 两个空对象不相等，所以它们被视为两个值
-  console.log(new Set().add({}).add({}).size) // 2
+  console.log(new Set().add({}).add({}).size); // 2
 }
 
 // Set 实例的属性和方法
@@ -67,17 +68,18 @@
   }
 
   // forEach()  forEach方法还可以有第二个参数，表示绑定处理函数内部的this对象
-  console.log(new Set([1, 4, 9]).forEach((value, key) => console.log(key + " : " + value))); // 1:1 4:4 9:9
+  console.log(
+    new Set([1, 4, 9]).forEach((value, key) => console.log(key + " : " + value))
+  ); // 1:1 4:4 9:9
 
   // 遍历的应用
   // Set 可以很容易地实现并集（Union）、交集（Intersect）和差集
 
   // 提供了两种方法，直接在遍历操作中改变原来的 Set 结构
-  console.log(new Set([...new Set([1, 2, 3])].map(val => val * 2))) // 2, 4, 6
+  console.log(new Set([...new Set([1, 2, 3])].map(val => val * 2))); // 2, 4, 6
 
   // 方法二
-  console.log(new Set(Array.from(new Set([1, 2, 3]), val => val * 2)))
-
+  console.log(new Set(Array.from(new Set([1, 2, 3]), val => val * 2)));
 }
 
 // 2 WeakSet
@@ -87,7 +89,6 @@
   // WeakSet.prototype.add(value)：向 WeakSet 实例添加一个新成员。
   // WeakSet.prototype.delete(value)：清除 WeakSet 实例的指定成员。
   // WeakSet.prototype.has(value)：返回一个布尔值，表示某个值是否在 WeakSet 实例之中
-
   // WeakSet 没有size属性，没有办法遍历它的成员
 }
 
@@ -124,9 +125,9 @@
     .set(1, "a")
     .set(2, "b")
     .set(3, "c");
-  
+
   console.log(new Map([...map0].filter(([k, v]) => k < 3))); // 产生 Map 结构 {1 => 'a', 2 => 'b'}
-  console.log(new Map([...map0].map(([k, v]) => [k * 2, "_" + v]))) // 产生 Map 结构 {2 => '_a', 4 => '_b', 6 => '_c'}
+  console.log(new Map([...map0].map(([k, v]) => [k * 2, "_" + v]))); // 产生 Map 结构 {2 => '_a', 4 => '_b', 6 => '_c'}
 
   // forEach方法还可以接受第二个参数，用来绑定this
 }
@@ -136,6 +137,5 @@
 // WeakMap结构与Map结构类似，也是用于生成键值对的集合。
 {
   // WeakMap只接受对象作为键名（null除外），不接受其他类型的值作为键名
-
   // get()、set()、has()、delete()。
 }

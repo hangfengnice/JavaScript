@@ -3,7 +3,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const path = require("path");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: ["./src/index.js"],
   output: {
     filename: "main.js",
     path: path.resolve("dist")
@@ -19,7 +19,13 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env"]
+            presets: ["@babel/preset-env", 
+              // {
+              //   "modules": "commonjs",  //设置ES6 模块转译的模块格式 默认是 commonjs
+              //   "useBuiltIns": "usage", 
+              // }
+            ],
+            plugins: ["@babel/plugin-transform-runtime"]
           }
         }
       }
