@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>三栏布局</title>
+  </head>
+  <body>
+    <style>
+      .float-container{
+        padding: 6px 0;
+        overflow: hidden;
+      }
+      .float-container .left {
+        /* height: 20px; */
+        float: left;
+        /* width: 200px; */
+        background-color: rgb(167, 240, 158);
+      }
+      .float-container .right {
+        /* height: 20px; */
+        float: right;
+        /* width: 200px; */
+        background-color: rgb(241, 212, 80);
+      }
+      .float-container .main {
+        /* height: 20px; */
+        margin: 0 200px;
+        background-color: rgb(46, 123, 153);
+      }
+    </style>
+    <article class="float-container">
+      <div class="left">left 浮动定位</div>
+      <div class="right">
+        right 缺点
+        内容展现顺序与DOM结构不一致，主体内容后加载，一定程度影响用户体验
+        当宽度缩小到不足以显示三栏时，右侧栏会被挤到下方
+      </div>
+      <div class="main">main 标签浮动跟随的特性</div>
+    </article>
+
+    <style>
+      .position-container{
+        /* position: relative; */
+        padding: 5px 0;
+      }
+      .position-container .left {
+        position: absolute;
+        left: 0;
+        background-color: rgb(167, 240, 158);
+      }
+      .position-container .right {
+        position: absolute;
+        right: 0;
+        background-color: rgb(241, 212, 80);
+      }
+      .position-container .main {
+        /* height: 20px; */
+        margin: 0 200px;
+        background-color: rgb(46, 123, 153);
+      }
+    </style>
+    <article class='position-container'>
+      <div class="left">left position</div>
+      <div class="right">
+        right 需要注意夫级属性
+      </div>
+      <div class="main">main 绝对定位</div>
+    </article>
+
+    <style>
+      .flex-container {
+        display: flex;
+        padding: 5px 0;
+      }
+      .flex-container .left {
+        /* width: 200px; */
+        background-color: rgb(167, 240, 158);
+      }
+      .flex-container .main {
+        flex:1;
+        background-color: rgb(241, 212, 80);
+      }
+      .flex-container .right {
+        /* width: 200px; */
+        background-color: rgb(46, 123, 153);
+      }
+    </style>
+    <article class='flex-container'>
+      <div class="left">left flex</div>
+      <div class="main">main</div>
+      <div class="right">right</div>
+    </article>
+
+    <style>
+      .grid-container {
+        padding: 5px 0;
+        display: grid;
+        /* width: 100%; */
+        /* grid-template-rows: 100px; */
+        grid-template-columns: 100px auto 200px;
+      }
+      .grid-left {
+        background-color: rgb(167, 240, 158);
+      }
+      .grid-main {
+        background-color: rgb(241, 212, 80);
+      }
+      .grid-right {
+        background-color: rgb(46, 123, 153);
+      }
+    </style>
+    <article class="grid-container">
+      <div class="grid-left">left grid</div>
+      <div class="grid-main">main</div>
+      <div class="grid-right">right</div>
+    </article>
+
+    <style>
+      .table-container {
+        display: table;
+        width: 100%;
+      }
+      .table-container > div {
+        display: table-cell;
+      }
+      .table-container .left {
+        width: 200px;
+        background-color: rgb(167, 240, 158);
+      }
+      .table-container .main {
+        /* width: 100%; */
+        background-color: rgb(241, 212, 80);
+      }
+      .table-container .right {
+        width: 200px;
+        background-color: rgb(46, 123, 153);
+      }
+    </style>
+    <article class='table-container'>
+      <div class="left">left table</div>
+      <div class="main">main</div>
+      <div class="right">right 能等高处理</div>
+    </article>
+    <hr>
+
+    <style>
+      .three-container {
+        margin:0 200px;
+      }
+      .three-container::after {
+        content: "";
+        display: block;
+        clear: both;
+      }
+      .three-container .main {
+        float: left;
+        width: 100%;
+        background-color: rgb(241, 212, 80);
+      }
+      .three-container .left {
+        width: 200px;
+        float:left;
+        margin-left: -100%;
+        position: relative;
+        left: -200px;
+        background-color: rgb(167, 240, 158);
+      }
+      .three-container .right {
+        width: 200px;
+        float: left;
+        margin-left: -200px;
+        position: relative;
+        left: 200px;
+        background-color: rgb(46, 123, 153);
+      }
+    </style>
+    <article class='three-container'>
+      <div class="main">main</div>
+      <div class="left">left three</div>
+      <div class="right">right 能等高处理a a a a a  a a</div>
+    </article>
+
+    
+    <style>
+      .double-container {
+        /* float: left; */
+        /* position: absolute; */
+        margin: 5px 0;
+      }
+      .double-container .main {
+        float: left;
+        width: 100%;
+      }
+      .double-container .main .in{
+        margin: 0 200px;
+        background-color: rgb(241, 212, 80);
+      }
+      .double-container .left {
+        width: 200px;
+        float:left;
+        margin-left: -100%;
+        background-color: rgb(167, 240, 158);
+      }
+      .double-container .right {
+        width: 200px;
+        float: left;
+        margin-left: -200px;
+        background-color: rgb(46, 123, 153);
+      }
+      .clearfix::after{
+        content: '';
+        /* display: block; */
+        clear: both;
+      }
+    </style>
+    
+    <article class='double-container clearfix'>
+      <div class='main'>
+        <div class="in">main</div>
+      </div>
+      <div class="left">left double</div>
+      <div class="right">right 能等高处理</div>
+    </article>
+    <p>hello
+
+    </p>
+
+  </body>
+</html>

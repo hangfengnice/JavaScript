@@ -13,6 +13,9 @@ import './assets/index.css'
 // import '../learnBooks/Javascript 5/6 Object-oriented'
 // import "../learnBooks/Javascript 5/7 asynchronous";
 // import '../learnBooks/Javascript 5/8 DOM/1 Node-interface'
+// import '../learnBooks/Javascript 5/浏览器模型/navigator对象, screen对象'
+// import '../learnBooks/Javascript 5/浏览器模型/3 Cookie'
+// import '../learnBooks/Javascript 5/浏览器模型/4 XMLHttpRequest 对象'
 
 // import '../learnBooks/ECMAScript 6/1 let const'
 // import '../learnBooks/ECMAScript 6/2 destructuring'
@@ -31,4 +34,6 @@ import './assets/index.css'
 // import '../learnBooks/ECMAScript 6/15 Iterator'
 // import '../learnBooks/ECMAScript 6/16 Generator'
 
+// import '../learnBooks/You don\'t know JS/this--object--protorype'
+// import '../learnBooks/You don\'t know JS/types && grammar'
 
