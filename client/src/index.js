@@ -37,3 +37,71 @@ import './assets/index.css'
 // import '../learnBooks/You don\'t know JS/this--object--protorype'
 // import '../learnBooks/You don\'t know JS/types && grammar'
 
+var rejectTh = {
+  then: function(resolved, rejected) {
+    console.log("ok")
+  },
+}
+
+let rejectPr = Promise.resolve(rejectTh)
+console.log(rejectPr)
+rejectPr.then(res => {
+console.log(res)
+},
+error => {
+  console.log(error)
+})
+
+// function* foo(x, y) {
+//   return x * y
+// }
+
+// var it = foo(6, 7)
+
+// var res = it.next()
+// console.log(res)
+// console.log(res.value)
+
+// var something = (function () {
+//   var nextVal
+//   return {
+//     [Symbol.iterator]: function() {
+//       console.log(this)
+//       return this
+//     },
+//     next: function() {
+//       if(nextVal === undefined) {
+//         nextVal = 1
+//       } else {
+//         nextVal = (3 * nextVal) + 6
+//       }
+
+//       return {done: false, value: nextVal}
+//     }
+//   }
+// })()
+
+// for(var v of something) {
+//   console.log(v)
+//   if (v > 1000) {
+//     break
+//   }
+// }
+
+Promise.resolve().then(res => {
+  console.log(res)
+})
+
+// function* run (gen) {
+//   let args = [].slice.call(arguments, 1), it;
+//   it = gen.apply(this, args)
+//   return Promise.resolve()
+//   .then(function handleNext(value){
+//     var next = it.next(value)
+//     return (function)
+//   })
+// }
+
+var a22 = Symbol('hello')
+console.log(typeof a22)
+
