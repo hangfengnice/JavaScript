@@ -16,6 +16,7 @@ import './assets/index.css'
 // import '../learnBooks/Javascript 5/浏览器模型/navigator对象, screen对象'
 // import '../learnBooks/Javascript 5/浏览器模型/3 Cookie'
 // import '../learnBooks/Javascript 5/浏览器模型/4 XMLHttpRequest 对象'
+// import '../learnBooks/Javascript 5/浏览器模型/indexedDB'
 
 // import '../learnBooks/ECMAScript 6/1 let const'
 // import '../learnBooks/ECMAScript 6/2 destructuring'
@@ -37,71 +38,98 @@ import './assets/index.css'
 // import '../learnBooks/You don\'t know JS/this--object--protorype'
 // import '../learnBooks/You don\'t know JS/types && grammar'
 
-var rejectTh = {
-  then: function(resolved, rejected) {
-    console.log("ok")
-  },
-}
 
-let rejectPr = Promise.resolve(rejectTh)
-console.log(rejectPr)
-rejectPr.then(res => {
-console.log(res)
-},
-error => {
-  console.log(error)
-})
-
-// function* foo(x, y) {
-//   return x * y
+// function timeout(ms) {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(resolve, ms, "done");
+//   });
 // }
 
-// var it = foo(6, 7)
+// timeout(100).then(value => {
+//   console.log(value);
+// });
 
-// var res = it.next()
-// console.log(res)
-// console.log(res.value)
-
-// var something = (function () {
-//   var nextVal
-//   return {
-//     [Symbol.iterator]: function() {
-//       console.log(this)
-//       return this
-//     },
-//     next: function() {
-//       if(nextVal === undefined) {
-//         nextVal = 1
-//       } else {
-//         nextVal = (3 * nextVal) + 6
+// const getJSON = function(url) {
+//   const promise = new Promise(function(resolve, reject) {
+//     const handler = function() {
+//       if (this.readyState !== 4) {
+//         return;
 //       }
+//       if (this.status === 200) {
+//         resolve(this.response);
+//       } else {
+//         reject(new Error(this.statusText));
+//       }
+//     };
+//     const client = new XMLHttpRequest();
+//     client.open("GET", url);
+//     client.onreadystatechange = handler;
+//     client.responseType = "json";
+//     client.setRequestHeader("Accept", "application/json");
+//     client.send();
+//   });
 
-//       return {done: false, value: nextVal}
-//     }
+//   return promise;
+// };
+
+// getJSON(
+//   "https://tvax3.sinaimg.cn/crop.135.0.810.810.180/006LO43wly8frjay2sypvj30u00mita5.jpg"
+// ).then(
+//   function(json) {
+//     console.log("Contents: " + json);
+//   },
+//   function(error) {
+//     console.error("出错了", error);
 //   }
-// })()
+// );
 
-// for(var v of something) {
-//   console.log(v)
-//   if (v > 1000) {
-//     break
-//   }
+// const someAsyncThing = function() {
+//   return new Promise(function(resolve, reject) {
+//     // 下面一行会报错，因为x没有声明
+//     resolve(x + 2);
+//   });
+// };
+
+// someAsyncThing().then(function() {
+//   console.log("everything is great");
+// });
+
+// setTimeout(() => {
+//   console.log(123);
+// }, 2000);
+
+// const someAsyncThing = function() {
+//   return new Promise(function(resolve, reject) {
+//     // 下面一行会报错，因为x没有声明
+//     resolve(x + 2);
+//   });
+// };
+
+// someAsyncThing().then(function() {
+//   return someOtherAsyncThing();
+// }).catch(function(error) {
+//   console.log('oh no', error);
+//   // 下面一行会报错，因为 y 没有声明
+//   y + 2;
+// }).then(function() {
+//   console.log('carry on');
+// });
+// 
+
+// let obj = {
+//   1: 'hello'
 // }
+// const p = Promise.reject(obj);
 
-Promise.resolve().then(res => {
-  console.log(res)
-})
+// p.then(null, (s) => console.log(s));
 
-// function* run (gen) {
-//   let args = [].slice.call(arguments, 1), it;
-//   it = gen.apply(this, args)
-//   return Promise.resolve()
-//   .then(function handleNext(value){
-//     var next = it.next(value)
-//     return (function)
-//   })
-// }
+const thenable = {
+  then(resolve, reject) {
+    reject("出错了");
+  }
+};
 
-var a22 = Symbol('hello')
-console.log(typeof a22)
-
+Promise.reject(thenable).catch(e => {
+  console.log(e)
+  console.log(e === thenable);
+});
