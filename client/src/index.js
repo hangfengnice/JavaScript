@@ -33,7 +33,9 @@ import './assets/index.css'
 // import '../learnBooks/ECMAScript 6/13 Reflect'
 // import '../learnBooks/ECMAScript 6/14 Promise'
 // import '../learnBooks/ECMAScript 6/15 Iterator'
-import '../learnBooks/ECMAScript 6/16 Generator'
+// import '../learnBooks/ECMAScript 6/16 Generator'
 
 // import '../learnBooks/You don\'t know JS/this--object--protorype'
 // import '../learnBooks/You don\'t know JS/types && grammar'
+
+import '../quiz/question js/clone'
