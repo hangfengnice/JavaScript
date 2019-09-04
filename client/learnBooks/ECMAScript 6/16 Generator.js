@@ -32,3 +32,5 @@ let p0 = new Promise(fn);
 let p1 = Promise.resolve(p0);
 // 返回为true，返回的 Promise 即是 入参的 Promise 对象。
 console.log(p0 === p1);
+
+
