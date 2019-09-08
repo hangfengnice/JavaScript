@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>inline-block</title>
+  <style>
+    .space a, .space span {
+    display: inline-block;
+    padding: .5em 1em;
+    background-color: #cad5eb;
+    }
+    .space1{
+      font-size: 0;
+      -webkit-text-size-adjust:none;
+    }
+    .space1 a{
+      font-size: 12px;
+      display: inline-block;
+    padding: .5em 1em;
+    background-color: #cad5eb;
+    }
+    .space2 a{
+    display: inline-block;
+    padding: .5em 1em;
+    background-color: #cad5eb;
+     margin-right: -6px;
+    }
+    .space3 {
+    letter-spacing: -6px;
+    }
+    .space3 a {
+        letter-spacing: 0;
+        display: inline-block;
+        padding: .5em 1em;
+        background-color: #cad5eb;
+    }
+    .space4 {
+        word-spacing: -6px;
+    }
+    .space4 a {
+        word-spacing: 0;
+        display: inline-block;
+        padding: .5em 1em;
+        background-color: #cad5eb;
+    }
+  </style>
+</head>
+<body>
+  <p>inline-block 有空隙问题</p>
+  <input />  <input type="submit" />
+  <div class="space">
+    <a href="##">惆怅</a>
+    <a href="##">淡定</a>
+    <a href="##">热血</a>
+  </div>
+
+  <!-- 方法之移除空格 -->
+  <p>标签连成一行</p>
+  <div class="space">
+    <a href="##">惆怅</a><a href="##">淡定</a><a href="##">热血 连成一行</a>
+  </div>
+
+  <p>标签间没有空格写法 1</p>
+  <div class="space">
+    <a href="##">
+    惆怅</a><a href="##">
+    淡定</a><a href="##">
+    热血 </a>
+  </div>
+
+  <p>标签间没有空格写法 2</p>
+  <div class="space">
+    <a href="##">惆怅</a
+    ><a href="##">淡定</a
+    ><a href="##">热血 标签的使用</a>
+  </div>
+
+  <p>借用html注释</p>
+  <div class="space">
+    <a href="##">惆怅</a><!--
+    --><a href="##">淡定</a><!--
+    --><a href="##">热血 使用html注释</a>
+  </div>
+
+
+  <p>让闭合标签吃胶囊 前两个 a 标签没有闭合标签</p>
+  <div class="space">
+    <a href="##">惆怅
+    <a href="##">淡定
+    <a href="##">热血 前两个没有闭合标签</a>
+</div>
+
+<p>让闭合标签吃胶囊 html5中 三个 span 标签都没有没有闭合标签</p>
+<div class="space">
+    <span >惆怅
+    <span >淡定
+    <span >热血 html5 没有 a 的闭合标签
+</div>
+<p>父元素 使用font-size:0</p>
+ <div class="space1">
+    <a href="##">惆怅</a>
+    <a href="##">淡定</a>
+    <a href="##">热血</a>
+  </div>
+
+  <p>使用 margin 负值 margin-left: -6px;</p>
+ <div class="space2">
+    <a href="##">惆怅</a>
+    <a href="##">淡定</a>
+    <a href="##">热血</a>
+  </div>
+
+   <p>使用 letter-spacing</p>
+ <div class="space3">
+    <a href="##">惆怅</a>
+    <a href="##">淡定</a>
+    <a href="##">热血</a>
+  </div>
+
+    <p>使用 word-spacing</p>
+ <div class="space4">
+    <a href="##">惆怅</a>
+    <a href="##">淡定</a>
+    <a href="##">热血</a>
+  </div>
+</body>
+</html>
