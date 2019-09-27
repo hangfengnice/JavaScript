@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  选折颜色: <select name="" id="colorSelect">
+    <option >请选折</option>
+    <option >红色</option>
+    <option >蓝色</option>
+  </select> <br>
+  输入购买颜色: <input type="text" id='numberInput'> <br>
+  您选折了颜色 <br>
+  <div id='colorInfo'></div><br>
+  您输入了数量 <br>
+  <div id='numberInfo'></div><br>
+
+  <button id='nextBtn' disabled>请选折手机颜色和购买数量</button>
+
+  <script>
+   var plane = {
+     fire: function() {
+       console.log('fire')
+     }
+   }
+    var missDecorator = function () {
+     console.log('fire1')
+   }
+    var atomDecorator = function () {
+     console.log('fire2')
+   }
+   var fire1 = plane.fire
+   plane.fire = function() {
+     fire1()
+     missDecorator()
+   }
+   var fire2 = plane.fire
+   plane.fire = function() {
+     fire2()
+     atomDecorator()
+   }
+   plane.fire()
+
+  </script>
+</body>
+</html>
