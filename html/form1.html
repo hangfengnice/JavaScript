@@ -7,43 +7,54 @@
   <title>Document</title>
 </head>
 <body>
-  选折颜色: <select name="" id="colorSelect">
-    <option >请选折</option>
-    <option >红色</option>
-    <option >蓝色</option>
-  </select> <br>
-  输入购买颜色: <input type="text" id='numberInput'> <br>
-  您选折了颜色 <br>
-  <div id='colorInfo'></div><br>
-  您输入了数量 <br>
-  <div id='numberInfo'></div><br>
-
-  <button id='nextBtn' disabled>请选折手机颜色和购买数量</button>
+  
 
   <script>
-   var plane = {
-     fire: function() {
-       console.log('fire')
+   var offLightState = function (light) {
+     this.light = light
+   }
+   offLightState.prototype.buttonWasPressed = function () {
+     console.log("弱光");
+     this.light.setState(this.light.weakLightState)
+   }
+   var weakLightState = function (light) {
+     this.light = light
+   }
+   weakLightState.prototype.buttonWasPressed = function () {
+     console.log("强光");
+     this.light.setState(this.light.strongLightState)
+   }
+   var strongLightState = function (light) {
+     this.light = light
+   }
+   strongLightState.prototype.buttonWasPressed = function () {
+     console.log("关灯");
+     this.light.setState(this.light.offLightState)
+   }
+
+   var light = function () {
+     console.log(this);
+     this.offLightState = new offLightState(this)
+     this.weakLightState = new weakLightState(this)
+     this.strongLightState = new strongLightState(this)
+     this.button = null
+   }
+   light.prototype.init = function () {
+     let button = document.createElement('button')
+     self = this
+     this.button = document.body.appendChild(button)
+     this.button.textContent = '开关'
+     this.currState = this.offLightState
+     this.button.onclick = function () {
+       self.currState.buttonWasPressed()
      }
    }
-    var missDecorator = function () {
-     console.log('fire1')
+   light.prototype.setState = function(newState) {
+     this.currState = newState
    }
-    var atomDecorator = function () {
-     console.log('fire2')
-   }
-   var fire1 = plane.fire
-   plane.fire = function() {
-     fire1()
-     missDecorator()
-   }
-   var fire2 = plane.fire
-   plane.fire = function() {
-     fire2()
-     atomDecorator()
-   }
-   plane.fire()
 
+   var light1 = new light()
+   light1.init()
   </script>
 </body>
 </html>

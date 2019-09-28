@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #table {
+      visibility: hidden;
+    }
+    .hover:hover {
+      background-color: rgb(49, 201, 112);
+    }
+    .checked {
+      background-color: rgb(235, 61, 61);
+    }
+  </style>
+</head>
+<body>
+  <input type="text" id='date'> <button id='showOrHidden'>显示日历</button>
+  <table id='table'>
+    <caption>
+      <span title='上一月'>&lt;</span>
+      <span title='上一年'>&lt;</span>
+      <span id='currentDate'></span>
+      <span title='下一年'>&gt;</span>
+      <span title='下一月'>&gt;</span>
+    </caption>
+    <thead>
+      <tr>
+        <th>周日</th>
+        <th>周一</th>
+        <th>周二</th>
+        <th>周三</th>
+        <th>周四</th>
+        <th>周五</th>
+        <th>周六</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    <tfoot>
+      <tr>
+				<td colspan="2">
+					<button id="determine">确定</button>
+				</td>
+				<td colspan="2">
+					<button id="cancel">取消</button>
+				</td>
+				<!-- <td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>				 -->
+			</tr>
+    </tfoot>
+  </table>
+
+  <script>
+    function $(id) {
+      return document.getElementById(id)
+    }
+    let table = $('table')
+    let showOrHidden = $('showOrHidden')
+    showOrHidden.onclick = function () {
+      if (this.textContent === '显示日历') {
+        showTable()
+      } else {
+        hiddenTable()
+      }
+    }
+    function showTable() {
+      $("table").style.visibility = 'visible'
+        $('showOrHidden').textContent = '隐藏日历'
+    }
+    function hiddenTable() {
+      $("table").style.visibility = 'hidden'
+        $('showOrHidden').textContent = '显示日历'
+    }
+    let input = $("date")
+    input.onfocus = function () {
+      showTable()
+    }
+    input.onblur= function () {
+      hiddenTable()
+    }
+    function Calender(table) {
+      this.table = table
+      this.array = []
+    }
+    Calender.prototype = {
+      init: function () {
+        let self = this
+        let now = new Date()
+        let y = now.getFullYear()
+        let m = now.getMonth()
+        this.repeat(y, m)
+        $("determine").onclick = function () {
+          hiddenTable()
+          let tds = self.table.tBodies[0].getElementsByTagName('td')
+          // console.log(tds)
+          for (let i in tds) {
+            console.log(tds[i].classList)
+            if (tds[i].classList && tds[i].classList.contains('checked')) {
+              tds[i].classList.remove('checked')
+            }
+          }
+          if (!self.array.length) {
+            return 
+          }
+          if (self.array.length === 1) {
+            input.value = array[0]
+            self.array = []
+          } else {
+            while (self.array.length > 2) {
+              self.shift()
+            }
+            if (self.array[0] === self.array[1]) {
+              input.value = array[0]
+              self.array = []
+            }
+            else {
+              let array1 = self.array[0].split("-")
+              let array2 = self.array[1].split("-")
+              let t1 = new Date(array1[0], array1[1], array1[2])
+              let t2 = new Date(array2[0], array2[1], array2[2])
+              var differTime = t2 - t1
+              var differDay = Math.abs(differTime/(24 * 3600 * 1000))
+              if (differDay < 3 || differDay > 30) {
+                alert('请选折 3 到 30 天')
+                self.array = []
+              } else {
+                if (parseInt(array1[0]) > parseInt(array2[0]) || parseInt(array1[1]) > parseInt(array2[1]) || parseInt(array1[2]) > parseInt(array2[2])) {
+							input.value = self.array[1] + " to " + self.array[0]; // 如果先选大的日期再选小的日期 
+							self.array = [];										// 则将两个日期调换过来
+						}
+						else {
+							input.value = self.array[0] + " to " + self.array[1];
+							self.array = [];
+						}	
+              }
+              
+            } 
+          }
+          
+        }
+      
+        $('cancel').onclick = function () {
+          var tds = self.table.tBodies[0].getElementsByTagName("td");
+          for (var i in tds) {
+            if (tds[i].className == "checked") {
+              tds[i].className = "clear";
+            }
+          }
+          self.array = [];
+          self.table.style.visibility = "hidden";
+        }
+      },
+      repeat: function (y, m) {
+        var start = new Date(y,m,1)
+        var indexDay = start.getDay()
+        var currentDate = $('currentDate')
+        currentDate.textContent = y + '年' + (m + 1) + "月"
+        this.creatTab()
+        this.renderTab(y, m, indexDay)
+        this.returnDate(y, m)
+        this.chooseDate(y, m)
+        console.log(indexDay, currentDate)
+      },
+      creatTab() {
+        let tbody = this.table.tBodies[0]
+        console.log(tbody)
+        tbody.textContent = ""
+        for (let i = 0; i < 6; i ++) {
+          var tr = document.createElement("tr")
+          for (let j = 0; j < 7; j ++) {
+            var td = document.createElement('td')
+            td.innerHTML = '&nbsp;'
+            td.className = ' hover'
+            tr.appendChild(td)
+          }
+          tbody.appendChild(tr)
+        }
+      },
+      renderTab(y, m, indexDay) {
+        let trs = table.tBodies[0].rows
+        let count = 1;
+        let allDay
+        let temp = new Date()
+        let tempY = temp.getFullYear()
+        let tempM = temp.getMonth()
+        let tempD = temp.getDate()
+        let tempIndex = indexDay
+        input.value = tempY + "-" + (tempM + 1) + '-' + tempD
+        while(tempIndex > 0) {
+          tempIndex --
+          trs[0].cells[tempIndex].className = ''
+        }
+        for (; indexDay < 7; indexDay ++) {
+          trs[0].cells[indexDay].innerHTML = count
+          count ++
+        }
+        for (let i = 1; i < 6; i ++) {
+          for(let j = 0; j < 7; j ++) {
+            trs[i].cells[j].innerHTML = count
+            count ++
+          }
+        }
+        switch (m) {
+          case 0:
+          case 2:
+          case 4:
+          case 6:
+          case 7:
+          case 9:
+          case 11:
+            allDay = 31
+            break
+          case 3:
+          case 5:
+          case 8:
+          case 10:
+            allDay = 30
+            break;
+          case 1:
+            if (y % 400 === 0 || (y % 4 === 0 && y % 100 !== 0))
+            allDay = 29
+            else 
+            allDay = 28
+            break
+          default: break
+        }
+        for (let i = 0; i < 6; i ++) {
+          for (let k = 0; k < 7; k ++) {
+            if (trs[i].cells[k].innerHTML > allDay) {
+              trs[i].cells[k].innerHTML = '&nbsp;'
+              trs[i].cells[k].className = ''
+            }
+            if (trs[i].cells[k].innerHTML == tempD && y == tempY && m == tempM) {
+              trs[i].cells[k].style.color = 'blue'
+
+            }
+          }
+        }
+
+      },
+      returnDate(y, m){
+        let self = this
+        let trs = this.table.tBodies[0].rows
+        let input = $('date')
+        for (let i = 0; i < 6; i ++) {
+          for (let j = 0; j < 7; j ++) {
+            trs[i].cells[j].onclick = function () {
+              let d = this.innerHTML
+              if (d !== '&nbsp;') {
+                let dateString = y + '-' + (m + 1) + "-" + d
+                self.array.push(dateString)
+                this.classList.add('checked')
+              }
+            }
+          }
+        }
+      },
+      chooseDate(y, m) {
+        let self = this
+        let spans = document.getElementsByTagName('span')
+        console.log(spans)
+        for (let i = 0, len = spans.length; i < len; i ++) {
+          spans[i].index = i 
+          spans[i].onclick = function () {
+            console.log(event.target, this.index)
+            switch(this.index) {
+              case 0:
+               m--;
+               break
+              case 1:
+               y--;
+               break
+              case 3:
+               y++;
+               break
+              case 4:
+               m++;
+               break
+              default:
+                break;
+            }
+            if (m < 0 ) {
+              y --
+              m = 11
+            }
+            if (m > 11) {
+              y ++
+              m = 0
+            }
+            if (y < 1970 || y > 2030) {
+              alert('只显示 1970 到 2030 的时间段')
+              y = 2019
+            }
+            console.log(y, m)
+            console.log("great")
+            self.repeat(y, m)
+          }
+        } 
+      }
+    }
+
+    // (function () {
+      var calender = new Calender(table)
+      console.log(calender)
+      calender.init()
+    // }())
+    // console.log($("table").tBodies)
+  
+  </script>
+</body>
+</html>
