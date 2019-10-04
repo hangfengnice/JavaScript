@@ -1,243 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>MVVM</title>
+  <title>myVue</title>
 </head>
+<style>
+  #app {
+    text-align: center;
+  }
+</style>
 <body>
-  <h1 id='name'>{{name}}</h1>
-  <script>
-    
-    function SelfVue(options) {
-      let self = this
-      this.methods = options.methods
-      this.data = options.data
+  <div id="app">
+    <form>
+      <input type="text"  v-model="number">
+      <button type="button" v-click="increment">增加</button>
+    </form>
+    <h3 v-bind="number"></h3>
+    <form>
+      <input type="text"  v-model="count">
+      <button type="button" v-click="incre">增加</button>
+    </form>
+    <h3 v-bind="count"></h3>
+  </div>
+</body>
 
-      Object.keys(this.data).forEach(key => {
-        self.proxyKeys(key)})
+<script>
+  function myVue(options) {
+    this._init(options);
+  }
 
-      observe(this.data)
-      new Compile(options, this)
-      // new Watcher(this, exp, (value) => el.innerHTML = value)
-      options.mounted.call(this)
-    }
-    SelfVue.prototype = {
+  myVue.prototype._init = function (options) {
+    this.$options = options;
+    this.$el = document.querySelector(options.el);
+    this.$data = options.data;
+    this.$methods = options.methods;
 
-      proxyKeys(key) {
-        let self = this
-        Object.defineProperty(this, key, {
-          enumerable: false,
+    this._binding = {};
+    this._obverse(this.$data);
+    this._complie(this.$el);
+  }
+ 
+  myVue.prototype._obverse = function (obj) {
+    var _this = this;
+    Object.keys(obj).forEach(function (key) {
+      if (obj.hasOwnProperty(key)) {
+        _this._binding[key] = {                                                                                                                                                          
+          _directives: []
+        };
+        console.log(_this._binding[key])
+        var value = obj[key];
+        if (typeof value === 'object') {
+          _this._obverse(value);
+        }
+        var binding = _this._binding[key];
+        Object.defineProperty(_this.$data, key, {
+          enumerable: true,
           configurable: true,
-          get() {
-            return self.data[key]
+          get: function () {
+            console.log(`${key}获取${value}`);
+            return value;
           },
-          set(value) {
-            self.data[key] = value
-          }
-        })
-      }
-    }
-
-     // observe 数据监听器
-    function Observe(data) {
-      this.data = data
-      this.walk(data)
-    }
-    Observe.prototype = {
-      walk(data) {
-        Object.keys(data).forEach(key => {
-        this.defineReactive(data, key, data[key])
-      })
-      },
-      defineReactive(data, key, val) {
-      let dep = new Dep()
-      let childObj = observe(val)
-      Object.defineProperty(data, key, {
-        enumerable: true,
-        configurable: true,
-        get() {
-          if (Dep.target) { // 是否添加订阅者
-            dep.addSub(Dep.target)  // 添加订阅者
-          }
-          return val
-        },
-        set(newVal) {
-          if (val === newVal) {
-            return
-          }
-          val = newVal
-          console.log("属性" + key + "已经被监听,现在的值为" + newVal.toString())
-          dep.notify()
-        }
-      }) 
-    }
-    }
-    function observe(value, vm) {
-      if (!value || typeof value !== 'object') {
-        return 
-      }
-      return new Observe(value)
-    }
-    // dep
-    function Dep() {
-      this.subs = []
-    }
-    Dep.prototype = {
-      addSub(sub) {
-        this.subs.push(sub)
-      },
-      notify() {
-        this.subs.forEach(sub => sub.update())
-      }
-    }
-    Dep.target = null
-
-    // watcher 订阅者
-
-    function Watcher (vm, exp, cb) {
-      this.cb = cb
-      this.vm = vm
-      this.exp = exp
-      this.value = this.get()
-    }
-    Watcher.prototype = {
-      update() {
-        this.run()
-      },
-      run() {
-        let value = this.vm.data[this.exp]
-        let oldVal = this.value
-        if (value !== oldVal) {
-          this.value = value
-          this.cb.call(this.vm, value, oldVal)
-        }
-      },
-      get() {
-        Dep.target = this
-        let value = this.vm.data[this.exp]
-        Dep.target = null
-        return value
-      }
-    }
-
-    function Compile(el, vm) {
-      this.vm = vm
-      this.el = document.querySelector(el)
-      this.fragment = null
-      this.init()
-    }
-    Compile.prototype = {
-      init() {
-        if (this.el) {
-          let fragment = this.nodeToFragment(this.el)
-          this.compileElement(this.fragment);
-          this.el.appendChild(this.fragment);
-          while(child) {
-            fragment.appendChild(child)
-            child = el.firstChild
-          }
-          return fragment
-        }
-      },
-      nodeToFragment(el) {
-        let fragment = document.createDocumentFragment()
-        this.compileElement(this.fragment)
-        while(child) {
-          fragment.appendChild(child)
-          child = el.firstChild
-        }
-        return fragment
-      },
-      compileElement(el) {
-        let childNodes = el.childNodes
-        let self = this;
-        [].slice.call(childNodes).forEach(node => {
-        let reg = /\{\{(.*)\}\}/
-        let text = node.textContent
-
-        if (self.isElementNode(node)) {
-          self.compile(node)
-        }
-        if (self.isTextNode(node) && reg.test(text)) {
-          self.compileText(node, reg.exec(text)[1])
-        }
-        if (node.childNodes && node.childNodes.length) {
-          self.compileElement(node)
-        }
-      })
-      },
-      compile(node) {
-        let nodeAttrs = node.attributes
-        let self = this
-        Array.prototype.forEach.call(nodeAttrs, attr => {
-          let attrName = attr.name
-          if (self.isDirective(attrName)) {
-            var exp = attr.value;
-                var dir = attrName.substring(2);
-                if (self.isEventDirective(dir)) {  // 事件指令
-                    self.compileEvent(node, self.vm, exp, dir);
-                } else {  // v-model 指令
-                    self.compileModel(node, self.vm, exp, dir);
-                }
-                node.removeAttribute(attrName);
-          }
-        })
-      },
-      compileEvent(node, vm, exp, dir) {
-        var eventType = dir.split(':')[1];
-        var cb = vm.methods && vm.methods[exp];
-
-        if (eventType && cb) {
-            node.addEventListener(eventType, cb.bind(vm), false);
-        }
-      },
-        compileModel(node, vm, exp, dir) {
-        var self = this;
-        var val = this.vm[exp];
-        this.modelUpdater(node, val);
-        new Watcher(this.vm, exp, function (value) {
-            self.modelUpdater(node, value);
-        });
-
-        node.addEventListener('input', function(e) {
-            var newValue = e.target.value;
-            if (val === newValue) {
-                return;
+          set: function (newVal) {
+            console.log(`${key}更新${newVal}`);
+            if (value !== newVal) {
+              value = newVal;
+              binding._directives.forEach(function (item) {
+                item.update();
+              })
             }
-            self.vm[exp] = newValue;
-            val = newValue;
-        });
-    },
-      isDirective(attr) {
-        return attr.indexOf('v-') == 0;
-      },
-      isEventDirective(attr) {
-        return dir.indexOf('on:') === 0;
-      },
-      isElementNode(node) {
-        return node.nodeType === 1
-      }
-    }
-    function compileText (node, exp) {
-      let self = this
-      let initText = this.vm[exp]
-      this.updateText(node, initText)
-      new Watcher(this.vm, exp, value => self.updateText(node, value))
-    }
-    function updateText(node, value) {
-      node.textContent = value ? "" : value
-    }
-
-
-let vm = new SelfVue({
-      el: "#name",
-      data: {
-        name: "hello"
+          }
+        })
       }
     })
+  }
 
-  </script>
-</body>
-</html>
+  myVue.prototype._complie = function (root) {
+    var _this = this;
+    var nodes = root.children;
+    for (var i = 0; i < nodes.length; i++) {
+      var node = nodes[i];
+      if (node.children.length) {
+        this._complie(node);
+      }
+
+      if (node.hasAttribute('v-click')) {
+        node.onclick = (function () {
+          var attrVal = nodes[i].getAttribute('v-click');
+          return _this.$methods[attrVal].bind(_this.$data);
+        })();
+      }
+
+      if (node.hasAttribute('v-model') && (node.tagName = 'INPUT' || node.tagName == 'TEXTAREA')) {
+        node.addEventListener('input', (function(key) {
+          var attrVal = node.getAttribute('v-model');
+          _this._binding[attrVal]._directives.push(new Watcher(
+            'input',
+            node,
+            _this,
+            attrVal,
+            'value'
+          ))
+
+          return function() {
+            _this.$data[attrVal] =  nodes[key].value;
+          }
+        })(i));
+      } 
+
+      if (node.hasAttribute('v-bind')) {
+        var attrVal = node.getAttribute('v-bind');
+        _this._binding[attrVal]._directives.push(new Watcher(
+          'text',
+          node,
+          _this,
+          attrVal,
+          'innerHTML'
+        ))
+      }
+    }
+  }
+
+  function Watcher(name, el, vm, exp, attr) {
+    this.name = name;         //指令名称，例如文本节点，该值设为"text"
+    this.el = el;             //指令对应的DOM元素
+    this.vm = vm;             //指令所属myVue实例
+    this.exp = exp;           //指令对应的值，本例如"number"
+    this.attr = attr;         //绑定的属性值，本例为"innerHTML"
+
+    this.update();
+  }
+
+  Watcher.prototype.update = function () {
+    this.el[this.attr] = this.vm.$data[this.exp];
+  }
+
+  window.onload = function() {
+    var app = new myVue({
+      el:'#app',
+      data: {
+        number: 0,
+        count: 0,
+      },
+      methods: {
+        increment: function() {
+          this.number ++;
+        },
+        incre: function() {
+          this.count ++;
+        }
+      }
+    })
+  }
+</script>
