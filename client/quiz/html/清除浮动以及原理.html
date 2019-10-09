@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .topDiv {
+    width: 500px;
+    border: 2px solid black;
+    /* display: inline-block; */
+    /* overflow: auto; */
+    }
+    .floatDiv {
+        width: 100px;
+        height: 100px;
+        border: 2px dotted red;
+        color: red;
+        margin: 4px;
+        float: left;
+    }
+    .bottomDiv {
+        width: 500px;
+        height: 100px;
+        margin: 5px 0;
+        border: 2px dotted black;
+    }
+    .textDiv {
+        color: blue;
+        border: 2px solid blue;
+
+        /* clear: both; */
+    }
+
+
+    .p1 {font-size: 16px; line-height: 32px;}
+.s1 {font-size: 2em;}
+.s1 {font-size: 2em; line-height: 2em;}
+
+.p2 {font-size: 16px; line-height: 2;}
+.s5 {font-size: 2em;}
+.s5 {font-size: 2em; line-height: 2em;}
+
+  </style>
+</head>
+<body>
+  <p class="topDiv">
+    <div class="floatDiv">float left</div>
+    <div class="textDiv">...</div>
+  </p>
+  <div class="bottomDiv">...</div>
+
+
+
+  <div class="p1">
+	<div class="s1">1</div>
+  	<div class="s2">1</div>
+</div>
+<div class="p2">
+	<div class="s5">1</div>
+  	<div class="s6">1</div>
+</div>
+
+ 
+</body>
+</html>
