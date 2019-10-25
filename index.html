@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>test</title>
+  <style>
+    .div {
+      display: grid;
+      grid-template-columns: 1fr 2fr 3fr;
+    }
+    .child1 {
+      background-color: deepskyblue;
+    }
+    .child2 {
+      background-color: goldenrod;
+    }
+    .child3 {
+      background-color: rgb(0, 255, 76);
+    }
+  </style>
+</head>
+<body>
+  <div class="div">
+    <div class="child1 child">1heloo</div>
+    <div class="child2 child">2heloo</div>
+    <div class="child3 child">3heloo</div>
+  </div>
+
+  <script>
+let age = 29
+window.color = "red"
+console.log(delete window.age);
+console.log(age);
+console.log(delete window.color);
+console.log(window.color);
+
+// let a = 0
+// let b = async () => {
+//   a= a + await 10
+//   console.log("2", a);
+//   a = (await 10) + a
+//   console.log("3", a);
+
+// }
+// b() 
+// a ++ 
+// console.log("1", a);
+// let obj = {
+//   hello: 'hello'
+// }
+// console.log(+obj);
+console.log(+null);
+let array = [1, 2, 3 ,4]
+console.log(array.toString());
+console.log(array.toLocaleString());
+console.log(array.valueOf());
+let array1 = [undefined , 1]
+console.log(array1.valueOf());
+console.log(array1.toString());
+console.log(array1.toLocaleString());
+    </script>
+</body>
+</html>
