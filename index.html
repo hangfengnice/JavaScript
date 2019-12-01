@@ -22,44 +22,46 @@
   </style>
 </head>
 <body>
-  <div class="div">
+  <div class="div" id='div' onclick="console.log('hello')">
     <div class="child1 child">1heloo</div>
     <div class="child2 child">2heloo</div>
     <div class="child3 child">3heloo</div>
   </div>
+  <button id='button'>hello</button>
+  <button id='btn'></button>
+  <a href="" name='a1'>hello a</a>
+  <a href="">hello</a>
+  <a >
+    @copy;
+    <script>  
+      document.write("<script src='./utils/index.js'><\/script>")</script>
+  </a>
+  
+ <script>
+   let div = $("div")
+   let button = $("button")
+  //  console.log(div.nodeName, div.nodeValue);
+  //  console.log("hello", button.childNodes[0].nodeValue);
+  let divNodes = div.childNodes
+  // console.log(divNodes.length);
+  // console.log(divNodes.item(1));  
+  let cloneDiv = div.cloneNode(true)
+  div.onclick = function () {
+    console.log("great");
+  }
+  console.log(cloneDiv);
+  document.body.appendChild(cloneDiv)
+  let btn = document.createElement('button')
+  // console.log(document.body.insertBefore(btn, div));
+  // console.log(div.hasChildNodes());
+  // console.log($("btn").hasChildNodes());
+  // console.log(div.ownerDocument);
 
-  <script>
-let age = 29
-window.color = "red"
-console.log(delete window.age);
-console.log(age);
-console.log(delete window.color);
-console.log(window.color);
+  
+  console.log(document.getElementsByTagName("Div"));
+  console.log(document.anchors);
+ </script>
 
-// let a = 0
-// let b = async () => {
-//   a= a + await 10
-//   console.log("2", a);
-//   a = (await 10) + a
-//   console.log("3", a);
 
-// }
-// b() 
-// a ++ 
-// console.log("1", a);
-// let obj = {
-//   hello: 'hello'
-// }
-// console.log(+obj);
-console.log(+null);
-let array = [1, 2, 3 ,4]
-console.log(array.toString());
-console.log(array.toLocaleString());
-console.log(array.valueOf());
-let array1 = [undefined , 1]
-console.log(array1.valueOf());
-console.log(array1.toString());
-console.log(array1.toLocaleString());
-    </script>
 </body>
 </html>
