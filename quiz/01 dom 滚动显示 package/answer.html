@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>answer</title>
+  <style>
+    #backTop {
+      position: fixed;
+      bottom: 0;
+      display: none;
+      color: red;
+    }
+    .height {
+      height: 2000px;
+    }
+  </style>
+</head>
+<body>
+  <div class="height"></div>
+  <a href="#" id="backTop" hidden="hidden">返回顶部</a>
+  <script>
+    window.addEventListener('scroll', function () {
+      if (this.pageYOffset > window.innerHeight) {
+        backTop.style.display = 'inline'
+      } else {
+        backTop.style.display = 'none'
+      }
+      
+    })
+  </script>
+</body>
+</html>

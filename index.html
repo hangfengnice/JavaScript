@@ -4,64 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>test</title>
-  <style>
-    .div {
-      display: grid;
-      grid-template-columns: 1fr 2fr 3fr;
-    }
-    .child1 {
-      background-color: deepskyblue;
-    }
-    .child2 {
-      background-color: goldenrod;
-    }
-    .child3 {
-      background-color: rgb(0, 255, 76);
-    }
-  </style>
+  <title>Document</title>
 </head>
 <body>
-  <div class="div" id='div' onclick="console.log('hello')">
-    <div class="child1 child">1heloo</div>
-    <div class="child2 child">2heloo</div>
-    <div class="child3 child">3heloo</div>
-  </div>
-  <button id='button'>hello</button>
-  <button id='btn'></button>
-  <a href="" name='a1'>hello a</a>
-  <a href="">hello</a>
-  <a >
-    @copy;
-    <script>  
-      document.write("<script src='./utils/index.js'><\/script>")</script>
-  </a>
   
- <script>
-   let div = $("div")
-   let button = $("button")
-  //  console.log(div.nodeName, div.nodeValue);
-  //  console.log("hello", button.childNodes[0].nodeValue);
-  let divNodes = div.childNodes
-  // console.log(divNodes.length);
-  // console.log(divNodes.item(1));  
-  let cloneDiv = div.cloneNode(true)
-  div.onclick = function () {
-    console.log("great");
-  }
-  console.log(cloneDiv);
-  document.body.appendChild(cloneDiv)
-  let btn = document.createElement('button')
-  // console.log(document.body.insertBefore(btn, div));
-  // console.log(div.hasChildNodes());
-  // console.log($("btn").hasChildNodes());
-  // console.log(div.ownerDocument);
-
-  
-  console.log(document.getElementsByTagName("Div"));
-  console.log(document.anchors);
- </script>
-
-
 </body>
 </html>

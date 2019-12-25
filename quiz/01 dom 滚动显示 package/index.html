@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>滚动显示</title>
+    <style>
+      .height {
+        height: 1200px;
+        width: 1400px;
+        background-color: deepskyblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="height">
+      hello world
+    </div>
+    <div id="result" class="result">滚动页面即可！</div>
+    <script>
+      // 1. window对象和document对象绑定scroll事件可以触发，document.documentElement和document.body是不行的。
+      window.addEventListener("scroll", function() {
+        console.log(
+          "window滚动触发，window.pageYOffset是：" + this.pageYOffset
+        );
+      });
+      document.addEventListener("scroll", function() {
+        console.log(
+          "document滚动触发，document.scrollTop是：" + this.scrollTop
+        );
+      });
+      document.documentElement.addEventListener("scroll", function() {
+        console.log(
+          "document.documentElement滚动触发，document.documentElement.scrollTop是：" +
+            this.scrollTop
+        );
+      });
+      document.body.addEventListener("scroll", function() {
+        console.log(
+          "document.body滚动触发，document.body.scrollTop是：" + this.scrollTop
+        );
+      });
+
+      // 2. 可以看到桌面浏览器和移动端浏览器对于滚动高度获取是有差别的，桌面端浏览器不能使用document.body.scrollTop获取浏览器窗体的滚动高度，
+      //    而移动端不能使用document.documentElement.scrollTop获取浏览器窗体的滚动高度。但是都支持window.pageYOffset。
+
+      //     所以，理论上讲，浏览器窗体的滚动高度获取使用window.pageYOffset即可，
+      //     然而window.pageYOffset有一个缺点，就是IE9及其以上浏览器才支持，在PC端，很多项目是需要兼容IE8浏览器的，
+      //     因此，对于传统PC网站，获取浏览器窗体滚动高度比较好的表达方法是这样：
+      //     var winScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      let logs = '';
+      window.addEventListener('scroll', function () {
+        logs += '\nwindow滚动触发，window.pageYOffset是：' + this.pageYOffset + '\ndocument.documentElement.scrollTop是：' + document.documentElement.scrollTop + '\ndocument.body.scrollTop是：' + document.body.scrollTop;
+        result.innerHTML = logs;
+        result.scrollTop = 9999999;
+      });
+
+      // 3. 浏览器窗体高度获取
+      // 这个可以使用window.innerHeight获取。然而，window.innerHeight有兼容性问题，IE8浏览器及其以下浏览器是不支持的，怎么办？
+      // 可以借助document.documentElement.clientHeight获取。
+
+
+    </script>
+  </body>
+</html>
