@@ -46,59 +46,64 @@
 
   <script>
     function createElement(tagName, className) {
-      let element = document.createElement(tagName)
-      element.classList.add(className)
-      return element
+      let element = document.createElement(tagName);
+      element.classList.add(className);
+      return element;
     }
 
-
-    let div = createElement("div", 'slider')
-    let btn1 = createElement("button", 'slider-track')
-    let btn2 = createElement("button", 'slider-thumb')
+    let div = createElement("div", "slider");
+    let btn1 = createElement("button", "slider-track");
+    let btn2 = createElement("button", "slider-thumb");
 
     console.log(div);
 
-    div.appendChild(btn1)
-    div.appendChild(btn2)
+    div.appendChild(btn1);
+    div.appendChild(btn2);
 
-    
+    document.body.appendChild(div);
 
-    document.body.appendChild(div)
-
-    
     // divReal.style['--percent'] = 50
-    div.setAttribute('style', '--percent: 50;')
+    div.setAttribute("style", "--percent: 50;");
 
-    btn2.addEventListener('click', e => e.stopPropagation())
-    div.addEventListener('click', function(event) {
-      this.setAttribute('style', `--percent:${Math.ceil(event.offsetX / this.offsetWidth * 100)}`)
-    })
+    btn2.addEventListener("click", e => e.stopPropagation());
+    div.addEventListener("click", function(event) {
+      this.setAttribute(
+        "style",
+        `--percent:${Math.ceil((event.offsetX / this.offsetWidth) * 100)}`
+      );
+    });
 
-    document.addEventListener('mousedown', function (e) {
-      if (event.target !== btn2) return
+    document.addEventListener("mousedown", function(e) {
+      if (event.target !== btn2) return;
 
-      document.addEventListener('mousemove', move)
-    })
+      document.addEventListener("mousemove", move);
+    });
 
-    document.addEventListener('mouseup', function (e) {
-      document.removeEventListener('mousemove', move)
-    })
+    document.addEventListener("mouseup", function(e) {
+      document.removeEventListener("mousemove", move);
+    });
 
     function move(event) {
-      let {left} = div.getBoundingClientRect()
+      let { left } = div.getBoundingClientRect();
       // console.log(event.offsetX, div.offsetWidth);
       // event.stopPropagation()
-      let rleft = event.clientX - left
+      // console.log(object);
+      let value = Math.ceil(((event.clientX - left) / div.offsetWidth) * 100);
+      // console.log(value);
+      value <= 0 && div.setAttribute("style", `--percent: 0`);
 
-      
-      console.log(rleft);
-      div.setAttribute('style', `--percent:${Math.ceil(rleft / div.offsetWidth * 100)}`)
+      value >= 100 && div.setAttribute("style", `--percent: 100`);
+
+      value > 0 &&
+        value < 100 &&
+        div.setAttribute("style", `--percent:${value}`);
+      // if (value <= 0 ? 0 : value) {
+      //   div.setAttribute('style', `--percent:${value}`)
+      // } else if (value >= 100 ? 100: value) {
+      //   div.setAttribute('style', `--percent:${value}`)
+      // }
+      // console.log(rleft);
+      // div.setAttribute('style', `--percent:${Math.ceil(rleft / div.offsetWidth * 100)}`)
     }
-
-
-
-
-    
-
   </script>
 </html>
