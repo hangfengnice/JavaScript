@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>addclass</title>
+    <style>
+      .box {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+        background-color: gray;
+      }
+      .box.active {
+        background-color: skyblue;
+      }
+
+      .box:hover:active {
+        opacity: 0.9;
+        transition: opacity 0.5s;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let fragment = document.createDocumentFragment();
+      for (let i = 0; i < 20; i++) {
+        let div = document.createElement("div");
+        div.classList.add("box");
+        div.draggable = false
+        fragment.append(div);
+      }
+      document.body.append(fragment);
+      document.addEventListener("transitionend", longclick);
+
+      document.addEventListener("mouseup", handleup);
+
+      document.addEventListener("touchend", handleup);
+
+      var start = [];
+
+      function longclick(ev) {
+        if (ev.target.className.includes("box")) {
+          ev.target.classList.add("active");
+          document.addEventListener("mousemove", handlemove);
+          document.addEventListener("touchmove", handlemove);
+        }
+      }
+
+      function handleup(ev) {
+        if (start.length) {
+          start.length = 0;
+        } else {
+          if (!ev.target.className.includes("box")) {
+            clear();
+          }
+        }
+        window.getSelection().removeAllRanges(); //清除选中区域
+        document.removeEventListener("mousemove", handlemove);
+        document.removeEventListener("touchmove", handlemove);
+      }
+
+      function handlemove(ev) {
+        var ev = (ev.touches && ev.touches[0]) || ev;
+        if (!start.length) {
+          start = [ev.pageX, ev.pageY];
+        }
+        document.querySelectorAll(".box").forEach(function(el) {
+          var _x = Math.min(start[0], ev.pageX);
+          var _y = Math.min(start[1], ev.pageY);
+          var _l = Math.max(start[0], ev.pageX);
+          var _t = Math.max(start[1], ev.pageY);
+          var $w = el.offsetWidth;
+          var $h = el.offsetHeight;
+          var $x = el.offsetLeft;
+          var $y = el.offsetTop;
+          var $l = $x + $w;
+          var $t = $y + $h;
+          if ($l - $w < _l && $l > _x && $t - $h <= _t && $t >= _y) {
+            el.classList.add("active");
+          } else {
+            el.classList.remove("active");
+          }
+        });
+      }
+
+      function clear() {
+        document.querySelectorAll(".box").forEach(function(el) {
+          el.classList.remove("active");
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>dom基础知识</title>
     <link rel="stylesheet" href="../css/reset.css" />
-
     <style>
       :root {
       }
@@ -29,9 +28,9 @@
         // 1. link 的 href 需要内容
         console.log(document.styleSheets);
         console.log(document.styleSheets[1].type);
-        let dom = document.styleSheets[1]
+        let dom = document.styleSheets[1];
         // console.log(dom, dom.getAttribute('type'));
-        console.log(document.querySelector('style').getAttribute('type')); // null
+        console.log(document.querySelector("style").getAttribute("type")); // null
 
         console.log(document.head.textContent);
 
@@ -48,11 +47,9 @@
             .querySelectorAll(":scope div div").length
         );
 
-
         // 4 ～= 单词匹配 ｜= 起始匹配 匹配 page page-
         console.log(document.querySelectorAll("div[class|=page]"));
         console.log(document.querySelectorAll("div[class|=page]"));
-
 
         console.log(document.querySelectorAll("div:not([class])").length);
       };
