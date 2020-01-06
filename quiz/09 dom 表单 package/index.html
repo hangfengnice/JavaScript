@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>form</title>
+</head>
+<body>
+  <form action="account/login" id="loginForm" method="post">
+    <p>账号： <input name="username" required></p>
+    <p>密码： <input type='password' name="password" required></p>
+    <p>账号： <input type="submit" value="登录" class="submitInput"></p>
+  </form>
+  <input type="hidden" name='form' form='loginForm' value="other">
+
+  <script>  
+    let form = document.forms[0]
+    console.log(form);
+
+    let submit = document.querySelector('.submitInput')
+    console.log(submit);
+
+    submit.addEventListener('click', function (event) {
+      event.preventDefault()
+
+      let formData = new FormData(form)
+      let obj = {}
+
+      for (const [key, value] of formData.entries()) {
+        obj[key] = value
+      }
+      console.log(obj);
+      this.disabled = true
+    })
+  </script>
+</body>
+</html>
