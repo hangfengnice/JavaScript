@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>dialog</title>
+</head>
+<body>
+  <script>
+    // 1.
+    let dialog = document.createElement('dialog')
+    document.body.appendChild(dialog)
+
+    // 2. 如果直接.open，则根据值是否 == true/false判断是否弹框显示；如果是setAttribute方法，则任意字符串和值
+    // dialog.setAttribute('open', "")
+    // dialog.open = '1'
+
+
+    let button = document.createElement('button')
+    dialog.appendChild(button)
+    button.addEventListener('click', function () {
+      dialog.close()
+    })
+    
+    // 自带顶级
+    dialog.showModal() 
+    // 如果是 show() 需要 index 加 一
+    
+    </script>
+</body>
+</html>

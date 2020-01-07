@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>textarea</title>
+    <style>
+      textarea {
+        line-height: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea></textarea>
+
+    <script>
+      // 1.
+      let textarea = document.querySelector("textarea");
+
+      // 2.
+      textarea.rows = 5; // 更简短的实现
+      // textarea.setAttribute('row', 5)
+
+      // 3.
+      let height = parseInt(getComputedStyle(textarea).height);
+      let lineHeight = parseFloat(getComputedStyle(textarea).lineHeight);
+
+      console.log(lineHeight, height);
+
+      // 4.
+      textarea.style.height = textarea.rows * lineHeight + "px";
+
+      // 5
+      document.addEventListener("DOMNodeInserted", function(event) {
+        var elm = event.target;
+
+        if (elm.nodeName.toLowerCase() === "textarea") {
+          var lineHt = window.getComputedStyle(elm).lineHeight;
+          elm.style.height = parseFloat(lineHt) * elm.rows + "px";
+        }
+      });
+    </script>
+  </body>
+</html>
