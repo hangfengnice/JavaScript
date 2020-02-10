@@ -7,6 +7,25 @@
   <title>Document</title>
 </head>
 <body>
-  
+
+  <div class="wrap" onclick="dosomething()">
+    wrap
+  </div>
+  <script>
+    function dosomething() {
+      console.log('hello');
+    }
+    var div = document.getElementsByClassName('wrap')[0]
+
+    let fragment = new DocumentFragment()
+
+    let span = document.createTextNode('span')
+
+    fragment.appendChild(span)
+
+    div.appendChild(fragment.cloneNode(true))
+    console.log(fragment.textContent);
+    
+  </script>
 </body>
 </html>

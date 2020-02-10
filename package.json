@@ -1,0 +1,42 @@
+{
+  "name": "javascript",
+  "version": "1.0.0",
+  "description": "1. 判断是否是移动端 'ontouchstart' in document.body 2. div.offsetHeight; // 触发浏览器的重绘",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hangfengnice/JavaScript.git"
+  },
+  "keywords": [
+    "javascript",
+    "dom",
+    "webpack"
+  ],
+  "author": "hangfeng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hangfengnice/JavaScript/issues"
+  },
+  "homepage": "https://github.com/hangfengnice/JavaScript#readme",
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "babel-loader": "^8.0.6",
+    "friendly-errors-webpack-plugin": "^1.7.0",
+    "html-webpack-plugin": "^3.2.0",
+    "url-loader": "^3.0.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.2"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-runtime": "^6.26.0",
+    "core-js": "^2.6.11"
+  }
+}
