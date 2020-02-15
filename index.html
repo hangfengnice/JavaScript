@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-
-  <div class="wrap" onclick="dosomething()">
-    wrap
-  </div>
-  <script>
-    function dosomething() {
-      console.log('hello');
-    }
-    var div = document.getElementsByClassName('wrap')[0]
-
-    let fragment = new DocumentFragment()
-
-    let span = document.createTextNode('span')
-
-    fragment.appendChild(span)
-
-    div.appendChild(fragment.cloneNode(true))
-    console.log(fragment.textContent);
-    
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 100px;
+      }
+      .box1 {
+        grid-column-start: 1;
+        grid-column-end: 4;
+        grid-row-start: 1;
+        grid-row-end: 3;
+      }
+      .box2 {
+        /* grid-column-start: 1; */
+        grid-row-start: 3;
+        grid-row-end: 5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="box1">One</div>
+      <div class="box2">Two</div>
+      <div class="box3">Three</div>
+      <div class="box4">Four</div>
+      <div class="box5">Five</div>
+    </div>
+  </body>
 </html>
