@@ -18,3 +18,4 @@ function test (a, b) {
   console.log(this.value + a + b);
 }
 test.apply1(obj, [1, 3])
+
