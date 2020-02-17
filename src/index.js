@@ -34,5 +34,31 @@
 // import './js/utils/findindex'
 
 // 两个对象相等
-import './js/utils/equal-obj'
+// import './js/utils/equal-obj'
 
+// curry
+// import './js/utils/curry' // 需要进一步的提高
+
+// partial
+// import './js/utils/partial'
+
+// 惰性函数
+// import './js/utils/lazy-func'
+
+// 函数组合
+// import './js/utils/compose-pointfree'
+
+// 函数记忆
+// import './js/utils/memoized-fibonacci'
+
+// underscore package
+// import './js/underscore package'
+
+
+let fn = function AAA () {
+  "use strict"
+  AAA = 1
+  console.log(AAA);
+}
+// AAA()
+fn()
