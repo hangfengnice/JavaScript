@@ -54,11 +54,11 @@
 // underscore package
 // import './js/underscore package'
 
+// RegExp package
+// import './js/RegExp package'
 
-let fn = function AAA () {
-  "use strict"
-  AAA = 1
-  console.log(AAA);
-}
-// AAA()
-fn()
+// mvvm
+import './js/mvvm package'
+
+
+

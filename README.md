@@ -14,3 +14,19 @@
 
 1. 判断是否是移动端 'ontouchstart' in document.body
 2. div.offsetHeight; // 触发浏览器的重绘
+
+## 2. RegExp
+
+* search和match，会把字符串转换为正则的
+* match返回结果的格式，与正则对象是否有修饰符g有关.
+* split方法看起来不起眼，但要注意的地方有两个的
+  * 第一，它可以有第二个参数，表示结果数组的最大长度：
+  * 第二，正则使用分组时，结果数组中是包含分隔符的
+
+## 3. 假值
+
+* undefined
+* null
+* false
+* +0 -0 NaN
+* ""
