@@ -58,7 +58,10 @@
 // import './js/RegExp package'
 
 // mvvm
-import './js/mvvm package'
+// import './js/mvvm package'
 
+// know
+// import './js/know package'
 
-
+// vue
+import './js/vue package'

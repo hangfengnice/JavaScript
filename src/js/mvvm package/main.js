@@ -78,8 +78,8 @@ class Compiler {
       let {name, value:expr} = attr
       if (this.isDirective(name)) {
         let [, directive] = name.split('-')
-        CompileUtil[directive](node, expr, this.vm)
-        console.log(node);
+        let [directiveName, eventName] = directive.split(':')
+        CompileUtil[directiveName](node, expr, this.vm, eventName)
       }
     })
   }
@@ -120,21 +120,43 @@ CompileUtil = {
       return data[current]
     }, vm.$data)
   },
+  setValue(vm, expr, value){
+    return expr.split('.').reduce((data, current, index, arr) => {
+      if (index == arr.length - 1) {
+        return data[current] = value
+      }
+      return data[current]
+    }, vm.$data)
+  },
   model(node, expr, vm) {
     let fn = this.updater['modelUpdater']
     new Watcher(vm, expr, (newVal) => {
       fn(node, newVal)
     })
+    node.addEventListener('input', (e) => {
+      let value = e.target.value
+      this.setValue(vm, expr, value)
+    })
     let value = this.getVal(vm, expr)
 
     fn(node, value)
   },
-  html() {
-
+  html(node, expr, vm) {
+    let fn = this.updater['htmlUpdater']
+    new Watcher(vm, expr, (newVal) => {
+      fn(node, newVal)
+    })
+    let value = this.getVal(vm, expr)
+    fn(node, value)
   },
   getContentValue(vm, expr) {
     return expr.replace(/\{\{(.+?)}}/, (...args) => {
       return this.getVal(vm, args[1])
+    })
+  },
+  on (node, expr, vm, eventName) {
+    node.addEventListener(eventName, (e) => {
+      vm[expr].call(vm, e)
     })
   },
   text(node, expr, vm) {
@@ -148,11 +170,12 @@ CompileUtil = {
     fn(node, content)
   },
   updater: {
+    htmlUpdater(node, value) {
+      console.log(node);
+      node.innerHTML = value
+    },
     modelUpdater(node, value) {
       node.value = value
-    },
-    htmlUpdater() {
-
     },
     textUpdater(node, value) {
       node.textContent = value
@@ -163,10 +186,43 @@ class Vue {
   constructor(options) {
     this.$el = options.el
     this.$data = options.data
+    let computed = options.computed
+    let methods = options.methods
 
     if (this.$el) {
       new Observer(this.$data)
+
+      for (let key in computed) {
+        Object.defineProperty(this.$data, key, {
+          get: () => {
+            return computed[key].call(this)
+          }
+        })
+      }
+      for (let key in methods) {
+        Object.defineProperty(this, key, {
+          get() {
+            return methods[key]
+          }
+        })
+      }
+      this.proxyVm(this.$data)
       new Compiler(this.$el, this)
+    }
+  }
+  proxyVm(data) {
+    for (let key in data) {
+      Object.defineProperty(this, key, {
+        get() {
+          return data[key]
+        },
+        set(newVal) {
+          if (newVal != data[key]) {
+            data[key] = newVal
+          }
+
+        }
+      })
     }
   }
 }
@@ -178,7 +234,22 @@ let vm = new Vue({
     school: {
       name: 'hangfeng',
       age: 10
+    },
+    message: '<h1>hello boys</h1>'
+  },
+  computed: {
+    getNewName() {
+      return this.school.name + 'yingying'
+    }
+  },
+  methods: {
+    change() {
+      this.school.name = 'hello world'
     }
   }
 })
-vm.$data.school.name = 'haha'
+// vm.$data.school.name = 'haha'
+// console.log(vm.school);
+
+
+vm.message = 'hang'
