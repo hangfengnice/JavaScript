@@ -55,7 +55,7 @@
 // import './js/underscore package'
 
 // RegExp package
-// import './js/RegExp package'
+import './js/RegExp package'
 
 // mvvm
 // import './js/mvvm package'
@@ -64,4 +64,4 @@
 // import './js/know package'
 
 // vue
-import './js/vue package'
+// import './js/vue package'
