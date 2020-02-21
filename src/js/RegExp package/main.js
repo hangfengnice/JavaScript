@@ -273,22 +273,95 @@
 // }
 // console.log(distance(["aa",1,"ab",true,1,true,"aa"]));
 
-function sum(n, m) {
-  n = Array(n+1).join('#')
-  m = Array(m+1).join('#')
-  console.log(n);
-  console.log(m);
-  let a = n.replace(/$/, m)
-  console.log(a);
+// function sum(n, m) {
+//   n = Array(n+1).join('#')
+//   m = Array(m+1).join('#')
+//   console.log(n);
+//   console.log(m);
+//   let a = n.replace(/$/, m)
+//   console.log(a);
 
-}
-sum(3, 2)
+// }
+// sum(3, 2)
 
-// 最大公约数
-function greatestCommondivisor(n, m) {
-  n = Array(n+1).join('#')
-  m = Array(m + 1).join('#')
-  return `${n}-${m}`.match(/^(.+)\1*-\1+/)[1].length
-}
+// // 最大公约数
+// function greatestCommondivisor(n, m) {
+//   n = Array(n+1).join('#')
+//   m = Array(m + 1).join('#')
+//   return `${n}-${m}`.match(/^(.+)\1*-\1+/)[1].length
+// }
 
-console.log(greatestCommondivisor(6, 3));
+// console.log(greatestCommondivisor(6, 3));
+
+// console.log("Helo"[0].toLowerCase());
+
+
+// function duplicateCount(text){
+//   //...
+//   var obj = {}
+//   for (var i = 0; i < text.length; i ++) {
+//     j = text[i].toLowerCase()
+//     if (!obj[j]) {
+//       obj[j] = 1;
+//     } else {
+//       obj[j] ++
+//     }
+//   }
+//   console.log(obj);
+//   let count = 0;
+//   for (key in obj) {
+//     if (obj.hasOwnProperty(key)) {
+//       if (obj[key] > 1) count ++
+//     }
+//   }
+//   return count
+// }
+
+// console.log(duplicateCount('hello'));
+
+// 找出相同数超过两个的数量
+
+// function sortArray(array) {
+//   if (!array) return array
+//   debugger
+//   for (var i = 0; i < array.length - 1; i ++) {
+//     if (array[i] % 2 == 0) continue;
+//     for (var j = i + 1; j < array.length; j ++) {
+//       if (array[j] % 2 == 0) continue;
+//       let temp = array[i];
+//       if (array[j] < temp) {
+//         array[i] = array[j]
+//         array[j] = temp
+//       }
+//     }
+//   }
+//   return array
+// }
+// console.log(sortArray([5, 3, 2, 8, 1, 4]));
+
+// function sortArray (array) {
+//   const odd = array.filter(x => x % 2).sort((a, b) => a - b)
+//   return array.map(x => x % 2 ? odd.shift() : x)
+// }
+// console.log(sortArray([5, 3, 2, 8, 1, 4]));
+
+// function cloneRegExp (regexp) {
+// }
+
+// let regex = /xyz/gim
+
+// console.log(regex.constructor);
+
+// console.log(regex.source);
+// console.log(regex.flags);
+
+// let [id, num] = ('+' + 1).split('')
+// console.log(id, num);
+// console.log(typeof num);
+
+
+// let reg = /[4-9\]01]/
+
+// console.log(reg.test("]"));
+
+console.log(/^<[^>]?>$/.test('<>'));
