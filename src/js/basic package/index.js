@@ -1090,9 +1090,913 @@
 // console.log('xaxb'.match(r));
 // console.log(r.lastIndex);
 
-var Vehicle = function () {
-  this.price = 1000
-  return ['1']
+// var Vehicle = function () {
+//   this.price = 1000
+//   return ['1']
+// }
+
+// console.log(new Vehicle());
+
+// var person = {
+//   name: 'hangfeng',
+//   describe: function () {
+//     return 'name' + this.name
+//   }
+// }
+// console.log(person.describe());
+
+// var a = {
+//   p: 'hello',
+//   b: {
+//     m: function() {
+//       console.log(this.p);
+//     }
+//   }
+// }
+
+// console.log(a.b.m());
+
+
+// var person = {
+//   name: '张三',
+//   describe: function () {
+//     return "name" + this.name
+//   }
+// }
+
+// console.log(person.describe());
+
+// var A = {
+//   name: 'hangfeng',
+//   describe: function () {
+//     return 'name:' + this.name
+//   }
+// }
+
+// var B = {
+//   name: 'yingying'
+// }
+
+// B.describe = A.describe
+
+// console.log(B.describe());
+
+// function f() {
+//   return 'name' + this.name
+// }
+
+// var A = {
+//   name: 'hangfneg',
+//   describe: f
+// }
+
+// var B = {
+//   name: 'yingyin',
+//   describe: f
+// }
+
+// console.log(A.describe());
+// console.log(B.describe());
+
+
+// var a = {
+//   name: 'hangfeng',
+//   describe: function () {
+//     return 'name' + this.name
+//   }
+// }
+// console.log(this);
+// console.log(a.describe);
+// var name = 'lisi'
+// var f = a.describe
+// console.log(f);
+// console.log(f());
+
+// var f = function () {
+//   console.log(this.x);
+// }
+
+// var x = 1
+// var obj = {
+//   f: f,
+//   x: 2
+// }
+
+// console.log(f());
+
+// console.log(obj.f());
+
+// var Obj = function (p) {
+//   this.p = p
+// }
+
+// var o = new Obj('hello world!')
+// console.log(o.p);
+
+// var obj = {
+//   foo: function () {
+//     console.log(this);
+//   }
+// }
+
+// console.log(obj.foo());
+
+// var a = {
+//   p: 'hello',
+//   b: {
+//     m: function () {
+//       console.log(this.p);
+//     }
+//   }
+// }
+
+// console.log(a.b.m());
+
+
+// var b = {
+//   m: function () {
+//     console.log(this.p);
+//   }
+// }
+
+// var a = {
+//   p: 'hello',
+//   b: b
+// }
+
+// console.log((a.b).m());
+
+// var a = {
+//   b: {
+//     m: function () {
+//       console.log(this.p);
+//     },
+//     p: 'hello'
+//   }
+// }
+
+// console.log(a.b.m());
+
+
+// var a = {
+//   b: {
+//     m: function () {
+//       console.log(this.p);
+//     },
+//     p: 'hello'
+//   }
+// }
+// var hello = a.b.m
+// hello()
+
+// var hello1 = a.b
+// hello1.m()
+
+// var o = {
+//   f1: function () {
+//     console.log(this);
+//     var f2 = function () {
+//       console.log(this);
+//     }()
+//   }
+// }
+
+// o.f1()
+
+// var temp = function () {
+//   console.log(this);
+// }
+
+// var o = {
+//   f1: function () {
+//     console.log(this);
+//     var f2 = temp()
+//   }
+// }
+
+// o.f1()
+
+// var o = {
+//   f1: function () {
+//     console.log(this);
+//     var that = this
+//     var f2 = function () {
+//       console.log(that);
+//     }()
+//   }
+// }
+
+// o.f1()
+
+// var counter = {
+//   count: 0
+// }
+
+// counter.inc = function () {
+//   'use strict'
+//   this.count ++
+// }
+
+// // var f = counter.inc
+// // f()
+
+// counter.inc()
+// console.log(counter);
+
+// var o = {
+//   v: 'hello',
+//   p: ['a1', 'a2'],
+//   f: function f() {
+//     // var that = this
+//     this.p.forEach(function (item) {
+//       // console.log(this);
+//       console.log(this.v + ' ' + item);
+//     }, this)
+//   }
+// }
+
+// var obj = {}
+// var f = function () {
+//   return this
+// }
+
+// console.log(f() === global);
+// console.log(f.call(obj) === obj);
+
+
+// console.log(f.call(1));
+
+// var n = 123
+// var obj = {
+//   n: 456
+// }
+
+// function a() {
+//   console.log(this.n);
+// }
+
+// a.call()
+// a.call(null)
+// a.call(undefined)
+// a.call(global)
+// a.call(obj)
+
+// function add(a, b) {
+//   return a + b
+// }
+// console.log(add.call(this, 1, 3));
+
+// var obj = {}
+// // obj.hasOwnProperty('toString')
+// console.log(obj.hasOwnProperty('toString'));
+
+// obj.hasOwnProperty = function () {
+//   return true
+// }
+// console.log(obj.hasOwnProperty('toString'));
+
+// console.log(Object.prototype.hasOwnProperty.call(obj, 'toString'));
+
+
+// function f(x, y) {
+//   console.log(x , y);
+// }
+
+// // f.call(null, 1, 1)
+// f.apply()
+
+// var a = [10, 2, 4, 15, 9]
+
+// console.log(Math.max.apply(null, a));
+
+
+// console.log(Array.apply(null, ['1', , 'b']));
+
+// var a = ['1', , 'b']
+// function print (i) {console.log(i);}
+
+// a.forEach(print)
+
+// Array.apply(null, a).forEach(print)
+
+// var d = new Date()
+// console.log(d.getTime());
+
+// // var print = d.getTime
+// var print = d.getTime.bind(d)
+// console.log(print());
+
+// var counter = {
+//   count: 0,
+//   inc: function () {
+//     this.count ++
+//   }
+// }
+
+// var obj = {
+//   count: 100
+// }
+
+// var func = counter.inc.bind(obj)
+// func()
+// console.log(obj.count);
+
+
+// var add = function (x, y) {
+//   return x * this.m + y * this.n
+// }
+
+// var obj = {
+//   m: 2,
+//   n: 2
+// }
+
+// var newAdd = add.bind(obj, 5)
+// console.log(newAdd(5));
+
+
+// function add(x,y) {
+//   return x + y
+// }
+
+// var plus5 = add.bind(null, 5)
+// console.log(plus5(10));
+
+// var counter = {
+//   count: 0,
+//   inc: function () {
+//     'use strict'
+//     this.count ++
+//   }
+// }
+
+// function callIt(callback) {
+//   callback()
+// }
+
+// callIt(counter.inc.bind(counter))
+// console.log(counter.count);
+
+// var obj = {
+//   name: 'hangfneg',
+//   times: [1, 2, 3],
+//   print: function () {
+//     this.times.forEach(function (n) {
+//       console.log(this.name);
+//     }.bind(this))
+//   }
+// }
+
+// obj.print()
+
+// function Cat (name, color) {
+//   this.name = name
+//   this.color = color
+// }
+
+// var cat1 = new Cat('big', 'white')
+
+// console.log(cat1.name);
+// console.log(cat1.color);
+
+// function Cat(name, color) {
+//   this.name = name
+//   this.color = color
+//   this.meow = function () {
+//     console.log('heihei');
+//   }
+// }
+
+// var cat1 = new Cat('big', 'white')
+// var cat2 = new Cat('second', 'black')
+
+// console.log(cat1.meow === cat2.meow);
+
+// function f() {}
+// console.log(typeof f.prototype);
+
+// function Animal(name) {
+//   this.name = name
+// }
+
+// Animal.prototype.color = 'white'
+
+// var cat1 = new Animal('大毛')
+
+// var myArray = function () {}
+
+// myArray.prototype = new Array()
+
+// myArray.prototype.constructor = myArray
+
+// var mine = new myArray()
+// console.log(mine);
+
+// mine.push(1, 3, 4)
+// console.log(mine);
+
+// console.log(mine.length);
+// console.log(mine instanceof Array);
+
+// function Foo() {}
+// var f = new Foo()
+// console.log(f.constructor.name);
+
+// var obj = {foo: 123}
+
+// console.log(obj instanceof Object);
+
+// console.log(null instanceof Object);
+
+// var obj  = Object.create(null)
+
+// console.log(typeof obj);
+
+// console.log(Object.create(null) instanceof Object);
+
+// var s = 'hello'
+// console.log(s instanceof String);
+
+// console.log(undefined instanceof Object);
+// console.log(null instanceof Object);
+
+
+function Shape() {
+  this.x = 0
+  this.y = 0
 }
 
-console.log(new Vehicle());
+Shape.prototype.move = function (x, y) {
+  this.x += x
+  this.y += y
+  console.info('shape moved')
+}
+function Rectangle() {
+  Shape.call(this)
+}
+
+// function Rectangle() {
+//   this.base = Shape
+//   this.base()
+// }
+
+// Rectangle.prototype = Object.create(Shape.prototype)
+
+// Rectangle.prototype.constructor = Rectangle
+
+// var rect = new Rectangle()
+// console.log(rect instanceof Rectangle);
+// console.log(rect instanceof Shape);
+
+// function M1() {
+//   this.hello = 'hello'
+// }
+// function M2() {
+//   this.world = 'world'
+// }
+
+// function S() {
+//   M1.call(this)
+//   M2.call(this)
+// }
+// S.prototype = Object.create(M1.prototype)
+// Object.assign = (S.prototype, M2.prototype)
+
+// console.log(S.prototype);
+
+// var s = new S()
+
+// console.log(s.hello);
+// console.log(s.world);
+
+// var module1 = new Object({
+//   _count: 0,
+//   m1: function () {},
+//   m2: function () {}
+// })
+
+// console.log(module1);
+
+// function StringBuilder() {
+//   var buffer = []
+//   this.add = function (str) {
+//     buffer.push(str)
+//   }
+//   this.toString = function () {
+//     return buffer.join('')
+//   }
+// }
+
+// var module1 = (function () {
+//   var _count = 0
+//   var m1 = function () {
+
+//   }
+//   var m2 = function () {}
+//   return {
+//     m1: m1,
+//     m2: m2
+//   }
+// })();
+
+// var module2 = (function (mod) {
+//   mod.m3 = function () {}
+//   return mod
+// })(module1)
+
+// console.log(module2);
+
+// var F = function () {}
+// var f = new F()
+
+// console.log(Object.getPrototypeOf(f) === F.prototype);
+
+// Object.getPrototypeOf({}) === Object.prototype
+
+// console.log(Object.getPrototypeOf({}) === Object.prototype);
+
+// console.log(Object.getPrototypeOf(Object.prototype) == null);
+// function f() {}
+// let a = new f()
+// console.log(Object.getPrototypeOf(f) === Function.prototype);
+// console.log(Object.getPrototypeOf(a) === f.prototype);
+
+// var a = {}
+// var b = {x: 1}
+// Object.setPrototypeOf(a, b)
+
+// console.log(Object.getPrototypeOf(a) === b);
+
+// var a = Object.create(undefined)
+// var a = Object.create([123])
+// console.log(a);
+// console.log(a.push);
+
+// var obj = Object.create({}, {
+//   p1: {
+//     value: 123,
+//     enumerable: true,
+//     configurable: true,
+//     writable: true
+//   },
+//   p2: {
+//     value: 'abc',
+//     enumerable: true,
+//     configurable: true,
+//     writable: true
+//   }
+// })
+
+// console.log(obj);
+
+// var o1 = {}
+// var o2 = Object.create(o1)
+// var o3 = Object.create(o2)
+
+// console.log(o2.isPrototypeOf(o3));
+
+// console.log(Object.prototype.isPrototypeOf(Object.create(null)));
+
+
+// var obj = {}
+// var p = {}
+// obj.__proto__ = p
+// Object.getPrototypeOf(obj) === p
+// console.log(Object.getPrototypeOf(obj) == p);
+
+// var A = {
+//   name: 'san'
+// }
+
+// var B = {
+//   name: 'si'
+// }
+
+// var proto = {
+//   print: function () {
+//     console.log(this.name);
+//   }
+// }
+
+// A.__proto__ = proto
+// B.__proto__ = proto
+
+// A.print()
+// B.print()
+
+
+// A.print = B.print
+// console.log(A.print == B.print);
+
+// console.log(A.print == proto.print);
+
+
+// var P = function () {}
+
+// var p = new P()
+
+// var C = function () {}
+
+// C.prototype = p
+
+// var c = new C()
+
+// console.log(c.constructor.prototype === p);
+
+
+// var o1 = {p1: 123}
+
+// var o2 = Object.create(o1, {
+//   p2: {value: 'abc', enumerable: true}
+// })
+
+// for (p in o2) {
+//   console.info(p)
+//   console.log(p);
+// }
+
+// function inheritedPropertyNames(obj) {
+//   var props = {}
+//   while(obj) {
+//     Object.getOwnPropertyNames(obj).forEach(function (p){
+//       props[p] = true
+//     })
+//     obj = Object.getPrototypeOf(obj)
+//   }
+//   return Object.getOwnPropertyNames(props)
+// }
+
+// console.log(inheritedPropertyNames(Date));
+
+// let obj = {
+//   name: 'hangfeng'
+// }
+
+// console.log(Object.getOwnPropertyNames(obj));
+
+
+// function copyObject(orig) {
+//   var copy = Object.create(Object.getPrototypeOf(orig))
+
+// }
+
+// function copyOwnPropertiesFrom(target, source) {
+//   Object.getOwnPropertyNames(source)
+//   .forEach(function (propKey) {
+//     var desc = Object.getOwnPropertyDescriptor(source, propKey)
+//     Object.defineProperty(target, propKey, desc)
+//   })
+
+//   return target
+// // }
+// 'use strict'
+
+// function ff() {
+//   console.log(arguments);
+// }
+
+// 'use strict'
+// var obj = {
+//   get v() {return 1}
+// }
+// obj.v = 2
+
+
+// function async(arg, callback) {
+//   console.log(' 参数为 ' + arg + ' , 1秒后返回结果');
+//   setTimeout(function () {callback(arg * 2)}, 1000)
+// }
+
+// function final(value) {
+//   console.log('完成 ', value);
+// }
+
+// async(1, function (value) {
+//   async(2, function (value) {
+//     async(3, function (value) {
+//       async(4, function (value) {
+//         async(5, function (value) {
+//           async(6, final)
+//         })
+//       })
+//     })
+//   })
+// // })
+
+// var items = [1, 2, 3, 4, 5, 6]
+// var results = []
+// var running = 0
+// var limit = 2
+// function async(arg, callback) {
+//   console.log('参数为 ' + arg + ' ,1秒后返回结果');
+//   setTimeout(() => {
+//     callback(arg * 2)
+//   }, 1000);
+// }
+// function final(value) {
+//   console.log('finish', value);
+// }
+
+// function launcher() {
+//   while(running < limit && items.length > 0) {
+//     var item = items.shift()
+//     async(item, function (result) {
+//       results.push(result)
+//       running --
+//       if (items.length > 0) {
+//         launcher()
+//       } else if (running == 0) {
+//         final(results)
+//       }
+//     })
+//     running ++
+//   }
+// }
+// launcher()
+
+// setInterval(function (a, b, c, d, e, f) {
+//   console.log(a, b, c, d, e,f );
+// }, 2000, 2, 3, 4, 5, 6, 6)
+
+// setInterval(function () {
+//   console.log(2);
+// }, 1000)
+// sleep(3000)
+
+// function sleep(ms) {
+//   var start = Date.now()
+//   while(Date.now() - start < ms) {}
+// }
+
+// new Promise(function (resolve, reject) {
+//   resolve(1)
+// }).then(console.log)
+
+// console.log(2);
+
+// function isType(type) {
+//   return function (obj) {
+//     return Object.prototype.toString.call(obj).includes(type)
+//   }
+// }
+// let types = ['String', 'Object', 'Function']
+
+// let fns = {}
+// types.forEach(type => {
+//   fns['is' + type] = isType(type)
+// })
+
+// let a = function () {}
+
+// console.log(fns.isFunction(a));
+
+// function after (times, callback) {
+//   let total = 0
+//   return function (a) {
+//     total += a
+//     console.log(times);
+//     if (--times == 0) {
+//       callback(total)
+//     }
+//   }
+// }
+// let fn = after(3, function (total) {
+//   console.log('after', total);
+// })
+
+// fn(1)
+// fn(2)
+// fn(3)
+// function say() {
+//   console.log('say');
+// }
+
+// Function.prototype.before = function (fn) {
+//   let that = this
+//   return function () {
+//     fn()
+//     that()
+//   }
+// }
+
+// let newFn = say.before(function () {
+//   console.log('later say');
+// })
+
+// newFn()
+
+// let corp = {}
+// // corp.list = []
+// corp.list = {}
+
+
+// corp.on = function (key, fn) {
+//   if (!this.list[key]) {
+//     this.list[key] = []
+//   }
+//   this.list[key].push(fn)
+// }
+
+// corp.emit = function () {
+//   let key = [].shift.call(arguments),
+//   fns = this.list[key];
+
+//   if (!fns || fns.length == 0) {
+//     return false
+//   }
+
+//   fns.forEach(cb => {
+//     cb.apply(this, arguments)
+//   })
+// }
+
+// corp.on('join', function (position, salary) {
+//   console.log('你的职位是： ' + position);
+//   console.log('期望薪水： ' + salary);
+// })
+// corp.on('other', function (skill, hobby) {
+//   console.log('你的技能有： ' + skill)
+//   console.log('爱好： ' + hobby);
+// })
+
+// corp.emit('join', '前端', 10000)
+// corp.emit('other', '端茶和倒水', '足球')
+
+
+// let event = {
+//   list: {},
+//   on(key, fn) {
+//     if (!this.list[key]) {
+//       this.list[key] = []
+//     }
+//     this.list[key].push(fn)
+//   },
+//   emit () {
+//     let key = [].shift.call(arguments),
+//     fns = this.list[key]
+
+//     if (!fns || fns.length == 0) {
+//       return false
+//     }
+//     fns.forEach(fn => {
+//       fn.apply(this, arguments)
+//     })
+//   },
+//   remove(key, fn) {
+//     let fns = this.list[key]
+//     if (!fns) return false
+//     if (!fn) {
+//       fns && (fns.length = 0)
+//     } else {
+//       fns.forEach((cb, i ) => {
+//         if (cb === fn) {
+//           fns.splice(i, 1)
+//         }
+//       })
+//     }
+//   }
+// }
+// let event = {
+//   list: {},
+//   on(key, fn) {
+//     if (!this.list[key]) {
+//       this.list[key] = []
+//     }
+//     this.list[key].push(fn)
+//   },
+//   emit() {
+//     let arg = [...arguments]
+//     let key = arg.shift()
+//     let fns = this.list[key]
+//     if (!fns || fns.length <= 0) return false
+
+//     fns.forEach(fn => {
+//       fn.apply(this, arg)
+//     })
+//   }
+// }
+// event.on('dog', (name) => {
+//   console.log('dod' + name);
+// })
+// event.on('cat', (name) => {
+//   console.log('cat' + name);
+// })
+
+// event.emit('dog', 'jiafei')
+// event.emit('cat', 'haha')
+
+
+// console.log('dog'.search('d'));
+
+// console.log(/^.*\//.exec('/usr/local/bin/python'));
+// console.log(/[.]/.test('hello.'));
+
+// var tagregex = /^<('[^']*'|\"[^\"]*\"|[^'\">])+>$/
+
+// console.log(tagregex.test("<input name=txt value=\">\">"));
+// console.log(tagregex.test("<input name=txt value='>'>"));
+// console.log(tagregex.test("<a>"));
+
+// console.log(/[^ho]/.test('hoa'));
+
+console.log(/(\d){4}-(\d{2})-(\d{2})/.exec('2010-12-12'));
