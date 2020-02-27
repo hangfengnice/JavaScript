@@ -1999,4 +1999,87 @@ function Rectangle() {
 
 // console.log(/[^ho]/.test('hoa'));
 
-console.log(/(\d){4}-(\d{2})-(\d{2})/.exec('2010-12-12'));
+// console.log(/(\d){4}-(\d{2})-(\d{2})/.exec('2010-12-12'));
+// console.log('aaa.bbb.ccc.ddd'.match(/(\w+\.?)+/));
+
+// var uniqueInOrder=function(iterable){
+//   //your code here - remember iterable can be a string or an array
+//   if (typeof itreable == 'string') {
+//     iterable = iterable.split('')
+//   }
+//   var ret = []
+//   for (var i = 0; i < iterable.length; i ++) {
+//     var temp = iterable[i]
+//     console.log(temp);
+//     var temp1 = iterable[i + 1]
+//     ret.push(temp)
+//     if (i == iterable.length - 1) return ret
+//     if (temp == temp1) {
+//       iterable.splice(i + 1, 0)
+//       i --
+//     } else {
+//       ret.push(temp1)
+//     }
+//   }
+//   return ret
+// }
+
+// console.log(uniqueInOrder(['1']));
+
+
+// function uniqueInOrder(iterable) {
+//   var pre_item = null, ret = []
+
+//   for (var item of iterable) {
+//     if (item != pre_item) {
+//       ret.push(item)
+//       pre_item = item
+//     }
+//   }
+//   return ret
+// }
+
+// console.log('a'.charCodeAt(0));
+// console.log('t'.charCodeAt(0) - 96);
+// function uniqueInOrder(iterable) {
+// return [...iterable].filter((a, i) => a != iterable[i - 1])
+// }
+// function alphabetPosition(text) {
+//   var ret = []
+//   text = text.toLowerCase()
+//   for (var i in text) {
+//     if(text[i].charCodeAt() > 96 && text[i].charCodeAt() < 123) {
+//       ret.push(text[i].charCodeAt() - 96)
+//     }
+//   }
+//   return ret.join(' ').trim()
+// }
+// console.log('Hello world'.toLowerCase().replace(/\s+/g, ''));
+
+// var s1 = Symbol()
+// var s2 = Symbol()
+
+// console.log('a'.charCodeAt());
+
+// console.log(typeof s1);
+
+// console.log(s1 == s2);
+// console.log(s1, s2);
+// var s3 = Symbol('mioav')
+// var s4 = Symbol('miaoaa')
+// console.log(s3, s4);
+
+function Person(name, gender) {
+  this.name = name
+  this.gender = gender
+}
+var p1 = new Person('hangfneg', 'man')
+ console.log(p1.gender);
+
+
+ function alphabetPosition(text) {
+   return text
+ }
+
+console.log('hello'.charCodeAt());
+
