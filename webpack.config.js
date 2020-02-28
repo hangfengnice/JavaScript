@@ -47,5 +47,10 @@ module.exports = {
     stats: "errors-only"
     // hot: true
   },
-  devtool: "source-map"
+  devtool: "source-map",
+  resolve: {
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js'
+    }
+  }
 };
