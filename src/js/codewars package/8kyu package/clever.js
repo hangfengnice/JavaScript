@@ -40,3 +40,21 @@ function summation(num) {
 function basicOp(operation, value1, value2) {
   return eval(value1 + operation + value2)
 }
+
+// reversed sequence
+const reverseSeq = length => Array.from({length}, () => length --)
+
+// rock paper scissors
+const rps = (p1, p2) => {
+  if (p1 == p2) return 'Draw!'
+  return `Player ${/rockscissors|scissorspaper|paperrock/.test(p1 + p2) ? 1 : 2} won!`
+}
+
+// total amount of points
+const points = g => g.reduce((a, [x, _, y]) => a + (x > y ? 3 : x == y), 0)
+
+
+// dna to rna conversion
+function DNAtoRNA(dna) {
+  return dna.split('T').join('U')
+}
