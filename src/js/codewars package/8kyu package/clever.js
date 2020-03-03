@@ -58,3 +58,8 @@ const points = g => g.reduce((a, [x, _, y]) => a + (x > y ? 3 : x == y), 0)
 function DNAtoRNA(dna) {
   return dna.split('T').join('U')
 }
+
+// will there be enough space
+function enough(cap, on, wait) {
+  return Math.max(wait + on - cap, 0)
+}

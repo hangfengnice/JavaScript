@@ -4,11 +4,80 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-
+  <style>
+    .header {
+    height: 300px;
+    background: lightgray;
+}
+.content {
+    position: relative;
+    writing-mode: vertical-lr;
+    width:100%;
+}
+.nav-wrap{
+    writing-mode:horizontal-tb;
+    display: inline-block;
+    margin-top:-50%;
+    width:100%;
+    text-align: center;
+}
+.nav {
+    display:inline-block;
+    border: 10px solid #53bff5;
+    border-radius: 10px;
+}
+.other{
+    display: inline-block;
+    position:absolute;
+    writing-mode:horizontal-tb;
+    width:100%;
+}
+.crumb-ol {
+    display:flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+}
+.crumb{
+    padding:20px;
+}
+.crumb-img {
+    display:block;
+    height: 60px;
+    width: 40px;
+    margin:auto;
+    margin-bottom: 20px;
+    background:lightgreen;
+}
+  </style>
 </head>
 <body>
-  <div id="app">
-    <h1>{{msg}}</h1>
-  </div>
+  <div class="header"></div>
+<div class="content">
+    <div class="nav-wrap">
+        <nav class="nav">
+            <ol class="crumb-ol">
+                <li class="crumb">
+                    <img class="crumb-img" />
+                    <span class="crumb-text">进口食品</span>
+                </li>
+                <li class="crumb">
+                    <img class="crumb-img" />
+                    <span class="crumb-text">进口食品</span>
+                </li>
+                <li class="crumb">
+                    <img class="crumb-img" />
+                    <span class="crumb-text">进口食品</span>
+                </li>
+                <li class="crumb">
+                    <img class="crumb-img" />
+                    <span class="crumb-text">进口食品</span>
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <div class="other">其他元素需要跟着一起往上挪</div>
+</div>
 </body>
 </html>

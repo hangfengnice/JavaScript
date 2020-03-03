@@ -1,119 +1,48 @@
-// function positiveSum(arr) {
-//   var sum = 0
-//   arr.map(i => {
-//     i > 0 ? sum += i : i
+// console.log('hello'.charAt(6));
+// console.log('hello'.charCodeAt(-1));
+// // console.log('hello'.charAt(6));
+// // console.log('hello'.charAt(6));
+// console.log('helo'.match('h'));
+
+// console.log('helo'.slice(-4,));
+// console.log('he|'.split(/\|/));
+
+// console.log('he'.substr(-1));
+
+// console.log(typeof /a/);
+// NaN = 1
+// console.log(+ 'a');
+
+
+// console.log(NaN);
+
+// var obj = {}
+// obj['prototype'] += obj['prototype'] + 1
+// console.log(obj['prototype']);
+// console.log(false == null);
+// console.log(null == null);
+// console.log(Math.max(2, 3, 3));
+// function openOrSenior(data) {
+//   return data.map(item => {
+//     return (item[0] > 55 || item[1] > 55) && Math.abs(item[0] - item[1]) > 7 ? 'Senior' : 'Open'
 //   })
-//   return sum
 // }
 
-// function findSmallestInt(arr) {
-//   return arr.reduce((a, b) => a > b ? b : a)
+// var numbers = function (busStops) {
+//   return busStops.reduce((a, b) => a + b[0] - b[1], 0)
 // }
 
-// function basicOp(operation, value1, value2) {
-//   switch (operation) {
-//     case '+':
-//       return value1 + value2
-//       case '-':
-//         return value1 - value2
-//         case '*':
-//           return value1 * value2
-//           case '/':
-//             return value1 / value2
-//   }
-// }
+// function divisors (integer) {
 
-
-// function findNeedle(haystack) {
-//   var index = haystack.indexOf('needle')
-//   return 'found the needle at position ' + index + ''
-// }
-// function numberToPower(number, power) {
-//   return Math.pow(number, power)
-// }
-
-// console.log(numberToPower(4, 2));
-// function sc(floor) {
-//   if (floor < 2) {
-//     return ''
-//   } else if (floor < 7) {
-//     return 'Aa~ '.repeat(floor - 2) + 'Pa! Aa!'
-//   } else if (floor > 6) {
-//     return 'Aa~ '.repeat(floor - 1) + 'Pa!'
-//   }
-// }
-
-// function closeCompare(a, b, margin) {
-//   if (margin > 0) {
-//     if (margin > Math.abs(a - b)) {
-//       return 1
-//     } else if (margin < Math.abs(a - b)) {
-//       return -1
-//     } else if (margin == Math.abs(a - b)) {
-//       return 0
+//   var ret = [];
+//   for (var i = integer ; i > 1; i --) {
+//     if (Number.isInteger(integer / i)) {
+//       ret.push(integer / i)
 //     }
 //   }
-
-//   if (a - b > 0) {
-//     return 1
-//   } else if (a - b == 0) {
-//     return 0
-//   } else if (a -b < 0) {
-//     return -1
-//   }
-
-
-// }
-// console.log(Math.sign(0));
-
-// function sumArray(array) {
-//   if (!array || array.length <= 1) return 0
-//   var max = Math.max(...array)
-//   var min = Math.min(...array)
-//   var sum = array.reduce((a, b) => a + b)
-//   return sum - max - min
+//   return ret.length ? ret : integer + " is prime"
 // }
 
-// function abbrevName(name) {
-//   return name.repalce(/\b(\w).*\b/g, (match, $1) => $1.toUpperCase()).repalce(" ", '.')
-// }
-
-
-
-// console.log(Array.from({length: 3}), (a, i, arr) => {
-//   console.log(a, i , arr);
-// });
-
-// function monkeyCount (n) {
-//   return Array.from([1, 3], (a, i) => {
-//     console.log(a, i );
-//   })
-// }
-
-// monkeyCount(2)
-
-// var arr = [1, 2, 3]
-
-// arr.forEach(i => i + 1)
-// console.log(arr);
-
-// function test([x, _, y]) {
-//   console.log(x,y);
-// }
-// test('helo')
-
-// console.log(...arr.keys());
-
-
-// function rentalCarCost(d) {
-//   if (d < 3) {
-//     return d * 40
-//   } else if (d >= 3 && d < 7) {
-//     return d * 20
-//   } else if (d > 7) {
-//     return d * 20 - 50
-//   }
-// }
-
-
-console.log(2^2);
+function SeriesSum (n) {
+  return Array.from({length: n}, (_, i) => 1 / (i + 1) / 3).reduce((a, b) => a + b)
+}
