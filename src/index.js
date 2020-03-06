@@ -64,7 +64,7 @@
 // import './js/know package'
 
 // vue
-import './js/vue package'
+// import './js/vue package'
 
 // javascript
 import './js/basic package'
