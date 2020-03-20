@@ -1,28 +1,13 @@
-class EventEmitter {
-  constructor() {
-    this._events = this._events || new Map()
-    this._maxListeners = this._maxListeners || 10
-  }
+function Person() {
+
 }
-EventEmitter.prototype.emit = function (type, ...args) {
-  let handler
-  handler = this._events.get(type)
-  if (args.length > 0) {
-    handler.apply(this, args)
-  } else {
-    handler.call(this)
-  }
-  return true
+Person.prototype = {
+  constructor: Person
 }
-EventEmitter.prototype.addListener = function (type, fn) {
-  if (!this._events.get(type)) {
-    this._events.set(type, fn)
-  }
+var instance = new Person()
+for (var prop in instance) {
+  console.log(prop)
 }
 
-const emitter = new EventEmitter()
-
-emitter.addListener('arson', man => {
-  console.log(`expel ${man}`);
-})
-emitter.emit('arson', 'low-end')
+console.log(Object.getPrototypeOf(instance))
+console.log(Object.getPrototypeOf(Person))
