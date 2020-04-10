@@ -1,1 +1,0 @@
-  return Number.isInteger(n = Math.sqrt(sq)) ? Math.pow(n + 1, 2) : -1
