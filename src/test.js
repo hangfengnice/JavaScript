@@ -1,6 +1,12 @@
-function create() {
-  return () => arguments[0]
-}
-var test = create(5)
+var values = [1, 2, 3, 4],
+    colors = ['red', 'green', 'blue'],
+    color='black'
 
-console.log(test())
+  with(colors) {
+    push(color)
+    push(...values)
+  }
+
+  console.log(colors)
+
+  console.log(Array.prototype[Symbol.unscopables])
