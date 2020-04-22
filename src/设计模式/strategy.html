@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form id='registerForm'>
+    <p>
+      请输入用户名： <input type="text" name="n">
+    </p>
+    <p>
+      请输入密码: <input type="text" name="password">
+    </p>
+    <p>
+      请输入手机号：<input type="text" name='phone'>
+    </p>
+    <button>submit</button>
+  </form>
+
+  <script>
+    var obj = {
+      isNonEmpty: function (value, errorMsg) {
+        if (value == '') {
+          return errorMsg
+        }
+      },
+      minLength: function (value, length, errorMsg) {
+        if (value.length < length) {
+          return errorMsg
+        }
+      },
+      isMobile: function (value, errorMsg) {
+        if (!/1\d{10}/.test(value)) {
+          return errorMsg
+        }
+      }
+    }
+
+    var Validator = function () {
+      this.cache = []
+    }
+
+    Validator.prototype.add = function (dom, rules) {
+      var self = this
+      for (var i = 0, rule; rule = rules[i ++];) {
+        (function (rule) {
+          var strategyAry = rule.strategy.split(':')
+          var errorMsg = rule.errorMsg
+          self.cache.push(function () {
+            var strategy = strategyAry.shift()
+            strategyAry.unshift(dom.value)
+            strategyAry.push(errorMsg)
+            return obj[strategy].apply(dom, strategyAry)
+          })
+        })(rule)
+      }
+    }
+
+    Validator.prototype.start = function () {
+      for (var i = 0; validatorFunc; validatorFunc = this.cache[i ++]) {
+        var errorMsg = validatorFunc()
+        if (errorMsg) {
+          return errorMsg
+        }
+      }
+    }
+
+    var registerForm = document.getElementById('registerForm')
+
+    var validatorFunc = function () {
+      var validator1 = new Validator()
+      validator1.add(registerForm.username, [{
+        strategy: 'isNonEmpty',
+        errorMsg: '用户名不能为空'
+      }])
+      var errorMsg = validator1.start()
+      return errorMsg
+    }
+
+    registerForm.onsubmit = function () {
+      var errorMsg = validatorFunc()
+      return false
+
+      if (errorMsg) {
+        console.log('fail')
+        return false
+      }
+    }
+  </script>
+</body>
+</html>

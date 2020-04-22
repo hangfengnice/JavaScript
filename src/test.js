@@ -1,12 +1,12 @@
-var values = [1, 2, 3, 4],
-    colors = ['red', 'green', 'blue'],
-    color='black'
+let map = new Map()
 
-  with(colors) {
-    push(color)
-    push(...values)
-  }
+map.set('title', 'es6')
+map.set('year', 2020)
 
-  console.log(colors)
+console.log(map.size)
 
-  console.log(Array.prototype[Symbol.unscopables])
+map.delete('title')
+map.clear()
+
+console.log(map.get('title'))
+console.log(map.get('year'))
