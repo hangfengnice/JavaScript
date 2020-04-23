@@ -8,7 +8,7 @@
 <body>
   <form id='registerForm'>
     <p>
-      请输入用户名： <input type="text" name="n">
+      请输入用户名： <input type="text" name="username">
     </p>
     <p>
       请输入密码: <input type="text" name="password">
@@ -59,8 +59,8 @@
     }
 
     Validator.prototype.start = function () {
-      for (var i = 0; validatorFunc; validatorFunc = this.cache[i ++]) {
-        var errorMsg = validatorFunc()
+      for (var i = 0, validatorFunc1; validatorFunc1 = this.cache[i ++];) {
+        var errorMsg = validatorFunc1()
         if (errorMsg) {
           return errorMsg
         }
@@ -70,6 +70,8 @@
     var registerForm = document.getElementById('registerForm')
 
     var validatorFunc = function () {
+      // console.log('hello')
+      // debugger
       var validator1 = new Validator()
       validator1.add(registerForm.username, [{
         strategy: 'isNonEmpty',
@@ -78,16 +80,18 @@
       var errorMsg = validator1.start()
       return errorMsg
     }
+    console.log(registerForm.username)
 
     registerForm.onsubmit = function () {
       var errorMsg = validatorFunc()
-      return false
+      // return false
 
       if (errorMsg) {
         console.log('fail')
         return false
       }
     }
+
   </script>
 </body>
 </html>
