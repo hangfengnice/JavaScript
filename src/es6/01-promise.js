@@ -25,7 +25,7 @@ function Promise(executor) {
         self.status = "rejected";
         self.data = reason;
         for (var i = 0; i < self.onRejectedCallback.length; i++) {
-          self.onRejectedCallback[i](value);
+          self.onRejectedCallback[i](reason);
         }
       }
     });
@@ -112,7 +112,7 @@ function resolvePromise(promise2, x, resolve, reject) {
     if (x.status === "pending") {
       x.then(function (value) {
         resolvePromise(promise2, value, resolve, reject);
-      }, reject());
+      }, reject);
     } else {
       x.then(resolve, reject);
     }
@@ -159,4 +159,6 @@ Promise.deferred = Promise.defer = function () {
 
 new Promise(function (resolve, reject) {
   resolve(8);
-}).then((val) => console.log(val));
+}).then((val) => {
+  throw Error('hello');
+}).catch(err => console.log(err)).then(val => console.log('yes'))
