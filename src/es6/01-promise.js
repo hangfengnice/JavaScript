@@ -162,3 +162,5 @@ new Promise(function (resolve, reject) {
 }).then((val) => {
   throw Error('hello');
 }).catch(err => console.log(err)).then(val => console.log('yes'))
+
+
