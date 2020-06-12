@@ -78,8 +78,31 @@ WordDictionary.prototype.search = function (word) {
   return this.words[len].some(item => reg.test(item))
 }
 
-const max = Math.pow(2, 31) - 1
-console.log(max);
-const min = -max - 1
-console.log(min);
-console.log(+'-1');
+// const max = Math.pow(2, 31) - 1
+// console.log(max);
+// const min = -max - 1
+// console.log(min);
+// console.log(+'-1');
+
+const reverseBetween = function (head, m, n) {
+  let pre, cur, lefthead
+  const dummy = new ListNode()
+  dummy.next = head
+  let p = dummy
+  for (let i = 0; i < m - 1; i ++) {
+    p = p.next
+  }
+  lefthead = p
+  let start = lefthead.next
+  pre = start
+  cur = pre.next
+  for (let i = m; i < n; i++) {
+    let next = cur.next
+    cur.next = pre
+    pre = cur
+    cur = next
+  }
+  lefthead.next = pre
+  start.next = cur
+  return dummy.next
+}

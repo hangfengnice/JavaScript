@@ -1,70 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <!-- <div id="span"></div> -->
-    <div id="parent" class="parent">
-      parent
-      <div class="child hh">1</div>
-      <div class="child">2</div>
-      <div class="child">3</div>
-      <div class="child hh">4</div>
-      <div class="child">5</div>
-      <div class="child">6</div>
-      <div class="child">7</div>
-      <div class="child">8</div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div :class='c' class="demo" v-if='isShow'>
+    <span v-for='item in sz'>{{item}}</span>
+  </div>
+  <script src="vue.js"></script>
+  <script>
 
-      <div id="div">1</div>
-      <div id="div">2</div>
-    </div>
-    <script>
-      const threeSum = function (nums) {
-        let res = [];
-        nums = nums.sort((a, b) => a - b);
-        const len = nums.length;
-        for (let i = 0; i < len - 2; i++) {
-          let j = i + 1;
-          let k = len - 1;
-          if (i > 0 && nums[i] === nums[i - 1]) {
-            continue;
-          }
-          console.log(i);
-          debugger
-          while (j < k) {
-            if (nums[i] + nums[j] + nums[k] < 0) {
-              j++;
-              while (j < k && nums[j] == nums[j - 1]) {
-                j++;
-              }
-            } else if (nums[i] + nums[j] + nums[k] > 0) {
-              k--;
-              while (j < k && nums[k] == nums[k + 1]) {
-                k--;
-              }
-            } else {
-              console.log("hello");
-              res.push([nums[i], nums[j], nums[k]]);
-              j++;
-              k--;
-              while (j < k && nums[j] == nums[j--]) {
-                j++;
-              }
-              while (j < k && nums[k] == nums[k + 1]) {
-                k--;
-              }
-            }
-          }
-        }
-        return res;
-      };
-      console.log("before");
-      let threearr = [0, 0, 0, 0];
-      let ret = threeSum(threearr);
-      console.log(ret, "ret");
-    </script>
-  </body>
+  </script>
+</body>
 </html>
