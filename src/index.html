@@ -1,17 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <div :class='c' class="demo" v-if='isShow'>
-    <span v-for='item in sz'>{{item}}</span>
-  </div>
-  <script src="vue.js"></script>
-  <script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .loading {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid;
+        border-color: #bbb #bbb #bbb deepskyblue;
+        animation: rotate 1s infinite linear;
+      }
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loading">
 
-  </script>
-</body>
+    </div>
+    <!-- <div :class="c" class="demo" v-if="isShow">
+      <span v-for="item in sz">{{item}}</span>
+    </div> -->
+    <script src="vue.js"></script>
+    <script></script>
+  </body>
 </html>

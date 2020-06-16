@@ -502,3 +502,24 @@ const permute = function (nums) {
   dfs(0)
   return res
 }
+
+
+const isValidBST = function (root) {
+  function dfs(root, minValue, maxValue) {
+    if (!root) return true
+    if (root.val <= minValue || root.val >= maxValue) return false
+    return dfs(root.left, minValue, root.val) && dfs(root.right, root.val, maxValue)
+  }
+  return dfs(root, -Infinity, Infinity)
+}
+
+const sortedArrayToBST = function (nums) {
+  if (!nums.length) return null
+  const root = buildBST(low, high)
+  function buildBST(low, high) {
+    if (low > high) return null
+    const mid = Math.floor(low + (high - low) / 2)
+    const cur = new TreeNode(nums[mid])
+
+  }
+}
