@@ -4,8 +4,9 @@
   "description": "keep move",
   "main": "index.js",
   "dependencies": {
-    "node-fetch": "^2.6.0",
-    "co": "^4.6.0"
+    "co": "^4.6.0",
+    "lodash": "^4.17.15",
+    "node-fetch": "^2.6.0"
   },
   "devDependencies": {},
   "scripts": {

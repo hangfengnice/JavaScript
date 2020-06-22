@@ -612,7 +612,10 @@ function coinChange(coins, amount) {
   for (let i = 1; i <= amount; i ++) {
     f[i] = Infinity
     for(let j = 0; j < coins.length; j ++) {
-      console.log(i)
+      // console.log(i)
+      if (i - coins[j] >= 0) {
+
+      }
     }
   }
 }
