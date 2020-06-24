@@ -135,3 +135,5 @@ Object.defineProperty(data, 'a', {
     console.log('设置了a属性');
   }
 })
+
+const dep = []
