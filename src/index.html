@@ -5,40 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      .loading {
-        width: 16px;
-        height: 16px;
+      .checkmark__circle {
+        stroke-dasharray: 166;
+        stroke-dashoffset: 166;
+        stroke-width: 2;
+        stroke: #7ac142;
+        fill: none;
+        animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+      }
+
+      .checkmark {
+        width: 56px;
+        height: 56px;
         border-radius: 50%;
-        border: 2px solid;
-        border-color: #bbb #bbb #bbb deepskyblue;
-        animation: rotate 1s infinite linear;
+        display: block;
+        stroke-width: 2;
+        stroke: #fff;
+        margin: 10% auto;
+        box-shadow: inset 0px 0px 0px #7ac142;
+        animation: fill 0.4s ease-in-out 0.4s forwards,
+          scale 0.3s ease-in-out 0.9s both;
       }
-      @keyframes rotate {
-        0% {
-          transform: rotate(0deg);
-        }
+
+      .checkmark__check {
+        transform-origin: 50% 50%;
+        stroke-dasharray: 48;
+        stroke-dashoffset: 48;
+        animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+      }
+
+      @keyframes stroke {
         100% {
-          transform: rotate(360deg);
+          stroke-dashoffset: 0;
         }
       }
-      .shadow {
-        box-shadow: 1px 1px 4px deepskyblue;
+      @keyframes scale {
+        0%,
+        100% {
+          transform: none;
+        }
+        50% {
+          transform: scale3d(1.1, 1.1, 1);
+        }
+      }
+      @keyframes fill {
+        100% {
+          box-shadow: inset 0px 0px 0px 30px #7ac142;
+        }
+      }
+      /* .animation {
         width: 200px;
         height: 200px;
+        background-color: lightblue;
+        animation: color1 1s;
       }
+      @keyframes color1 {
+        100% {
+          background-color: red;
+        }
+      }
+      @keyframes color2 {
+        100% {
+          background-color: #000;
+        }
+      } */
+
     </style>
   </head>
   <body>
-    <div class="loading">
+    <!-- <div class="animation"></div> -->
+    <!-- <div class="loading"></div> -->
+    <!-- <div class="shadow"></div> -->
+    <svg
+      class="checkmark"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 52 52"
+    >
+      <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+      <path
+        class="checkmark__check"
+        fill="none"
+        d="M14.1 27.2l7.1 7.2 16.7-16.8"
+      />
+    </svg>
+    <svg width="500px" height="500px" viewBox="0 0 500 500">
 
-    </div>
-    <div class="shadow"></div>
-    <!-- <div :class="c" class="demo" v-if="isShow">
-      <span v-for="item in sz">{{item}}</span>
-    </div> -->
-    <!-- <script src="vue.js"></script> -->
-    <script>
+      <rect x="0" y="0" width="100" height="100" fill="#feac5e">
+          <animate attributeName="x" from="0" to="500" dur="2s" repeatCount="indefinite" />
+      </rect>
 
-    </script>
+  </svg>
+
+
+  <svg width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <circle fill="none" stroke-width="6" stroke-linecap="round" stroke="#000" cx="33" cy="33" r="30" >    </circle>
+     </g>
+  </svg>
+
+  <svg width="320" height="320" xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <text font-family="microsoft yahei" font-size="120" y="160" x="160">
+      马
+      <animate attributeName="x" from="160" to="60" begin="0s" dur="3s" repeatCount="indefinite" />
+      </text>
+
+    </g>
+  </svg>
+    <script></script>
   </body>
 </html>
