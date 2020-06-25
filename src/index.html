@@ -73,45 +73,45 @@
     </style>
   </head>
   <body>
-    <!-- <div class="animation"></div> -->
-    <!-- <div class="loading"></div> -->
-    <!-- <div class="shadow"></div> -->
-    <svg
-      class="checkmark"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 52 52"
-    >
-      <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-      <path
-        class="checkmark__check"
-        fill="none"
-        d="M14.1 27.2l7.1 7.2 16.7-16.8"
-      />
-    </svg>
-    <svg width="500px" height="500px" viewBox="0 0 500 500">
 
-      <rect x="0" y="0" width="100" height="100" fill="#feac5e">
-          <animate attributeName="x" from="0" to="500" dur="2s" repeatCount="indefinite" />
-      </rect>
+    <script>
+      function _merge(arr, l, mid, r) {
+  let aux = new Array(r - l + 1);
+  for (let i = l; i <= r; i++) {
+    aux[i - l] = arr[i];
+  }
+  let i = l,
+    j = mid + 1;
+  for (let k = l; k <= r; k++) {
+    if (i > mid) {
+      arr[k] = aux[j - l];
+      j++;
+    } else if (j > r) {
+      arr[k] = aux[i - l];
+      i++;
+    } else if (aux[i - l] < aux[j - l]) {
+      arr[k] = aux[i - l];
+      i++;
+    } else {
+      arr[k] = aux[j - l];
+      j++;
+    }
+  }
+}
+let arr = [1, 6, 2, 2,23,43,4,23,432,14234, 321,4 ,231,432];
 
-  </svg>
+function mergeSortBU(arr, n) {
+  // debugger
+  console.log(n)
+  for (let sz = 1; sz <= n; sz += sz) {
+    for (let i = 0; i + sz < n; i += sz + sz) {
+      _merge(arr, i, i + sz - 1, Math.min(i + sz + sz - 1, n));
+    }
 
-
-  <svg width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-    <g>
-      <circle fill="none" stroke-width="6" stroke-linecap="round" stroke="#000" cx="33" cy="33" r="30" >    </circle>
-     </g>
-  </svg>
-
-  <svg width="320" height="320" xmlns="http://www.w3.org/2000/svg">
-    <g>
-      <text font-family="microsoft yahei" font-size="120" y="160" x="160">
-      马
-      <animate attributeName="x" from="160" to="60" begin="0s" dur="3s" repeatCount="indefinite" />
-      </text>
-
-    </g>
-  </svg>
-    <script></script>
+  }
+}
+mergeSortBU(arr, arr.length - 1);
+console.log(arr);
+    </script>
   </body>
 </html>
