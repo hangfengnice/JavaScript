@@ -141,7 +141,6 @@ let arrCopy = copyArray(arr)
 testSort(mergeSort.name, mergeSort, arrCopy)
 // testSort(quickSort.name, quickSort, arr)
 testSort(quickSort3ways.name, quickSort3ways, arr)
-console.log(arr);
 
 
 
