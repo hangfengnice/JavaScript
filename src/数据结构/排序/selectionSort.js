@@ -7,8 +7,8 @@ function selectionSort(arr) {
       if (arr[j] < arr[minIndex]) {
         minIndex = j;
       }
-      swap(arr, minIndex, i)
     }
+    swap(arr, minIndex, i)
   }
 }
 

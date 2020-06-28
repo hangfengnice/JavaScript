@@ -5,113 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      .checkmark__circle {
-        stroke-dasharray: 166;
-        stroke-dashoffset: 166;
-        stroke-width: 2;
-        stroke: #7ac142;
-        fill: none;
-        animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+      .emphasis {
+        /* -webkit-text-emphasis-style: "CSS";
+        /* text-emphasis-style: "❤"; */
+        /* text-emphasis-style: 'CSS'; */
+        /* text-emphasis: filled dot; */
+        /* -webkit-text-emphasis: open dot; */
+        -webkit-text-emphasis: circle deepskyblue;
+        -webkit-text-emphasis-position: under;
       }
-
-      .checkmark {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        display: block;
-        stroke-width: 2;
-        stroke: #fff;
-        margin: 10% auto;
-        box-shadow: inset 0px 0px 0px #7ac142;
-        animation: fill 0.4s ease-in-out 0.4s forwards,
-          scale 0.3s ease-in-out 0.9s both;
-      }
-
-      .checkmark__check {
-        transform-origin: 50% 50%;
-        stroke-dasharray: 48;
-        stroke-dashoffset: 48;
-        animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
-      }
-
-      @keyframes stroke {
-        100% {
-          stroke-dashoffset: 0;
-        }
-      }
-      @keyframes scale {
-        0%,
-        100% {
-          transform: none;
-        }
-        50% {
-          transform: scale3d(1.1, 1.1, 1);
-        }
-      }
-      @keyframes fill {
-        100% {
-          box-shadow: inset 0px 0px 0px 30px #7ac142;
-        }
-      }
-      /* .animation {
-        width: 200px;
-        height: 200px;
-        background-color: lightblue;
-        animation: color1 1s;
-      }
-      @keyframes color1 {
-        100% {
-          background-color: red;
-        }
-      }
-      @keyframes color2 {
-        100% {
-          background-color: #000;
-        }
-      } */
-
     </style>
   </head>
   <body>
-
-    <script>
-      function _merge(arr, l, mid, r) {
-  let aux = new Array(r - l + 1);
-  for (let i = l; i <= r; i++) {
-    aux[i - l] = arr[i];
-  }
-  let i = l,
-    j = mid + 1;
-  for (let k = l; k <= r; k++) {
-    if (i > mid) {
-      arr[k] = aux[j - l];
-      j++;
-    } else if (j > r) {
-      arr[k] = aux[i - l];
-      i++;
-    } else if (aux[i - l] < aux[j - l]) {
-      arr[k] = aux[i - l];
-      i++;
-    } else {
-      arr[k] = aux[j - l];
-      j++;
-    }
-  }
-}
-let arr = [1, 6, 2, 2,23,43,4,23,432,14234, 321,4 ,231,432];
-
-function mergeSortBU(arr, n) {
-  // debugger
-  console.log(n)
-  for (let sz = 1; sz <= n; sz += sz) {
-    for (let i = 0; i + sz < n; i += sz + sz) {
-      _merge(arr, i, i + sz - 1, Math.min(i + sz + sz - 1, n));
-    }
-
-  }
-}
-mergeSortBU(arr, arr.length - 1);
-console.log(arr);
-    </script>
+    <span class="emphasis">爱你</span>，<span class="emphasis">比心</span>！
   </body>
 </html>
