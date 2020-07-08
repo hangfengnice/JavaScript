@@ -10,3 +10,8 @@ var rgb2hex = function(r, g, b) {
 
 rgb2hex(color.r, color.g, color.b)
 // "#bada55"
+
+function defaultArguments(func, params) {
+  return 
+}
+

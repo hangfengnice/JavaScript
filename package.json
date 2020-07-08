@@ -5,7 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "co": "^4.6.0",
+    "folktale": "^2.3.2",
     "lodash": "^4.17.15",
+    "moment": "^2.27.0",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {},
