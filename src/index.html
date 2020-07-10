@@ -4,11 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      #io {
+        margin: 8px;
+      }
+    </style>
   </head>
   <body>
     <div id="io">i am some inner html</div>
     <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.27.0/moment.js"></script>
     <!-- <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.27.0/locale/af.js"></script> -->
+    <script>
+      let margintop = getComputedStyle(io).marginTop
+      console.log(margintop)
+    </script>
     <script>
       function curry(fn) {
         const arity = fn.length;
@@ -249,7 +258,7 @@
           { street: { name: "Mulburry", number: 8402 }, postcode: "WC2N" },
         ],
       });
-      console.log(ret1)
+      console.log(ret1);
     </script>
   </body>
 </html>
