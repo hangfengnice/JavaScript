@@ -1,3 +1,6 @@
+const _ = require("lodash");
+
+// * links
 // chunk
 const chunk = (xs, size) => {
   return arr.reduce((arr, item, idx) => {
@@ -74,3 +77,115 @@ const isArrayBuffer = (params) => params instanceof ArrayBuffer;
 
 // join
 const join = (arr, separator) => arr.join(separator);
+
+// last
+const last = (arr) => arr.slice(-1)[0];
+
+// lastIndexOf
+const lastIndexOf = (arr, value, from) => arr.lastIndexOf(value, from);
+
+// reverse
+const reverse = (arr) => arr.reverse();
+
+// slice
+
+// without
+const without = (arr, ...rest) => arr.filter((item) => !rest.includes(item));
+
+// initial
+const initial = (arr) => arr.slice(0, -1);
+
+// pull
+const pull = (arr, ...values) => {
+  let set = new Set(values);
+  return arr.filter((x) => !set.has(x));
+};
+
+//  * collection
+
+// each
+const each = (collecton, iteratee) => {
+  if (Array.isArray(collecton)) {
+    collecton.forEach(iteratee);
+  } else {
+    Object.entries(collecton).forEach(iteratee);
+  }
+};
+
+// every
+
+// filter
+
+// groupBy
+const groupBy = (arr, iteratee) =>
+  arr.reduce(
+    (
+      r,
+      v,
+      i,
+      a,
+      k = typeof iteratee == "function" ? iteratee(v) : v[iteratee]
+    ) => ((r[k] || (r[k] = [])).push(v), r),
+    {}
+  );
+
+// includes **(array || object || string)
+
+// keyBy
+const keyBy = (arr, key) =>
+  (arr || []).reduce((r, x) => ({ ...r, [key ? x[key] : x]: x }), {});
+
+// map ** (object || prop)
+
+// minBy, maxBy
+const minBy = (arr, iteratee) =>
+  arr.reduce((acc, cur) => {
+    if (typeof iteratee == "function") {
+      return iteratee(acc) < iteratee(cur) ? acc : cur;
+    }
+    return acc[iteratee] < cur[iteratee] ? acc : cur;
+  });
+
+// pluck *remove*
+
+// reduce reduceRight
+
+// range
+// const range = (start = 0, end, step = 1)
+
+// sample
+const sample = (arr) => {
+  let length = arr == null ? 0 : arr.length;
+  return length ? arr[Math.floor(Math.random() * length)] : undefined;
+};
+
+// size *(array || object || string)
+
+// some
+
+// sortBy
+
+// uniq 去重
+
+// bind (placeholder)
+
+// debounce
+
+// isEmpty
+const isEmpty = (obj) =>
+  [Object, Array].includes((obj || {}).constructor) &&
+  !Object.entries(obj || {}).length;
+
+// get
+const get = (obj, path, defaultValue = undefined) => {
+  const travel = (regexp) =>
+    path
+      .split(regexp)
+      .filter(Boolean)
+      .reduce(
+        (res, key) => (res !== null && res !== undefined ? res[key] : res),
+        obj
+      );
+  const result = travel(/[[,[\].]+?/g);
+  return result === undefined || result === obj ? defaultValue : result;
+};
