@@ -9,3 +9,5 @@
 * 在代码中引用了自由变量
 
 ## recursion 递归
+
+## window.onerror
