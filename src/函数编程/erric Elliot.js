@@ -1,27 +1,32 @@
-const Indetity = (value) => ({
-  map: (fn) => Indetity(fn(value)),
-  valueOf: () => value,
-  toString: () => `Identity(${value})`,
-  *[Symbol.iterator]() {
-    yield value;
-  },
-});
+const t = value => {
+  const add = n => t(value + n)
+  return Object.assign(add, {
+    toString() {
+      return `t(${value})`
+    },
+    valueOf() {
+      return value
+    }
+  })
+}
 
-const trace = (x) => {
-  console.log(x);
-  return x;
-};
+const assert = {
+  same: (actual, expected, msg) => {
+    if (actual.toString() !== expected.toString()) {
+      throw new Error(`not ok; ${ msg }
+      Expected: ${ expected }
+      Actual:   ${ actual }`)
+    }
+    console.log(`ok: ${msg}`);
+  }
+}
+{
+  const msg = 'a value t(x) composed with t(0) ==== t(x)'
+  const x = 20
+  const a = t(x)(t(0))
+  const b = t(x)
+  // assert.same(a, b, msg)
 
-const u = Indetity(2);
-console.log(+u, u.toString(), [2, ...u]);
+}
 
-// u.map(x => x).map(trace)
-
-// const f = n => n + 1
-// const g = n => n * 2
-
-// const r1 = u.map(x => f(g(x)))
-// const r2 = u.map(g).map(f)
-
-// r1.map(trace)
-// r2.map(trace)
+console.log(Array.of(2));
