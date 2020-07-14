@@ -1,32 +1,38 @@
-const t = value => {
-  const add = n => t(value + n)
-  return Object.assign(add, {
-    toString() {
-      return `t(${value})`
-    },
-    valueOf() {
-      return value
-    }
+const view = (lens, store) => lens.view(store)
+const set = (lens, value, store) => lens.set(value, store)
+
+const lensProp = prop => ({
+  view: store => store[prop],
+  set: (value, store) => ({
+    ...store,
+    [prop]: value
   })
+})
+
+const fooStore = {
+  a: 'foo',
+  b: 'bar'
 }
 
-const assert = {
-  same: (actual, expected, msg) => {
-    if (actual.toString() !== expected.toString()) {
-      throw new Error(`not ok; ${ msg }
-      Expected: ${ expected }
-      Actual:   ${ actual }`)
-    }
-    console.log(`ok: ${msg}`);
-  }
-}
+const aLens = lensProp('a')
+const bLens = lensProp('b')
+
+const a = view(aLens, fooStore)
+const b = view(bLens, fooStore)
+
+// const bazStore = set(aLens, 'baz', fooStore)
+
+// console.log(bazStore);
+
+// console.log(a, b);
+
+const store = fooStore
 {
-  const msg = 'a value t(x) composed with t(0) ==== t(x)'
-  const x = 20
-  const a = t(x)(t(0))
-  const b = t(x)
-  // assert.same(a, b, msg)
+  const lens = lensProp('a')
+  console.log(lens)
+  const value = 'baz'
+  const a = value
 
+  const b = view(lens, set(lens, value, store))
+  console.log(a, b);
 }
-
-console.log(Array.of(2));
