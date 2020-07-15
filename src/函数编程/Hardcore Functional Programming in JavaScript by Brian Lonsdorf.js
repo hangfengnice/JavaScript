@@ -1,22 +1,67 @@
-const _ = require('ramda')
-const curry = _.curry
+const fs = require('fs')
+const path = require('path')
+const { curry, compose } = require("ramda");
 
-const add = (x, y) => x + y;
+const Box = (x) => ({
+  map: (f) => Box(f(x)),
+  fold: f => f(x),
+  toString: `Box(${x})`,
+});
 
-// const curry = f => x => y => f(x, y)
+const first = xs => xs[0]
 
-const uncurry = f => (x, y) => f(x)(y)
+const halfTheFirstLargeNumber_ = xs => {
+  const found = xs.filter(x => x >= 20)
+  const answer = first(found) / 2
+  return `The answer is ${answer}`
+}
 
-const curryiedAdd = curry(add)
+const compose = (f, g) => x => Box(x).map(g).fold(f)
+const halfTheFirstLargeNumber = xs =>
+  Box(xs)
+  .map(xs => xs.filter(x => x >= 20))
+  .map(found => first(found) / 2)
+  .fold(answer => `The answer is ${answer}`)
 
-const modulo = curry((x, y) => y % x)
 
-const isOdd = modulo(2)
+const Right = x => ({
+  chain: f => f(x),
+  map: f => Right(f(x)),
+  fold: (f, g) => g(x),
+  toString: `Right(${x})`
+})
 
-const filter = curry((f, xs) => xs.filter(f))
+const Left = x => ({
+  chain: f => Left(x),
+  map: f => Left(x),
+  fold: (f, g) => f(x),
+  toString: `Left(${x})`
+})
+// const result = halfTheFirstLargeNumber([1, 4, 50])
+// console.log(result);
 
-const replace = curry((regex, replacement, str) => str.replace(regex, replacement))
+// const nextCharForNumberString_ = (str) => {
+//   const trimmed = str.trim();
+//   const number = parseInt(trimmed);
+//   const nextNumber = new Number(number + 1);
+//   return String.fromCharCode(nextNumber);
+// };
 
-const replaceVowels = replace(/[aeiou]/ig, '!')
+// const nextCharForNumberString = (str) =>
+//   Box(str)
+//   .map(x => x.trim())
+//   .map(trimmed => parseInt(trimmed, 10))
+//   .map(number => new Number(number + 1))
+//   .fold(String.fromCharCode)
 
-const result = replaceVowels('Hey I have words!')
+// const result = nextCharForNumberString('  64')
+
+// console.log(result);
+
+const getPort = () => {
+  try {
+    const str =
+  } catch (e) {
+    return 3000
+  }
+}

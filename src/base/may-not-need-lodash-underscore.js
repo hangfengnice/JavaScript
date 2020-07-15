@@ -2,13 +2,26 @@ const _ = require("lodash");
 
 // * links
 // chunk
-const chunk = (xs, size) => {
-  return arr.reduce((arr, item, idx) => {
+let arr = [1, 2, 3, 4];
+const chunk = (input, size) => {
+  return input.reduce((arr, item, idx) => {
     return idx % size == 0
       ? [...arr, [item]]
       : [...arr.slice(0, -1), [...arr.slice(-1)[0], item]];
   }, []);
 };
+// console.log([...[], [1]]);
+let arr1 = [[1]];
+// console.log(arr1.slice(-1));
+
+let arr2 = [[1, 2]];
+// console.log([...arr1.slice(0, -1), [...arr1.slice(-1)[0], 2]])
+
+// console.log([...arr2, [3]]);
+
+let arr3 = [[1, 2], [3]];
+
+// console.log([...arr3.slice(0, -1), [...arr3.slice(-1)[0], 4]]);
 
 // compact
 const compact = (xs) => xs.filter(Boolean);
