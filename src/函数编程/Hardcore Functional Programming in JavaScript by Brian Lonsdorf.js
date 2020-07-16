@@ -1,42 +1,41 @@
-const fs = require('fs')
-const path = require('path')
+const fs = require("fs");
+const path = require("path");
 const { curry, compose } = require("ramda");
 
 const Box = (x) => ({
   map: (f) => Box(f(x)),
-  fold: f => f(x),
+  fold: (f) => f(x),
   toString: `Box(${x})`,
 });
 
-const first = xs => xs[0]
+const first = (xs) => xs[0];
 
-const halfTheFirstLargeNumber_ = xs => {
-  const found = xs.filter(x => x >= 20)
-  const answer = first(found) / 2
-  return `The answer is ${answer}`
-}
+const halfTheFirstLargeNumber_ = (xs) => {
+  const found = xs.filter((x) => x >= 20);
+  const answer = first(found) / 2;
+  return `The answer is ${answer}`;
+};
 
-const compose = (f, g) => x => Box(x).map(g).fold(f)
-const halfTheFirstLargeNumber = xs =>
+// const compose = (f, g) => x => Box(x).map(g).fold(f)
+const halfTheFirstLargeNumber = (xs) =>
   Box(xs)
-  .map(xs => xs.filter(x => x >= 20))
-  .map(found => first(found) / 2)
-  .fold(answer => `The answer is ${answer}`)
+    .map((xs) => xs.filter((x) => x >= 20))
+    .map((found) => first(found) / 2)
+    .fold((answer) => `The answer is ${answer}`);
 
+// const Right = x => ({
+//   chain: f => f(x),
+//   map: f => Right(f(x)),
+//   fold: (f, g) => g(x),
+//   toString: `Right(${x})`
+// })
 
-const Right = x => ({
-  chain: f => f(x),
-  map: f => Right(f(x)),
-  fold: (f, g) => g(x),
-  toString: `Right(${x})`
-})
-
-const Left = x => ({
-  chain: f => Left(x),
-  map: f => Left(x),
-  fold: (f, g) => f(x),
-  toString: `Left(${x})`
-})
+// const Left = x => ({
+//   chain: f => Left(x),
+//   map: f => Left(x),
+//   fold: (f, g) => f(x),
+//   toString: `Left(${x})`
+// })
 // const result = halfTheFirstLargeNumber([1, 4, 50])
 // console.log(result);
 
@@ -57,11 +56,25 @@ const Left = x => ({
 // const result = nextCharForNumberString('  64')
 
 // console.log(result);
+const Right = (x) => ({
+  chain: (f) => f(x),
+  map: (f) => Right(f(x)),
+  fold: (f, g) => g(x),
+  toString: `Right(${x})`,
+});
+const Left = (x) => ({
+  chain: (f) => Left(x),
+  map: (f) => Left(x),
+  fold: (f, g) => f(x),
+  toString: `Left(${x})`,
+});
 
-const getPort = () => {
-  try {
-    const str =
-  } catch (e) {
-    return 3000
-  }
+const findColor = (name) =>
+  ({ red: "#ff4444", blue: "#3b5998", yellow: "#fff68f" }[name]);
+
+const res = findColor("red");
+// console.log(res);
+
+function mergeSort(arr) {
+  l;
 }
