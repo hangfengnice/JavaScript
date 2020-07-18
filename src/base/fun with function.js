@@ -124,5 +124,22 @@ function collect(gen, array) {
 
 // }
 // let ret = liftf(add)(1)(2)
+
+function exp(value) {
+  return (Array.isArray(value))
+    ? value[0](value[1], value[2]) : value
+}
+function addg(first) {
+  function more(next) {
+    if (next === undefined) {
+      return first
+    }
+    first += next
+    return more
+  }
+  if (first !== undefined) {
+    return more
+  }
+}
 let ret1 = compose(square, double)(3)
 console.log(ret1);
