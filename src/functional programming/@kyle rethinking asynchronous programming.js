@@ -64,3 +64,33 @@ var thunk = makeThunk(addAsync, 10, 15)
 thunk(function (num) {
   console.log(num);
 })
+
+function coroutine (g) {
+  var it = g()
+  return function () {
+    return it.next.apply(it, arguments)
+  }
+}
+
+var run = coroutine(function *() {
+  var x = 1 + (yield);
+  var y = 1 + (yield)
+  yield (x + y)
+})
+
+run()
+run(10)
+console.log('coroutine', run(30).value);
+
+var run = coroutine(function *() {
+  var x = 1 + (yield getData(10))
+  var y = 1 + (yield getData(30))
+  var answer = (yield getData('meaning life' + (x + y)))
+  console.log(answer, 'answer');
+})
+function getData(d) {
+  setTimeout(() => {
+      run(d)
+  });
+}
+run()

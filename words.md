@@ -1,5 +1,18 @@
 # words
 
+encapsulate 压缩
+dump 抛弃
+audience 观众
+fatigue 疲劳
+exclusino 排除
+diagram 图解
+distinct 明显的
+coroutine 协程
+sequential 按顺序
+swallow 吞下
+blindly 盲目的
+concurrency 并发性
+
 crafty 狡猾的 灵巧的
 premature 过早的 提前的
 negligible 微不足道的
@@ -253,7 +266,7 @@ pretend 假装
 perpetuate 永久的
 inferior 低级的
 robust 强壮的
-marble 
+marble
 compilation 编写
 execute 执行
 lexical 词法
