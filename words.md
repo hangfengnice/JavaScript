@@ -1,5 +1,8 @@
 # words
 
+unicorn 独角兽
+exception 例外
+theoretical 理论
 encapsulate 压缩
 dump 抛弃
 audience 观众

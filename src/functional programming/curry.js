@@ -5,7 +5,6 @@ function identity(x) {
 var identity = function identity(x) {
   return x
 }
-
 function add(first, second) {
   return first + second
 }
@@ -88,4 +87,3 @@ var index = to(from(1), 3)
 console.log(index());
 console.log(index());
 console.log(index());
-
