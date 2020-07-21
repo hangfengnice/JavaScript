@@ -1,97 +1,161 @@
-const {
-  toUpper,
-  concat,
-  prop,
-  match,
-  add,
-  compose,
-  map,
-  curry
-} = require('ramda')
-const moment = require('moment')
+const moment = require('moment');
+const { prepend } = require('ramda');
+const always = curry((a, b) => a);
+const compose = (...fns) => (...args) =>
+  fns.reduceRight((res, fn) => [fn.call(null, ...res)], args)[0];
 
-var Container = function (x) {
-  this.__value = x
+function curry(fn) {
+  const arity = fn.length;
+  return function $curry(...args) {
+    if (args.length < arity) {
+      return $curry.bind(null, ...args);
+    }
+    return fn.call(null, ...args);
+  };
 }
-Container.of = function (x) {
-  return new Container(x)
-}
-Container.prototype.map = function (f) {
-  return new Container(f(this.__value))
-}
+const identity = (x) => x;
+var add = curry((a, b) => a + b);
+var chain = curry((fn, m) => m.chain(fn));
+var concat = curry((a, b) => a.concat(b));
+const eq = curry((a, b) => a === b);
+const filter = curry((fn, xs) => xs.filter(fn));
+var flip = curry((fn, a, b) => fn(b, a));
+var append = flip(concat);
 
-var Maybe = function (x) {
-  this.__value = x
-}
-Maybe.of = function (x) {
-  return new Maybe(x)
-}
-Maybe.prototype.isNothing = function () {
-  return this.__value == null
-}
-Maybe.prototype.map = function (f) {
-  return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.__value))
-}
-var safeHead = function(xs) {
-  return Maybe.of(xs[0]);
-};
-
-// var withdraw = curry(function(amount, account) {
-//   return account.balance >= amount ?
-//     Maybe.of({balance: account.balance - amount}) :
-//     Maybe.of(null);
-// });
-// var maybe = curry(function(x, f, m) {
-//   return m.isNothing() ? x : f(m.__value);
-// });
-
-var Left = function (x) {
-  this.__value = x
-}
-Left.of = function (x) {
-  return new Left(x)
-}
-Left.prototype.map = function () {
-  return this
-}
-
-var Right = function (x) {
-  this.__value = x
-}
-Right.of = function(x) {
-  return new Right(x)
-}
-Right.prototype.map = function (f) {
-  return new Right(f(this.__value))
-}
-var getAge = curry(function(now, user) {
-  var birthdate = moment(user.birthdate, 'YYYY-MM-DD');
-  if(!birthdate.isValid()) return Left.of("Birth date could not be parsed");
-  return Right.of(now.diff(birthdate, 'years'));
-});
-
-var fortune = compose(concat("If you survive, you will be "), String)
-var zoltar = compose(map(console.log), map(fortune), getAge(moment()));
-
-var either = curry(function(f, g, e) {
-  switch(e.constructor) {
-    case Left: return f(e.__value);
-    case Right: return g(e.__value);
+class Container {
+  constructor(x) {
+    this.$value = x;
   }
+  static of(x) {
+    return new Container(x);
+  }
+  map(f) {
+    return new Container(f(this.$value));
+  }
+}
+const prop = curry((prop, obj) => obj[prop]);
+
+class Maybe {
+  static of(x) {
+    return new Maybe(x);
+  }
+  get isNothing() {
+    return this.$value == null;
+  }
+  constructor(x) {
+    this.$value = x;
+  }
+  map(fn) {
+    return this.isNothing ? this : Maybe.of(fn(this.$value));
+  }
+  inspect() {
+    return this.isNothing ? "Nothing" : `Just(${inspect(this.$value)})`;
+  }
+}
+const match = curry((reg, str) => str.match(reg));
+const safeHead = (xs) => Maybe.of(xs[0]);
+const map = curry((f, xs) => xs.map(f));
+const streetName = compose(map(prop("street")), safeHead, prop("addresses"));
+const withdraw = curry((amount, { balance }) =>
+  Maybe.of(balance >= amount ? { balance: balance - amount } : null)
+);
+const updateLedger = (account) => account;
+const remainingBalance = ({ balance }) => `Your balance is $${balance}`;
+const finishTransaction = compose(remainingBalance, updateLedger);
+// const getTwenty = compose(map(finishTransaction), withdraw(20));
+
+const maybe = curry((v, f, m) => {
+  if (m.isNothing) {
+    return v;
+  }
+  return f(m.$value);
 });
-function id (x) {
-  return x
+
+const getTwenty = compose(
+  maybe("You're broke!", finishTransaction),
+  withdraw(20)
+);
+class Either {
+  static of(x) {
+    return new Right(x);
+  }
+  constructor(x) {
+    this.$value = x;
+  }
 }
-var zoltar = compose(console.log, either(id, fortune), getAge(moment()));
 
-var IO = function (f) {
-  this.__value = f
+class Left extends Either {
+  map(f) {
+    return this;
+  }
+  inspect() {
+    return `Left(${inspect(this.$value)})`;
+  }
 }
 
-IO.of = function (x) {
-
+class Right extends Either {
+  map(f) {
+    return Either.of(f(this.$value));
+  }
+  inspect() {
+    return `Right(${inspect(this.$value)})`;
+  }
 }
+const left = (x) => new Left(x);
 
-let ret = zoltar({birthdate: 'balloons!'});;
+const getAge = curry((now, user) => {
+  const birthDate = moment(user.birthDate, 'YYYY-MM-DD');
+  return birthDate.isValid()
+    ? Either.of(now.diff(birthDate, 'years'))
+    : left('Birth date could not be parsed');
+});
+// const trace = curry((tag, x) => {
+//   console.log(tag, x);
+//   return x
+// })
+const toString = String;
+const fortune = compose(append('If you survive, you will be '), toString, add(1));
+const zoltar = compose(map(console.log), map(fortune), getAge(moment()));
+
+let ret = zoltar({ birthDate: '2005-12-12' });
+// let ret1 = getAge(moment(), { birthDate: '2005-12-12' })
+
 console.log(ret);
+
+class Task {
+  constructor(fork) {
+    this.fork = fork;
+  }
+  static rejected(x) {
+    return new Task((reject, _) => reject(x));
+  }
+  // ----- Pointed (Task a)
+  static of(x) {
+    return new Task((_, resolve) => resolve(x));
+  }
+  // ----- Functor (Task a)
+  map(fn) {
+    return new Task((reject, resolve) => this.fork(reject, compose(resolve, fn)));
+  }
+  // ----- Applicative (Task a)
+  ap(f) {
+    return this.chain(fn => f.map(fn));
+  }
+  // ----- Monad (Task a)
+  chain(fn) {
+    return new Task((reject, resolve) => this.fork(reject, x => fn(x).fork(reject, resolve)));
+  }
+  join() {
+    return this.chain(identity);
+  }
+}
+{
+  fork = (_, resolve) => resolve(3)
+}
+map(x => x + 2)
+
+{
+  fork = (reject, resolve) => this.fork(reject, compose(resolve, x => x + 3))
+}
+map(x => x * 2)
 
