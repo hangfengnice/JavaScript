@@ -48,4 +48,7 @@ var range = function (i, count) {
     }
   }, i)
 }
+var tree = function () {
+  
+}
 console.log(range(1, 5));
