@@ -1,5 +1,3 @@
-const { max } = require("lodash");
-
 class MaxHeap {
   constructor(opacity) {
     this.data = new Array(opacity + 1);
@@ -12,7 +10,8 @@ class MaxHeap {
     return this.count == 0;
   }
   insert(item) {
-    this.data[this.count++] = item;
+    this.data[this.count + 1] = item;
+    this.count++;
     this.shiftUp(this.count);
   }
   shiftUp(k) {
@@ -25,6 +24,9 @@ class MaxHeap {
     if (this.size() >= 100) {
       console.log("超过100个数字了");
       return;
+    }
+    for (let i = 1; i < this.size(); i++) {
+      console.log(this.data[i]);
     }
     let n = this.size();
     let max_level = 0;
@@ -58,44 +60,52 @@ class MaxHeap {
         );
         isLeft = !isLeft;
 
-        if( level == max_level - 1 ) break
-        let line2 = ' '.repeat(max_level_number * 3 - 1)
-        for( let index_cur_level = 0 ; index_cur_level < cur_level_number ; index_cur_level ++ ) {
-          putBranchInLine( line2 , index_cur_level , cur_tree_max_level_number*3-1 );
+        if (level == max_level - 1) break;
+        let line2 = " ".repeat(max_level_number * 3 - 1);
+        for (
+          let index_cur_level = 0;
+          index_cur_level < cur_level_number;
+          index_cur_level++
+        ) {
+          putBranchInLine(
+            line2,
+            index_cur_level,
+            cur_tree_max_level_number * 3 - 1
+          );
         }
+        console.log(line2);
         cur_tree_max_level_number /= 2;
       }
     }
   }
 }
-function putNumberInLine( num, line, index_cur_level, cur_tree_width,isLeft){
-
+function putNumberInLine(num, line, index_cur_level, cur_tree_width, isLeft) {
   let sub_tree_width = (cur_tree_width - 1) / 2;
-  let offset = index_cur_level * (cur_tree_width+1) + sub_tree_width;
+  let offset = index_cur_level * (cur_tree_width + 1) + sub_tree_width;
   // assert(offset + 1 < line.size());
-  if( num >= 10 ) {
-      line[offset + 0] = '0' + num / 10;
-      line[offset + 1] = '0' + num % 10;
-  }
-  else{
-      if( isLeft)
-          line[offset + 0] = '0' + num;
-      else
-          line[offset + 1] = '0' + num;
+  if (num >= 10) {
+    line[offset + 0] = "0" + num / 10;
+    line[offset + 1] = "0" + (num % 10);
+  } else {
+    if (isLeft) line[offset + 0] = "0" + num;
+    else line[offset + 1] = "0" + num;
   }
 }
 
-function putBranchInLine( line,  index_cur_level,  cur_tree_width){
-
+function putBranchInLine(line, index_cur_level, cur_tree_width) {
   let sub_tree_width = (cur_tree_width - 1) / 2;
   let sub_sub_tree_width = (sub_tree_width - 1) / 2;
-  let offset_left = index_cur_level * (cur_tree_width+1) + sub_sub_tree_width;
+  let offset_left = index_cur_level * (cur_tree_width + 1) + sub_sub_tree_width;
   // assert( offset_left + 1 < line.size() );
-  let offset_right = index_cur_level * (cur_tree_width+1) + sub_tree_width + 1 + sub_sub_tree_width;
-  assert( offset_right < line.size() );
+  let offset_right =
+    index_cur_level * (cur_tree_width + 1) +
+    sub_tree_width +
+    1 +
+    sub_sub_tree_width;
+  // assert( offset_right < line.size() );
 
-  line[offset_left + 1] = '/';
-  line[offset_right + 0] = '\\';
+  line[offset_left + 1] = "/";
+  line[offset_right + 0] = "\\";
 }
 function swap(arr, i, k) {
   [arr[i], arr[k]] = [arr[k], arr[i]];
@@ -105,4 +115,6 @@ let maxheap = new MaxHeap(100);
 for (let i = 0; i < 15; i++) {
   maxheap.insert(Math.floor(Math.random() * 100));
 }
-console.log(maxheap.size());
+// console.log(maxheap.size(), maxheap.data);
+
+console.log(maxheap.testPrint());
