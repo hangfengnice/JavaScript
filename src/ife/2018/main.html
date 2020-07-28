@@ -4,45 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      ul {
+        display: none;
+      }
+      ul.active {
+        display: block;
+      }
+      li:first-child {
+        background-color: lightpink;
+      }
+      li:hover {
+        background-color: lightblue;
+      }
+    </style>
   </head>
   <body>
     <div class="wrapper">
       <input id="email-input" type="text" />
       <ul id="email-sug-wrapper" class="email-sug"></ul>
     </div>
-    <script>
-      let postfixList = [
-        "163.com",
-        "gmail.com",
-        "126.com",
-        "qq.com",
-        "263.net",
-      ];
-      function $(id) {
-        return document.getElementById(id)
-      }
-      let input = $('email-input')
-      let ul = $('email-sug-wrapper')
-      input.addEventListener('input', function(){
-        if (!this.value.trim()) return remove()
-        getList()
-
-      })
-      function remove() {
-        while(ul.children.length > 0) {
-          ul.removeChild(ul.firstChild)
-        }
-      }
-      function getList() {
-        remove()
-        let fragment = document.createDocumentFragment()
-        for (let i = 0; i < postfixList.length; i ++) {
-          let li = document.createElement('li')
-          li.textContent = input.value + postfixList[i]
-          fragment.appendChild(li)
-        }
-        ul.appendChild(fragment)
-      }
-    </script>
+    <div></div>
+    <script src="main.js"></script>
   </body>
 </html>
