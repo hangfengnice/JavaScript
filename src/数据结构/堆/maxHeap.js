@@ -25,8 +25,9 @@ class MaxHeap {
       console.log("超过100个数字了");
       return;
     }
+    console.log("The max heap size is: ", this.size());
     for (let i = 1; i < this.size(); i++) {
-      console.log(this.data[i]);
+      console.log(this.data[i], ' ');
     }
     let n = this.size();
     let max_level = 0;
@@ -117,4 +118,15 @@ for (let i = 0; i < 15; i++) {
 }
 // console.log(maxheap.size(), maxheap.data);
 
-console.log(maxheap.testPrint());
+// console.log(maxheap.testPrint());
+
+
+function frankenSplice(arr1, arr2, n) {
+  let arr = [...arr2];
+  arr.splice(n, 0, ...arr1);
+  return arr
+}
+
+let ret = frankenSplice([1, 2, 3], [4, 5, 6], 1);
+console.log(ret);
+
