@@ -3,26 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>debugger</title>
+    <title>Document</title>
+    <style>
+      :root {
+        --mode: "unknown";
+      }
+      @media (prefers-color-scheme: dark) {
+        /* 黑暗模式 */
+        :root {
+          --mode: "dark";
+          --colorLink: #bfdbff;
+          --colorMark: #cc0000;
+          --colorText: #ffffff;
+          --colorLight: #777777;
+        }
+      }
+      @media (prefers-color-scheme: light) {
+        /* 浅色主题 */
+        :root {
+          --mode: "light";
+          --colorLink: #34538b;
+          --colorMark: #cc0000;
+          --colorText: #000000;
+          --colorLight: #cccccc;
+        }
+      }
+    </style>
   </head>
   <body>
+    <noscript class="loading-lazy">
+      <img
+          src="example.jpg"
+          loading="lazy"
+          alt="zhangxinxu"
+          width="250"
+          height="150"
+      />
+  </noscript>
+    <a href="https://www.google.com/search?q=234&oq=234&aqs=chrome..69i57j0l7.683j0j8&sourceid=chrome&ie=UTF-8" target="https://www.google.com/search?q=234&oq=234&aqs=chrome..69i57j0l7.683j0j8&sourceid=chrome&ie=UTF-8">a</a>
     <script>
-      function coinChange(coins, amount) {
-        debugger
-        const f = [];
-        f[0] = 0;
-        for (let i = 1; i <= amount; i++) {
-          f[i] = Infinity;
-          for (let j = 0; j < coins.length; j++) {
-            if (i - coins[j] >= 0) {
-              f[i] = Math.min(f[i], f[i - coins[j]] + 1);
-            }
-          }
-        }
-        if (f[amount] == Infinity) return -1;
-        return f[amount];
-      }
-      coinChange([1, 5, 5], 11);
+      var strContent = getComputedStyle(document.documentElement).getPropertyValue('--mode').trim();
+      console.log(strContent);
     </script>
   </body>
 </html>

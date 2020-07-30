@@ -127,6 +127,11 @@ function frankenSplice(arr1, arr2, n) {
   return arr
 }
 
-let ret = frankenSplice([1, 2, 3], [4, 5, 6], 1);
-console.log(ret);
+// let ret = frankenSplice([1, 2, 3], [4, 5, 6], 1);
+// console.log(ret);
+
+// 1 基础
+// 2 设计模式
+// 3 算法
+// 4 vue
 
