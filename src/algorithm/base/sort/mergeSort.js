@@ -1,12 +1,12 @@
-const { shortInsertionSort } = require("./insertionSort");
+const { swap } = require("../../utils");
 
 function _merge(arr, l, mid, r) {
-  let aux = Array.from({ length: r - l + 1 });
+  let aux = Array(r - l + 1);
   for (let i = l; i <= r; i++) {
     aux[i - l] = arr[i];
   }
-  let i = l,
-    j = mid + 1;
+  let i = l;
+  j = mid + 1;
   for (let k = l; k <= r; k++) {
     if (i > mid) {
       arr[k] = aux[j - l];
@@ -24,18 +24,16 @@ function _merge(arr, l, mid, r) {
   }
 }
 function _mergeSort(arr, l, r) {
-  if (r - l <= 15) {
-    return shortInsertionSort(arr, l, r);
+  if (l >= r) {
+    return;
   }
   let mid = Math.floor((l + r) / 2);
   _mergeSort(arr, l, mid);
   _mergeSort(arr, mid + 1, r);
-  if (arr[mid] > arr[mid + 1]) {
-    _merge(arr, l, mid, r); // 优化
-  }
+  _merge(arr, l, mid, r);
 }
-function mergeSort(arr, n = arr.length) {
-  _mergeSort(arr, 0, n - 1);
+function mergeSort(arr) {
+  _mergeSort(arr, 0, arr.length - 1);
 }
 
 module.exports = {

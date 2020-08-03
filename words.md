@@ -281,3 +281,8 @@ retrieve 取回
 theoretical
 encapsulate 封装
 eliminate 消除
+
+scalability 系统设计 扩展性
+coconut 🍃
+manipulate 操作
+via 通过
