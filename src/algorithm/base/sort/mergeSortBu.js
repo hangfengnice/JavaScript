@@ -1,5 +1,3 @@
-const { swap,insertionSort15 } = require("../../utils");
-
 function _merge(arr, l, mid, r) {
   let aux = Array(r - l + 1);
   for (let i = l; i <= r; i++) {
@@ -23,21 +21,14 @@ function _merge(arr, l, mid, r) {
     }
   }
 }
-function _mergeSort(arr, l, r) {
-  if (r - l <= 15) {
-    return insertionSort15(arr, l, r)
+function mergeSortBu(arr) {
+  for(let sz = 1; sz <= arr.length - 1; sz += sz) {
+    for(let i = 0; i + sz < arr.length; i += sz + sz) {
+      _merge(arr, i, i + sz - 1, Math.min(i + sz + sz - 1, arr.length - 1))
+    }
   }
-  let mid = Math.floor((l + r) / 2);
-  _mergeSort(arr, l, mid);
-  _mergeSort(arr, mid + 1, r);
-  if(arr[mid] > arr[mid + 1]) {
-    _merge(arr, l, mid, r);
-  }
-}
-function mergeSort(arr) {
-  _mergeSort(arr, 0, arr.length - 1);
 }
 
 module.exports = {
-  mergeSort,
-};
+  mergeSortBu
+}

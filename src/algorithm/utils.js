@@ -28,10 +28,20 @@ function testSort(sortName, sort, arr) {
   console.timeEnd(sortName);
   console.assert(isSorted(arr), `${sortName} 排序错误！`);
 }
+function insertionSort15(arr, l, r) {
+  for(let i = l + 1; i <=r; i ++ ) {
+    let e = arr[i], j = i
+    for(; j > l && arr[j - 1] > e; j --) {
+      arr[j] = arr[j - 1]
+    }
+    arr[j] = e
+  }
+}
 
 module.exports = {
   swap,
   sortTestHelper,
   generateNearlyOrderedArray,
   testSort,
+  insertionSort15
 };
