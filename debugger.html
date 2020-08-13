@@ -42,8 +42,27 @@
   </noscript>
     <a href="https://www.google.com/search?q=234&oq=234&aqs=chrome..69i57j0l7.683j0j8&sourceid=chrome&ie=UTF-8" target="https://www.google.com/search?q=234&oq=234&aqs=chrome..69i57j0l7.683j0j8&sourceid=chrome&ie=UTF-8">a</a>
     <script>
-      var strContent = getComputedStyle(document.documentElement).getPropertyValue('--mode').trim();
-      console.log(strContent);
+      function sortSolor(nums) {
+        debugger
+  let zero = -1, two = nums.length
+
+  for(let i = 0; i < two;) {
+    if (nums[i] == 1) {
+      i ++
+    } else if (nums[i] == 2) {
+      two --;
+      [nums[i], nums[two]] = [nums[two], nums[i]]
+    } else {
+      zero ++;
+      [nums[i], nums[zero]] = [nums[zero], nums[i]];
+      i ++
+    }
+  }
+}
+
+let nums = [0, 1, 1, 2, 1, 0, 0]
+sortSolor(nums)
+console.log(nums);
     </script>
   </body>
 </html>
