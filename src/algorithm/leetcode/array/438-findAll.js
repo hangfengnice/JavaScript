@@ -1,10 +1,36 @@
 function findAll(s, p) {
-  if (!s || !p) return []
-
-  let need = {}, window = {}, ans = [];
-  [...p].forEach(c => need[c] ? need[c] ++ : need[c] = 1)
-  let l = 0, r = 0, cnt = 0, nklen = Object.keys(need).length
-  while(l < s.length) {
-
+  let res = [];
+  let left = 0,
+    right = 0;
+  let needs = {},
+    windows = {};
+  let match = 0;
+  for (let i = 0; i < p.length; i++) {
+    needs[p[i]] ? needs[p[i]]++ : (needs[p[i]] = 1);
   }
+  let needsLen = Object.keys(needs).length;
+  while (right < s.length) {
+    let c1 = s[right];
+    if (needs[c1]) {
+      windows[c1] ? windows[c1]++ : (windows[c1] = 1);
+      if (windows[c1] === needs[c1]) {
+        match++;
+      }
+    }
+    right++;
+    while (match == needsLen) {
+      if (right - left == p.length) {
+        res.push(left);
+      }
+      let c2 = s[left];
+      if (needs[c2]) {
+        windows[c2]--;
+        if (windows[c2] < needs[c2]) {
+          match--;
+        }
+      }
+      left++;
+    }
+  }
+  return res;
 }
