@@ -7,28 +7,35 @@
   </head>
   <body>
     <script>
-      function minSize(s, nums) {
-        let l = 0,
-          r = -1,
-          sum = 0,
-          res = nums.length + 1;
-          debugger
-        while (l < nums.length) {
-          if (r + 1 < nums.length && sum < s) {
-            sum += nums[++r];
-          } else {
-            sum -= nums[l++];
-          }
-          if (sum >= s) {
-            res = Math.min(res, r - l + 1);
-          }
-        }
-        if (res == nums.length + 1) return 0;
-        return res;
+      function Foo() {
+        getName = function () {
+          console.log(1);
+        };
+        return this;
+      }
+      Foo.getName = function () {
+        console.log(2);
+      };
+
+      Foo.prototype.getName = function () {
+        console.log(3);
+      };
+
+      var getName = function () {
+        console.log(4);
+      };
+
+      function getName() {
+        console.log(5);
       }
 
-      let ret = minSize(7, [1, 2, 2, 2, 4, 3, 1, 1]);
-      console.log(ret);
+      Foo.getName(); // 2
+      getName(); // 4
+      Foo().getName(); // 1
+      getName() // 1
+      new Foo.getName(); // 2
+      new Foo().getName(); // 3
+      new new Foo().getName()
     </script>
   </body>
 </html>
