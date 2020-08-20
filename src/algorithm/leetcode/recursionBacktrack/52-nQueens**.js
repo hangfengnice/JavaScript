@@ -1,0 +1,3 @@
+var totalNQueens = function (n) {
+
+}
