@@ -1,0 +1,3 @@
+var numDecodings = function (s) {
+
+}
