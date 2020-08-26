@@ -418,4 +418,4 @@ const { each } = require("jquery");
 //   }
 //   return [...ret, ...left, ...right];
 // }
-const
+const rope = {value: 1500, weight: 1}
