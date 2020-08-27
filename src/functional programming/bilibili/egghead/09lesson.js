@@ -1,4 +1,6 @@
-const { List } = require("immutable");
+const { List } = require("immutable-ext");
+let state = List.of({name: 'hf'}, {age: 12}, {sex: 'man'})
+
 
 const Sum = (x) => ({
   x,
