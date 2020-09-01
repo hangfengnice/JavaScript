@@ -6,4 +6,15 @@ function formatTrend(trendRate) {
   return `${direction} ${Math.abs(trendRate)}`
 }
 
-console.log(+[[[['1']]]]);
+var teacher = 'kyle'
+
+function otherClass () {
+  teacher = 'suzy'
+  topic = 'react'
+  console.log('welcome');
+}
+
+otherClass()
+
+console.log(teacher);
+console.log(topic);
