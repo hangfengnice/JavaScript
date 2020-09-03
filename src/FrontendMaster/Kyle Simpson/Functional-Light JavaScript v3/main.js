@@ -1,3 +1,4 @@
+const {curry, ramda} = require('ramda')
 function flip(f) {
   return function flipped(a, b, ...args) {
     return f(b, a, ...args)
@@ -24,4 +25,28 @@ function compose(...fns) {
 }
 var f = compose(add, double, subtract)
 let ret = f(3) // 3
-console.log(ret);
+
+function countVowels(str, count = v => v) {
+  var first = (isVoewl(str[0]) ? 1 : 0)
+  if (str.length <= 1) return count(first)
+  return countVowels(str.slice(1), function (v) {
+    return count(v + first)
+  })
+}
+
+var outer = 1
+function f() {
+  console.log(outer)
+  var outer = outer + 1
+  return outer
+}
+
+let res = f()
+console.log(res)
+
+
+// function compose(...fns) {
+//   return function f(x) {
+//     return fns.reduceRight((acc, fn) => fn(acc), x)
+//   }
+// }
