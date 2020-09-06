@@ -36,4 +36,11 @@ thunk(function (sum) {
 })
 
 
-log(Array(5).join('wat  1' - 1) + 'hello')
+// log(Array(5).join('wat  1' - 1) + 'hello')
+
+function coroutine(g) {
+  var it = g()
+  return function () {
+    return it.next.apply(it, arguments)
+  }
+}
