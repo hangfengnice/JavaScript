@@ -44,3 +44,12 @@ function coroutine(g) {
     return it.next.apply(it, arguments)
   }
 }
+
+
+try {
+  console.lo(object);
+} catch (error) {
+  console.log(error);
+}
+
+// console.log(error);
