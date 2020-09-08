@@ -1,55 +1,21 @@
-const { setIn } = require("immutable");
-
-
-
-function log(x) {
-  console.log(x);
+function swap(arr, i, j) {
+  [arr[i], arr[j]] = [arr[j], arr[i]]
 }
-
-
-function addAsync(x, y, cb) {
-  setTimeout(() => {
-    cb(x + y)
-  }, )
-}
-
-// var thunk = function (cb) {
-//   addAsync(10, 15, cb)
-// }
-
-
-
-
-var thunk = makeThunk(addAsync, 10, 15)
-
-
-function makeThunk(fn) {
-  var args = [].slice.call(arguments, 1)
-  return function (cb) {
-    args.push(cb)
-    fn.apply(null, args)
+var selectionSort = function (arr) {
+  for(let i = 0; i < arr.length; i ++) {
+    let minIndex = i
+    for(let j = i + 1; j < arr.length; j ++) {
+      if (arr[j] < arr[minIndex]) minIndex = j
+    }
+    swap(arr, i, minIndex)
   }
 }
 
-thunk(function (sum) {
-  console.log(sum);
-})
+let arr = [1, 3, 2, 5, 4]
 
+var SortTestHelper = function () {
 
-// log(Array(5).join('wat  1' - 1) + 'hello')
-
-function coroutine(g) {
-  var it = g()
-  return function () {
-    return it.next.apply(it, arguments)
-  }
 }
 
-
-try {
-  console.lo(object);
-} catch (error) {
-  console.log(error);
-}
-
-// console.log(error);
+selectionSort(arr)
+console.log(arr);
