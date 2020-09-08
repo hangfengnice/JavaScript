@@ -31,10 +31,20 @@ var TestSort = function (func, arr) {
   console.timeEnd(func.name);
   console.assert(isSorted(arr), `${func.name} 排序有问题`);
 };
+var insertionSort15 = function (arr, l, r) {
+  for(let i = l + 1; i <= r; i ++) {
+    let e = arr[i], j;
+    for(let j = i; j > l && arr[j - 1] > e; j --) {
+      arr[j] = arr[j - 1]
+    }
+    arr[j] = e
+  }
+}
 
 module.exports = {
   TestSort,
   swap,
   generateRandomArray,
-  generateNearlyOrderedArray
+  generateNearlyOrderedArray,
+  insertionSort15
 }
