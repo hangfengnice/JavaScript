@@ -1,5 +1,8 @@
 const { swap, insertionSort15 } = require("./SortTestHelper");
 var __partition = function (arr, l, r) {
+
+  let temp = Math.floor(Math.random() * (r - l + 1)) + l
+  swap(arr, l, temp)
   let v = arr[l],
     j = l;
   for (let i = l + 1; i <= r; i++) {
