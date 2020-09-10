@@ -1,9 +1,14 @@
-const { swap } = require("./helper");
+// const { swap } = require("./helper");
+
+function swap(arr, l, r) {
+  [arr[l], arr[r]] = [arr[r], arr[l]]
+}
 
 class IndexMaxHeep {
-  constructor() {
+  constructor(n) {
     this.data = [];
     this.indexes = []
+    this.reverse = Array(n + 1).fill(0)
     this.count = 0;
   }
   size() {
@@ -18,13 +23,16 @@ class IndexMaxHeep {
     i += 1
     this.data[i] = item;
     this.indexes[this.count + 1] = i
+    this.reverse[i] = this.count + 1
     this.count++;
     this.shiftUp(this.count);
   }
   shiftUp(k) {
     while (k > 1 && this.data[this.indexes[Math.floor(k / 2)]] < this.data[this.indexes[k]]) {
       swap(this.indexes, this.indexes[Math.floor(k / 2)], this.indexes[k]);
-      k = Math.floor(k / 2);
+      this.reverse[this.indexes[~~(k / 2)]] = ~~(k / 2)
+      this.reverse[this.indexes[k]] = k
+      k = ~~(k / 2);
     }
   }
   shiftDown(k) {
@@ -37,12 +45,16 @@ class IndexMaxHeep {
         break
       }
       swap(this.indexes, this.indexes[k], this.indexes[j])
+      this.reverse[this.indexes[k]] = k
+      this.reverse[this.indexes[j]] = j
       k = j
     }
   }
   extractMax() {
     let ret = this.data[this.indexes[1]]
     swap(this.indexes, this.indexes[1], this.indexes[this.count])
+    this.reverse[this.indexes[1]] = 1
+    this.reverse[this.indexes[this.count]] = 0
     this.count --
     this.shiftDown(1)
     return ret
@@ -50,6 +62,8 @@ class IndexMaxHeep {
   extractMaxIndex() {
     let ret = this.indexes[1] - 1
     swap(this.indexes, this.indexes[1], this.indexes[this.count])
+    this.reverse[this.indexes[1]] = 1
+    this.reverse[this.indexes[this.count]] = 0
     this.count --
     this.shiftDown(1)
     return ret
@@ -60,13 +74,17 @@ class IndexMaxHeep {
   change(i, item) {
     i += 1
     this.data[i] = item
-    for(let j = 1; j <= this.count; j ++) {
-      if (this.indexes[j] == i) {
-        this.shiftUp(j)
-        this.shiftDown(j)
-        return
-      }
-    }
+    // for(let j = 1; j <= this.count; j ++) {
+    //   if (this.indexes[j] == i) {
+    //     this.shiftUp(j)
+    //     this.shiftDown(j)
+    //     return
+    //   }
+    // }
+    let j = this.reverse[i]
+
+    this.shiftDown(j)
+    this.shiftUp(j)
   }
   testPrint() {
     let n = this.size();
@@ -142,14 +160,31 @@ class IndexMaxHeep {
   }
 }
 
-let indexmaxheep = new IndexMaxHeep()
+let indexmaxheep = new IndexMaxHeep(10)
 
-for(let i = 0; i < 5; i ++) {
-  indexmaxheep.insert(i, ~~(Math.random() * 20))
-}
+
+let arr = [15,
+  7,
+  18,
+  3,
+  13,
+  19,
+  18]
+
+  for(let i = 0; i < arr.length; i ++) {
+    debugger
+    indexmaxheep.insert(i, arr[i])
+  }
+// for(let i = 0; i < 7; i ++) {
+//   let randon = ~~(Math.random() * 20)
+//   console.log(randon);
+//   indexmaxheep.insert(i, randon)
+// }
+
 console.log(indexmaxheep.indexes);
 console.log(indexmaxheep.data);
+console.log(indexmaxheep.reverse);
 
-module.exports = {
-  IndexMaxHeep
-}
+// module.exports = {
+//   IndexMaxHeep
+// }
