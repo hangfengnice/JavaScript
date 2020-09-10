@@ -3,6 +3,7 @@ const { swap } = require("./helper");
 class MaxHeep {
   constructor() {
     this.data = [];
+    this.indexes = []
     this.count = 0;
   }
   size() {
@@ -13,33 +14,35 @@ class MaxHeep {
     return this.count == 0;
   }
 
-  insert(item) {
-    this.data[this.data.length ? this.data.length : 1] = item;
+  insert(i, item) {
+    i += 1
+    this.data[i] = item;
+    this.indexes[this.count + 1] = i
     this.count++;
     this.shiftUp(this.count);
   }
   shiftUp(k) {
-    while (k > 1 && this.data[Math.floor(k / 2)] < this.data[k]) {
-      swap(this.data, Math.floor(k / 2), k);
+    while (k > 1 && this.data[this.indexes[Math.floor(k / 2)]] < this.data[this.indexes[k]]) {
+      swap(this.data, this.indexes[Math.floor(k / 2)], this.indexes[k]);
       k = Math.floor(k / 2);
     }
   }
   shiftDown(k) {
     while(2 * k <= this.count) {
       let j = 2 * k
-      if (j + 1 <= this.count && this.data[j + 1] > this.data[j]) {
+      if (j + 1 <= this.count && this.data[this.indexes[j + 1]] > this.data[this.indexes[j]]) {
         j += 1
       }
-      if (this.data[k] >= this.data[j]) {
+      if (this.data[this.indexes[k]] >= this.data[this.indexes[j]]) {
         break
       }
-      swap(this.data, k, j)
+      swap(this.data, this.indexes[k], this.indexes[j])
       k = j
     }
   }
   extractMax() {
-    let ret = this.data[1]
-    swap(this.data, 1, this.count)
+    let ret = this.data[this.indexes[1]]
+    swap(this.data, this.indexes[1], this.indexes[this.count])
     this.count --
     this.shiftDown(1)
     return ret

@@ -1,9 +1,15 @@
 const { swap } = require("./helper");
 
-class MaxHeep {
-  constructor() {
-    this.data = [];
-    this.count = 0;
+class MaxHeepHeapify {
+  constructor(arr, n) {
+    this.data = Array(n + 1)
+    this.count = n
+    for(let i = 0; i < n; i ++) {
+      this.data[i + 1] = arr[i]
+    }
+    for(let i = ~~(this.count / 2); i >= 1; i --) {
+      this.shiftDown(i)
+    }
   }
   size() {
     return this.count;
@@ -119,5 +125,5 @@ class MaxHeep {
 }
 
 module.exports = {
-  MaxHeep
+  MaxHeepHeapify
 }
