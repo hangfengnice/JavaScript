@@ -1,9 +1,5 @@
 # leetcode
 
-## linklist 147 148
+## array
 
-## queue 127 126
-
-## recursion 236
-
-## recursionBacktrack 37
+* 283
