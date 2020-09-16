@@ -1,4 +1,14 @@
-function removeElement(nums, val) {
+var removeElement = function (nums, val) {
+  let i = 0;
+  for (let j = 0; j < nums.length; j++) {
+    if (nums[j] != val) {
+      nums[i++] = nums[j];
+    }
+  }
+  return i;
+};
+
+var removeElement1 = function (nums, val) {
   let i = 0,
     n = nums.length;
   while (i < n) {
@@ -10,4 +20,4 @@ function removeElement(nums, val) {
     }
   }
   return n;
-}
+};

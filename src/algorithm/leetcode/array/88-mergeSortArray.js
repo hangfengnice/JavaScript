@@ -1,14 +1,16 @@
-const { merge } = require("jquery");
+var merge = function (nums1, m, nums2, n) {
+  let l = m - 1;
+  let r = n - 1;
+  let all = m + n - 1;
 
-function mergeSortArray(nums1, nums2) {
-  let p1 = nums1.length - 1;
-  let p2 = nums2.length - 1;
-  let p = nums1.length + nums2.length - 1;
-
-  while (p1 >= 0 && p2 >= 0) {
-    nums1[p--] = nums1[p1] < nums2[p2] ? nums2[p2--] : nums1[p1--];
+  while (l >= 0 && r >= 0) {
+    if (nums1[l] < nums2[r]) {
+      nums1[all--] = nums2[r--];
+    } else {
+      nums1[all--] = nums1[l--];
+    }
   }
-  while (p2 >= 0) {
-    nums1[p--] = nums2[p2--];
+  while (r >= 0) {
+    nums1[all--] = nums2[r--];
   }
-}
+};

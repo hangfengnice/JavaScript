@@ -1,16 +1,16 @@
-function sortColors(nums) {
-  let zero = -1,
-    two = nums.length;
-  for (let i = 0; i < two; ) {
+var sortColors = function (nums) {
+  let l = -1,
+    r = nums.length;
+  for (let i = 0; i < r; ) {
     if (nums[i] == 1) {
       i++;
     } else if (nums[i] == 2) {
-      two--;
-      [nums[two], nums[i]] = [nums[i], nums[two]];
+      r--;
+      [nums[i], nums[r]] = [nums[r], nums[i]];
     } else {
-      zero++;
-      [nums[i], nums[zero]] = [nums[zero], nums[i]];
+      l++;
+      [nums[l], nums[i]] = [nums[i], nums[l]];
       i++;
     }
   }
-}
+};
