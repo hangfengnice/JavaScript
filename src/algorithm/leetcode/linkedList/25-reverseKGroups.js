@@ -31,3 +31,52 @@ function reverseK(head, k) {
     return [tail, head];
   }
 }
+
+var reverseKGroup = function (head, k) {
+  let cur = head;
+  let count = 0;
+  while (cur != null && count != k) {
+    cur = cur.next;
+    count++;
+  }
+
+  if (count == k) {
+    cur = reverseKGroup(cur, k);
+    while (count) {
+      count--;
+      let tmp = head.next;
+      head.next = cur;
+      cur = head;
+      head = tmp;
+    }
+    head = cur;
+  }
+  return head;
+};
+
+var reverseKGroup = function (head, k) {
+  let stack = [];
+  let preHead = new ListNode();
+  let pre = preHead;
+
+  while (true) {
+    let count = 0;
+    let tmp = head;
+    while (tmp && count < k) {
+      stack.push(tmp);
+      tmp = tmp.next;
+      count++;
+    }
+    if (count != k) {
+      pre.next = head;
+      break;
+    }
+    while (stack.length) {
+      pre.next = stack.pop();
+      pre = pre.next;
+    }
+    pre.next = tmp;
+    head = tmp;
+  }
+  return preHead.next;
+};

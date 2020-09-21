@@ -15,3 +15,12 @@ function swapNode(head) {
   }
   return dummy.next;
 }
+
+var swapPairs = function (head) {
+  if (head == null || head.next == null) return head;
+  let a = head;
+  let b = head.next;
+  a.next = swapPairs(b.next);
+  b.next = a;
+  return b;
+};
