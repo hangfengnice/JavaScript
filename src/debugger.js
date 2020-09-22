@@ -1,28 +1,29 @@
+var str = '123456789'
+
+var reg = /\B(?=(\d{3})+\b)/g
+
+console.log(str.replace(reg, ','));
+
+var obj = {}
+let a = obj
+a.name = 'hf'
+
+console.log(obj);
 
 
-var numSquares = function (n) {
-  let q = []
-  q.push([n, 0])
+// function _new () {
+//   var args = [].slice.call(arguments)
+//   let constructor = args.shift()
+//   let context = Object.create(constructor.prototype)
+//   var result = constructor.apply(context, args)
+//   return result ==
+// }
 
-  let visited = {}
+function Test () {
+  return function hello() {
 
-  while(q.length) {
-    let front = q.shift()
-    let num = front[0]
-    let step = front[1]
-
-    for(let i = 1; ; i ++) {
-      let a = num - i * i
-      if (a < 0) break
-      if (a == 0) return step + 1
-
-      if (!visited[a]) {
-        q.push([a, step + 1])
-        visited[a] = true
-      }
-    }
   }
 }
 
-let result = numSquares(6)
-console.log(result);
+let instance = new Test()
+console.log(instance);

@@ -124,3 +124,38 @@ dir(object)：显示特定对象的所有属性，是console.dir方法的别名�
 
 19 obj对象经过Object.preventExtensions以后，就无法添加新属性了。
     Object.seal方法使得一个对象既无法添加新属性，也无法删除旧属性。
+
+20 Object.freeze()以后，修改属性、新增属性、删除属性都无效了
+
+21 对空数组使用pop方法，不会报错，而是返回undefined
+
+22 map方法的回调函数在这个位置不会执行，会跳过数组的空位
+   forEach方法也会跳过数组的空位。
+   filter
+   some
+   every
+   reduce,
+   reduceRight
+
+23 如果参数为负数，或大于等于字符串的长度，charCodeAt返回NaN
+
+24 split方法还可以接受第二个参数，限定返回数组的最大成员数。
+
+25 Math.round(-1.5) -1  Math.sqrt方法返回参数值的平方根。如果参数是一个负值，则返回NaN。
+
+26 Date 时间
+  无论有没有参数，直接调用Date总是返回当前时间
+  toDateString方法返回日期字符串（不含小时、分和秒）。
+  Date.prototype.toLocaleDateString()：本地日期 "2020/9/22"
+  d2.setDate(-1)表示设为上个月的倒数第二天，即12月30日。
+
+27 regex
+  设置正则表达式的lastIndex属性，对match方法无效，匹配总是从字符串的第一个字符开始。
+  $&：匹配的子字符串。
+  $`：匹配结果前面的文本。
+  $'：匹配结果后面的文本。
+  $n：匹配成功的第n组内容，n是从1开始的自然数。
+  $$：指代美元符号$。
+
+28 JSON.stringify 3个参数
+   JSON.parse() 2 个参数
