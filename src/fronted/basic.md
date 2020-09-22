@@ -113,3 +113,14 @@ dir(object)：显示特定对象的所有属性，是console.dir方法的别名�
   10 (shift + )
   100 (command + shift + )
   0.1 (option + )
+
+15 判断一个变量 是否是对象 Object方法的参数是一个对象，它总是返回该对象，即不用转换  vlaue == Object(value)
+
+16 语义的区别 Object(value)与new Object(value)两者的语义是不同的，Object(value)表示将value转成一个对象，new Object(value)则表示新生成一个对象，它的值是value。
+
+17 Object.keys方法只返回可枚举的属性 Object.getOwnPropertyNames方法还返回不可枚举的属性名
+
+18 value，只要writable和configurable有一个为true，就允许改动。
+
+19 obj对象经过Object.preventExtensions以后，就无法添加新属性了。
+    Object.seal方法使得一个对象既无法添加新属性，也无法删除旧属性。
