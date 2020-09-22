@@ -159,3 +159,6 @@ dir(object)：显示特定对象的所有属性，是console.dir方法的别名�
 
 28 JSON.stringify 3个参数
    JSON.parse() 2 个参数
+
+29 new 的原理
+  
