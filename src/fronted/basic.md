@@ -161,4 +161,89 @@ dir(object)：显示特定对象的所有属性，是console.dir方法的别名�
    JSON.parse() 2 个参数
 
 29 new 的原理
+
+30 call方法的参数，应该是一个对象。如果参数为空、null和undefined，则默认传入全局对象
   
+31 通过apply方法，利用Array构造函数将数组的空元素变成undefined
+   Array.apply(null, ['a', ,'b'])
+
+32 有一种特殊情况，就是左边对象的原型链上，只有null对象。这时，instanceof判断会失真
+
+33 函数的原型是 Function.prototype
+
+34 Object.create方法还可以接受第二个参数。该参数是一个属性描述对象，它所描述的对象属性，会添加到实例对象，作为该对象自身的属性
+
+35 对象的拷贝 function copyObject(orig) {
+  return Object.create(
+    Object.getPrototypeOf(orig),
+    Object.getOwnPropertyDescriptors(orig)
+  );
+}
+
+36 var items = [1, 2, 3, 4, 5, 6];
+var results = [];
+var running = 0;
+var limit = 2;
+
+function async(arg, callback) {
+  console.log("参数为" + arg + " , 1秒后返回结果");
+  setTimeout(() => {
+    callback(arg * 2);
+  }, 1000);
+}
+
+function final(val) {
+  console.log("完成", val);
+}
+
+function series(item) {
+  if (item) {
+    async(item, function (result) {
+      results.push(result);
+      return series(items.shift());
+    });
+  } else {
+    return final(results[results.length - 1]);
+  }
+}
+
+// series(items.shift());
+
+// items.forEach(function (item) {
+//   async(item, function (result) {
+//     results.push(result);
+//     if (results.length == items.length) {
+//       final(results[results.length - 1]);
+//     }
+//   });
+// });
+
+function launcher () {
+  while(running < limit && items.length) {
+    var item = items.shift()
+
+    async(item, function (result) {
+      results.push(result)
+      running --
+      if (items.length) launcher()
+      else if (!running) final(results[results.length - 1])
+    })
+    running ++
+  }
+}
+launcher()
+
+36 setTimeout的第二个参数如果省略，则默认为0。
+   setTimeout共有4个参数。最后那两个参数，将在1000毫秒之后回调函数执行时，作为回调函数的参数
+   生效后setInterval不会产生累积效应，即不会一下子输出三个2，而是只会输出一个2
+setInterval(function () {
+  console.log(2);
+}, 1000);
+
+sleep(3000);
+
+function sleep(ms) {
+  var start = Date.now();
+  while ((Date.now() - start) < ms) {
+  }
+}
