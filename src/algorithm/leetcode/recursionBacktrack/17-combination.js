@@ -26,5 +26,38 @@ var letterCombinations = function (digits) {
   return output;
 };
 
-let ret = letterCombinations("23", ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"])
+var letterCombinations = function (digits) {
+  const CHAR_MAP = [
+    "",
+    "",
+    "abc",
+    "def",
+    "ghi",
+    "jkl",
+    "mno",
+    "pqrs",
+    "tuv",
+    "wxyz",
+  ].map((s) => s.split(""));
+  return digits.length === 0
+    ? []
+    : digits
+        .split("")
+        .map((d) => CHAR_MAP[d])
+        .reduce((as, bs) =>
+          as.reduce((arr, a) => arr.concat(bs.map((b) => `${a}${b}`)), [])
+        );
+};
+
+let ret = letterCombinations("23", [
+  "ad",
+  "ae",
+  "af",
+  "bd",
+  "be",
+  "bf",
+  "cd",
+  "ce",
+  "cf",
+]);
 console.log(ret);
