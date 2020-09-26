@@ -1,11 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <div hidden onClick='console.log("hello")'>div</div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .float dt {
+        float: left;
+      }
+      .emtpy dt {
+        float: left;
+      }
+      .emtpy dd:empty::before {
+        content: "暂无";
+      }
+      .ajax dd,
+      .other dd {
+        margin-top: -1.3em;
+      }
+
+      .other dd:empty::after {
+        content: '-';
+      }
+      .ajax dd:empty::after {
+        content: '没有搜素结果';
+      }
+      section {
+        border: 1px solid #eee;
+        padding: 8px;
+        margin: 12px;
+      }
+      body {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h4>初始数据</h4>
+      <dl>
+        <dt>姓名</dt>
+        <dd>张三</dd>
+        <dt>性别：</dt>
+        <dd></dd>
+        <dt>手机：</dt>
+        <dd></dd>
+        <dt>邮箱</dt>
+        <dd></dd>
+      </dl>
+    </section>
+
+    <section>
+      <h4>dt元素浮动时候 而且dd 有空值 布局错乱</h4>
+      <dl class="float">
+        <dt>姓名</dt>
+        <dd>张三</dd>
+        <dt>性别：</dt>
+        <dd></dd>
+        <dt>手机：</dt>
+        <dd></dd>
+        <dt>邮箱</dt>
+        <dd></dd>
+      </dl>
+    </section>
+
+    <section>
+      <h4>dt元素浮动时候 dd 有值</h4>
+      <dl class="emtpy">
+        <dt>姓名</dt>
+        <dd>张三</dd>
+        <dt>性别：</dt>
+        <dd></dd>
+        <dt>手机：</dt>
+        <dd></dd>
+        <dt>邮箱</dt>
+        <dd></dd>
+      </dl>
+    </section>
+
+    <section>
+      <h4>空值使用其他符号代替</h4>
+      <dl class="other">
+        <dt>姓名</dt>
+        <dd>张三</dd>
+        <dt>性别：</dt>
+        <dd></dd>
+        <dt>手机：</dt>
+        <dd></dd>
+        <dt>邮箱</dt>
+        <dd></dd>
+      </dl>
+    </section>
+
+    <section>
+      <h4>在ajax请求完后 没有返回数据的提示</h4>
+      <dl class="ajax">
+        <dt>姓名</dt>
+        <dd>张三</dd>
+        <dt>性别：</dt>
+        <dd></dd>
+        <dt>手机：</dt>
+        <dd></dd>
+        <dt>邮箱</dt>
+        <dd></dd>
+      </dl>
+    </section>
+  </body>
 </html>
