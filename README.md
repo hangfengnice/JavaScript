@@ -1,5 +1,9 @@
 # javascript
 
+## node 升级
+
+* sudo n stable
+
 ## 闭包
 
 * 能够访问自由变量的函数
