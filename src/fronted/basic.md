@@ -53,4 +53,28 @@ to {
 transform: rotate(360deg)
 }
 }
-<div class="loading"></div>
+
+* globalThis
+
+* 解构赋值
+
+题目 1
+let c = [a] = [1, 2]
+console.log(c, a)
+
+题目 2
+const obj1 = {}
+const obj2 = {foo: 'bar'}
+
+Object.setPrototypeOf(obj1, obj2)
+const {foo} = obj1
+console.log(foo)
+
+题三
+
+'\z' === 'z'  // true
+'\172' === 'z' // true
+'\x7A' === 'z' // true
+'\u007A' === 'z' // true
+'\u{7A}' === 'z' // true
+
