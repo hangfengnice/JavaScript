@@ -9,7 +9,6 @@ var pacificAtlantic = function (matrix) {
     .fill()
     .map(() => []);
 
-
   let res = [];
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {
@@ -30,8 +29,15 @@ var pacificAtlantic = function (matrix) {
   }
   return res;
   function dfs(aux, i, j, pre) {
-    console.log( pre);
-    if (i < 0 || i == m || j < 0 || j == n || aux[i][j] == 1 || matrix[i][j] < pre) return;
+    if (
+      i < 0 ||
+      i == m ||
+      j < 0 ||
+      j == n ||
+      aux[i][j] == 1 ||
+      matrix[i][j] < pre
+    )
+      return;
     aux[i][j] = 1;
     dfs(aux, i + 1, j, matrix[i][j]);
     dfs(aux, i - 1, j, matrix[i][j]);
@@ -40,5 +46,11 @@ var pacificAtlantic = function (matrix) {
   }
 };
 
-let result = pacificAtlantic([[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]])
+let result = pacificAtlantic([
+  [1, 2, 2, 3, 5],
+  [3, 2, 3, 4, 4],
+  [2, 4, 5, 3, 1],
+  [6, 7, 1, 4, 5],
+  [5, 1, 1, 2, 4],
+]);
 console.log(result);
