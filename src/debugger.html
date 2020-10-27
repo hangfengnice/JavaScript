@@ -6,6 +6,21 @@
   <title>Document</title>
 </head>
 <body>
+  <script>
+    function baz () {
+      debugger
+      console.log('baz')
+      bar()
+    }
+    function bar() {
+      console.log('bar')
+      foo()
+    }
+    function foo() {
+      console.log('foo')
 
+    }
+    baz()
+  </script>
 </body>
 </html>
