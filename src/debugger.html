@@ -6,8 +6,24 @@
   <title>Document</title>
 </head>
 <body>
+  <div id="subTree">
+    <from><input type="text"></from>
+    <p>pargraph</p>
+    <span>span</span>
+  </div>
   <script>
-
+    function traverseDOM(element, callback) {
+      callback(element)
+      element = element.firstElementChild
+      while(element) {
+        traverseDOM(element, callback)
+        element = element.nextElementSibling
+      }
+    }
+    let subTree = document.getElementById('subTree')
+    traverseDOM(subTree, ele => {
+      console.log(ele.nodeName)
+    })
   </script>
 </body>
 </html>

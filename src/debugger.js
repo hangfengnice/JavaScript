@@ -1,8 +1,11 @@
-let arr = [1, 2,3 ]
+function *gen(val) {
+  val = yield val * 2
+  yield val
+}
 
-arr['4'] = 4
+let g = gen(2)
 
-console.log(arr);
+let a1 = g.next(3).value;
+let a2 = g.next(5).value;
 
-
-console.log(arr.length);
+console.log(a1, a2);
