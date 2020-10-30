@@ -1,11 +1,12 @@
-function *gen(val) {
-  val = yield val * 2
-  yield val
-}
+let s = '𠮷a';
 
-let g = gen(2)
+console.log(s.length);
 
-let a1 = g.next(3).value;
-let a2 = g.next(5).value;
+console.log(s.codePointAt(2));
+console.log(s.charCodeAt(0));
 
-console.log(a1, a2);
+let str = 'hello'
+
+console.log(str.endsWith('h', 2));
+
+console.log(str.replaceAll('l', '_'));
