@@ -1,3 +1,0 @@
-var sortedArrayToBST = function (nums) {
-
-}

@@ -19,12 +19,3 @@
 
 学习this的第一步是明白this既不指向函数自身也不指向函数的词法作用域，抛开以前错误的假设和理解。this实际上是在函数被调用时发生的绑定，它指向什么完全取决于函数在哪里被调用。
 
-## recursion 递归
-
-## window.onerror
-
-## 刷题的一些 组合 77 78 90 39 值得在看
-
-## you dont know js
-
-* retrieve his source value (RHS)
