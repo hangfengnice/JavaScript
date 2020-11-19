@@ -1,32 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge, chrome=1">
+    <title>debounce</title>
     <style>
-       .aside {
-            margin-bottom: 100px;
-            width: 100px;
-            height: 150px;
-            background: #f66;
-        }
-        .main {
-            margin-top: 100px;
-            height: 200px;
-            background: #fcc;
-            overflow: hidden;
-        }
-         .text{
-            /*盒子main的外面包一个div，通过改变此div的属性使两个盒子分属于两个不同的BFC，以此来阻止margin重叠*/
-            /* overflow: hidden; */
-        }
-        span {
-          float: left;
+        #container{
+            width: 100%; height: 200px; line-height: 200px; text-align: center; color: #fff; background-color: #444; font-size: 30px;
         }
     </style>
-  </head>
-  <body>
-    <span>helo</span>
-  </body>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="./手写/type.js"></script>
+    <!-- <script src="debounce.js"></script> -->
+    <!-- <script src="throttle.js"></script> -->
+</body>
+
 </html>
