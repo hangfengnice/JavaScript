@@ -42,6 +42,8 @@ function swap(arr, a, b) {
   arr[b] = temp
 }
 
+
+
 let heap = new Heap(10)
 heap.insert(3)
 heap.insert(4)
@@ -49,3 +51,17 @@ heap.insert(2)
 heap.insert(6)
 heap.removeMax()
 console.log(heap);
+
+class Down{
+  // 向下堆化
+  buildHeap (a, n) {
+    for(let i = n >> 1; i >= 1; i --) {
+      heapify(a, n, i)
+    }
+  }
+  heapify(a, n, i) {
+    while(true) {
+      
+    }
+  }
+}
