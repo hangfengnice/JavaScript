@@ -1,10 +1,21 @@
-var findAnagrams = function (s, p) {
-
+var lengthOfLongestSubstring = function (s) {
+  let len = s.length
+  if (!len) return 0
+  let has = {}
+  let max = 0
+  let left = 0
+  for(let right = 0; right < len; right ++) {
+    let moveLeft = has[s[right]]
+    if (moveLeft) {
+      left = Math.max(left, moveLeft)
+    }
+    has[s[right]] = right + 1
+    max = Math.max(max, right - left + 1)
+  }
+  return max
 }
 
-let s = Symbol('s')
-let obj = {
-  [s]: 'h'
-}
+let res = lengthOfLongestSubstring('abcabcbb')
 
-console.log(Reflect.ownKeys(obj));
+console.log(res);
+
