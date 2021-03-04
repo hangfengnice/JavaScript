@@ -1,6 +1,10 @@
-const getIdx = (c) => c.charCodeAt() - 'a'.charCodeAt();
-const getAlpha = (c) => String.fromCharCode(c);
+var findAnagrams = function (s, p) {
 
-var reorganizeString = function (S) {
-  var h = new Map(), v = (s, n) => (n == 1)
 }
+
+let s = Symbol('s')
+let obj = {
+  [s]: 'h'
+}
+
+console.log(Reflect.ownKeys(obj));
