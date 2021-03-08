@@ -3,6 +3,15 @@ const isObject = (target) =>
 
 const getType = target => Object.prototype.toString.call(target)
 
+const canTraverse = {
+  '[object Map]': true,
+  '[object Set]': true,
+  '[object Array]': true,
+  '[object Object]': true,
+  '[object Arguments]': true,
+};
+
+
 const deepClone = (target, map = new Map()) => {
   if (map.get(target)) {
     return target
