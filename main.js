@@ -1,114 +1,176 @@
-const isObject = (target) =>
-  (typeof target == "object" || typeof target == "function") && target !== null;
+var html =
+  '<div :class="c" class="demo" v-if="isShow"><span v-for="item in sz">{{item}}</span></div>';
 
-const getType = target => Object.prototype.toString.call(target)
+const ncname = "[a-zA-Z_][\\w\\-\\.]*";
+const singleAttrIdentifier = /([^\s"'<>/=]+)/;
+const singleAttrAssign = /(?:=)/;
+const singleAttrValues = [
+  /"([^"]*)"+/.source,
+  /'([^']*)'+/.source,
+  /([^\s"'=<>`]+)/.source,
+];
+const attribute = new RegExp(
+  "^\\s*" +
+    singleAttrIdentifier.source +
+    "(?:\\s*(" +
+    singleAttrAssign.source +
+    ")" +
+    "\\s*(?:" +
+    singleAttrValues.join("|") +
+    "))?"
+);
 
-const canTraverse = {
-  '[object Map]': true,
-  '[object Set]': true,
-  '[object Array]': true,
-  '[object Object]': true,
-  '[object Arguments]': true,
-};
+const qnameCapture = "((?:" + ncname + "\\:)?" + ncname + ")";
+const startTagOpen = new RegExp("^<" + qnameCapture);
+const startTagClose = /^\s*(\/?)>/;
 
-const mapTag = '[object Map]';
-const setTag = '[object Set]';
-const boolTag = '[object Boolean]';
-const numberTag = '[object Number]';
-const stringTag = '[object String]';
-const symbolTag = '[object Symbol]';
-const dateTag = '[object Date]';
-const errorTag = '[object Error]';
-const regexpTag = '[object RegExp]';
-const funcTag = '[object Function]';
+const endTag = new RegExp("^<\\/" + qnameCapture + "[^>]*>");
 
-const handleRegExp = (target) => {
-  const {source, flags} = target
-  return new target.constructor(source, flags)
+const defaultTagRE = /\{\{((?:.|\n)+?)\}\}/g;
+
+const forAliasRE = /(.*?)\s+(?:in|of)\s+(.*)/;
+
+let index = 0;
+
+const stack = [];
+let currentParent, root;
+
+function advance(n) {
+  index += n;
+  html = html.substring(n);
 }
 
-const handleFunc = (func) => {
-  if (!func.prototype) return func
-  const bodyReg = /(?<={)(.|\n)+(?=})/m
-  const paramReg = /(?<=\().+(?=\)\s+{)/
+function parseHtml() {
+  debugger;
+  while (html) {
+    let textEnd = html.indexOf("<");
 
-  const funcStr = func.toString()
+    if (textEnd == 0) {
+      if (html.match(endTag)) {
+        const endTagMatch = html.match(endTag);
+        if (endTagMatch) {
+          advance(endTagMatch[0].length);
 
-  let param = paramReg.exec(funcStr)
-  const body = bodyReg.exec(funcStr)
+          parseStartTag(endTagMatch[1]);
+          continue;
+        }
+      }
 
-  console.log(param, body)
-  if (!body)return null
-  if (param) {
-    param = param[0].split(',')
-    return new Function (...param, body[0])
-  } else {
-    return new Function (body[0])
-  }
+      if (html.match(startTagOpen)) {
+        const startTagMatch = parseStartTag();
+        const element = {
+          type: 1,
+          tag: startTagMatch.tagName,
+          lowerCasedTag: startTagMatch.tagName.toLowerCase(),
+          attrsList: startTagMatch.attrs,
+          attrsMap: makeAttrsMap(startTagMatch.attrs),
+          parent: currentParent,
+          children: [],
+        };
+        if (!root) {
+          root = element;
+        }
 
-}
-
-const handleNotTraverse = (target, tag) => {
-  const Ctor = target.constructor
-  switch (tag) {
-    case boolTag:
-      return new Object(Boolean.prototype.valueOf.call(target))
-    case numberTag:
-      return new Object(Number.prototype.valueOf.call(target))
-    case stringTag:
-      return new Object(String.prototype.valueOf.call(target))
-    case errorTag:
-    case dateTag:
-      return new Ctor(target)
-    case regexpTag:
-      return handleRegExp(target)
-    case funcTag:
-      return handleFunc(target)
-    default:
-      return new Ctor(target)
-  }
-}
-
-const deepClone = (target, map = new Map()) => {
-  if (map.get(target)) {
-    return target
-  }
-
-  let type = getType(target)
-
-  let cloneTarget
-
-  if (!canTraverse(type)) {
-    return handleNotTraverse(target, type)
-  } else {
-    let ctor = target.constructor
-    cloneTarget = new ctor
-  }
-
-  if (map.get(target)) {
-    return target
-  }
-  map.set(target, true)
-
-  if (type == mapTag) {
-    target.forEach((item, key) => {
-      cloneTarget.set(deepClone(key), deepClone(item))
-    })
-  }
-
-  if (type == setTag) {
-    target.forEach(item => {
-      cloneTarget.add(deepClone(item))
-    })
-  }
-
-  if (prop in target) {
-    if (target.hasOwnProperty(prop)) {
-      cloneTarget[prop] = deepClone(target[prop])
+        if (currentParent) {
+          currentParent.children.push(element);
+        }
+        stack.push(element);
+        currentParent = element;
+        continue;
+      }
+    } else {
+      text = html.substring(0, textEnd);
+      advance(textEnd);
+      let expression;
+      if ((expression = parseText(text))) {
+        currentParent.children.push({
+          type: 2,
+          text,
+          expression,
+        });
+      } else {
+        currentParent.children.push({
+          type: 3,
+          text,
+        });
+      }
+      continue;
     }
   }
-  return cloneTarget
 }
 
+function parseStartTag() {
+  const start = html.match(startTagOpen);
 
+  if (start) {
+    const match = {
+      tagName: start[1],
+      attrs: [],
+      start: index,
+    };
+    advance(start[0].length);
 
+    let end, attr;
+
+    while (
+      !(end = html.match(startTagClose)) &&
+      (attr = html.match(attribute))
+    ) {
+      advance(attr[0].length);
+      match.attrs.push({
+        name: attr[1],
+        value: attr[3],
+      });
+    }
+
+    if (end) {
+      match.unarySlash = end[1];
+      advance(end[0].length);
+      match.end = index;
+      return match;
+    }
+  }
+}
+function parseEndTag(tagName) {
+  let pos;
+  for (pos = stack.length - 1; pos >= 0; pos--) {
+    if (stack[pos].lowerCasedTag === tagName.toLowerCase()) {
+      break;
+    }
+  }
+  if (pos >= 0) {
+    stack.length = pos;
+    currentParent = stack[pos];
+  }
+}
+function parseText(text) {
+  if (!defaultTagRE.test(text)) return
+
+  const tokens = []
+  let lastIndex = defaultTagRE.lastIndex = 0
+  let match, index
+
+  while((match = defaultTagRE.exec(text))) {
+    index = match.index
+    if (index > lastIndex) {
+      tokens.push(JSON.stringify(text.slice(lastIndex, index)))
+    }
+
+    const exp = match[1].trim()
+    tokens.push(`_s(${exp})`)
+    lastIndex = index + match[0].length
+  }
+  
+  if (lastIndex < test.length) {
+    tokens.push(JSON.stringify(text.slice(lastIndex)))
+  }
+  return tokens.join('+')
+}
+function makeAttrsMap(attrs) {
+  const map = {};
+  for (let i = 0; i < attrs.length; i++) {
+    map[attrs[i].name] = attrs[i].value;
+  }
+  return map;
+}
+parseHtml();
