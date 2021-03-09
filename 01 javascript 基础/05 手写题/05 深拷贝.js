@@ -17,16 +17,43 @@ const deepClone = (target, map = new Map()) => {
     return target
   }
 
-  if (isObject(target)) {
-    map.set(target, true)
-    const cloneTarget = Array.isArray(target) ? [] : {}
-    for(let prop in target) {
-      if (target.hasOwnProperty(prop)) {
-        cloneTarget[prop] = deepClone(target[prop])
-      }
-    }
-    return cloneTarget
+  let type = getType(target)
+
+  let cloneTarget
+
+  if (!canTraverse(type)) {
+    return 
   } else {
+    let ctor = target.constructor
+    cloneTarget = new ctor
+  }
+
+  if (map.get(target)) {
     return target
   }
+  map.set(target, true)
+
+  if (type == mapTag) {
+    target.forEach((item, key) => {
+      cloneTarget.set(deepClone(key), deepClone(item))
+    })
+  }
+
+  // if (isObject(target)) {
+  //   map.set(target, true)
+  //   const cloneTarget = Array.isArray(target) ? [] : {}
+  //   for(let prop in target) {
+  //     if (target.hasOwnProperty(prop)) {
+  //       cloneTarget[prop] = deepClone(target[prop])
+  //     }
+  //   }
+  //   return cloneTarget
+  // } else {
+  //   return target
+  // }
 }
+
+let map = new Map([['a', 'b']])
+map.forEach((item, key) => {
+  console.log(item, key);
+})
