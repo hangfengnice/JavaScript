@@ -1,20 +1,22 @@
-const fn = num => {
-  let arr = []
+function debounce(fn, wait) {
+  let timer
+  return function () {
+    clearTimeout(timer)
 
-  for (let i = num; i-- > 0;) {
-    arr.push(Math.round(Math.random() * 30 + 2))
+    timer = setTimeout(() => {
+      fn.apply(this, arguments)
+    }, wait)
   }
-
-  arr = [...new Set(arr)]
-  
-  let len = arr.length
-      
-  while (num - len > 0) {
-    console.log(1);
-    arr = [...new Set(arr.concat(fn(num - len)))]
-    len = arr.length
-  }
-
-  return arr
 }
-fn(10)
+
+function throttle(fn, wait) {
+  let timer
+  return function () {
+    if (!timer) {
+      timer = setTimeout(() => {
+        fn.apply(this, arguments)
+        timer = null
+      }, wait)
+    }
+  }
+}
