@@ -6,135 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      body {
-        height: 2000px;
-       
+      div {
+        width: 120px;
+        border: 1px solid;
+        /* white-space: pre-line; */
+        word-break: keep-all;
       }
-      /* body::after {
-        content: '';
-        position: fixed;
-        top: 5px;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: #fff;
-        z-index: -1;
-      } */
-      .css {
-        position: fixed;
-        top: 0;
-        height: 8px;
-        background-color: red;
-      }
+
     </style>
   </head>
   <body>
-    <div class="css"></div>
-    <div>
-      不可思议的纯 CSS 滚动进度条效果 问题先行，如何使用 CSS
-      实现下述滚动条效果？ scrollbar
-      就是顶部黄色的滚动进度条，随着页面的滚动进度而变化长短。
-      在继续阅读下文之前，你可以先缓一缓。尝试思考一下上面的效果或者动手尝试一下，不借助
-      JS ，能否巧妙的实现上述效果。
-      OK，继续。这个效果是我在业务开发的过程中遇到的一个类似的小问题。其实即便让我借助
-      Javascript
-      ，我的第一反应也是，感觉很麻烦啊。所以我一直在想，有没有可能只使用 CSS
-      完成这个效果呢？ image 分析需求
-      第一眼看到这个效果，感觉这个跟随滚动动画，仅靠 CSS
-      是不可能完成的，因为这里涉及了页面滚动距离的计算。 如果想只用 CSS
-      实现，只能另辟蹊径，使用一些讨巧的方法。 好，下面就借助一些奇技淫巧，使用
-      CSS 一步一步完成这个效果。分析一下难点：
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br><br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-
-      如何得知用户当前滚动页面的距离并且通知顶部进度条？
-      正常分析应该是这样的，但是这就陷入了传统的思维。进度条就只是进度条，接收页面滚动距离，改变宽度。如果页面滚动和进度条是一个整体呢？
-      实现需求 不卖关子了，下面我们运用线性渐变来实现这个功能。
-      假设我们的页面被包裹在 中，可以滚动的是整个
-      body，给它添加这样一个从左下到到右上角的线性渐变： body {
-      background-image: linear-gradient(to right top, #ffcc00 50%, #eee 50%);
-      background-repeat: no-repeat; }
+    <div id="box">
+      Hi&nbsp;&nbsp;, 
+      This is a incomprehensibilities long word.
+      <br />
+      你好&nbsp;&nbsp;， 这 是一个不可思议的长单词
     </div>
-
-    <script>
-      let height = document.body.clientHeight
-      let windowheight = window.screen.height
-
-      let indictor = document.querySelector('.css')
-
-      document.addEventListener('scroll', function () {
-        let scroll = window.pageYOffset
-        // console.log(scroll,'scroll')
-        console.log(document.documentElement.scrollTop,
-document.body.scrollTop);
-        requestAnimationFrame(function () {
-          indictor.style.width = (scroll / (height - windowheight)) * 100 + '%'
-        })
-      })
-
-      console.log(height, windowheight)
-    </script>
   </body>
 </html>
