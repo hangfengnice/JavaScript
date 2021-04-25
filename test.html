@@ -1,80 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <input id="file" type="file" />
-    <script>
-      var eleFile = document.querySelector("#file");
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script src="./promise.js">
 
-      var reader = new FileReader(),
-        img = new Image();
-
-      var file = null;
-
-      var canvas = document.createElement("canvas");
-      var content = canvas.getContext("2d");
-
-      eleFile.addEventListener("change", function (event) {
-        file = event.target.files[0];
-
-        if (file.type.indexOf("image") == 0) {
-          reader.readAsDataURL(file);
-        }
-      });
-      reader.onload = function (e) {
-        img.src = e.target.result;
-      };
-
-      img.onload = function () {
-        // var originWidth = this.width;
-        // var originHeight = this.height;
-
-        // var maxWidth = 400,
-        //   maxHeight = 400;
-
-        // var targetWidth = originWidth,
-        //   targetHeight = originHeight;
-
-        // if (originWidth > maxWidth || originHeight > maxHeight) {
-        //   if (originWidth / originHeight > maxWidth / maxHeight) {
-        //     // 更宽，按照宽度限定尺寸
-        //     targetWidth = maxWidth;
-        //     targetHeight = Math.round(maxWidth * (originHeight / originWidth));
-        //   } else {
-        //     targetHeight = maxHeight;
-        //     targetWidth = Math.round(maxHeight * (originWidth / originHeight));
-        //   }
-        // }
-
-        // canvas.width = targetWidth;
-        // canvas.height = targetHeight;
-
-        // canvas.clearRect(0, 0, targetWidth, targetHeight);
-        // // 图片压缩
-        // canvas.drawImage(img, 0, 0, targetWidth, targetHeight);
-        document.body.appendChild(img)
-      };
-
-      
-
-      // canvas.toBlob(function (blob) {
-      //   // 图片ajax上传
-      //   var xhr = new XMLHttpRequest();
-      //   // 文件上传成功
-      //   xhr.onreadystatechange = function () {
-      //     if (xhr.status == 200) {
-      //       // xhr.responseText就是返回的数据
-      //     }
-      //   };
-      //   // 开始上传
-      //   xhr.open("POST", "upload.php", true);
-      //   xhr.send(blob);
-      // }, file.type || "image/png");
-    </script>
-  </body>
+  </script>
+</body>
 </html>
