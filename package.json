@@ -1,5 +1,5 @@
 {
-  "name": "JavaScript",
+  "name": "js",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/hangfengnice/JavaScript#readme",
   "dependencies": {
+    "lodash": "^4.17.21",
     "node-fetch": "^2.6.1"
   }
 }
