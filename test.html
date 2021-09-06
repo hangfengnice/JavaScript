@@ -30,6 +30,19 @@
         <div class="item"></div>
         <div class="item"></div>
       <!-- </div> -->
-    </div>    
+    </div>   
+    
+    <script>
+      function outer(name = 'hf') {
+        return function hello () {
+          console.log(typeof this);
+          console.log('hh' + name)
+        }
+      }
+
+      let hello = outer()
+
+      hello()
+    </script>
   </body>
 </html>
