@@ -36,29 +36,23 @@
     <button class="unbind">unbind</button>
 
     <script>
-      if (true) {
-        function ask() {
-          console.log("Am I called?");
-        }
+      var students = [
+        { id: 14, name: "Kyle" },
+        { id: 73, name: "Suzy" },
+        { id: 112, name: "Frank" },
+        { id: 6, name: "Sarah" },
+      ];
+
+      function getFirstStudent() {
+        return function firstStudent() {
+          debugger
+          return students[0].name;
+        };
       }
 
-      if (true) {
-        function ask() {
-          console.log("Or what about me?");
-        }
-      }
+      var student = getFirstStudent();
 
-      for (let i = 0; i < 5; i++) {
-        function ask() {
-          console.log("Or is it one of these?");
-        }
-      }
-
-      ask();
-
-      function ask() {
-        console.log("Wait, maybe, it's this one?");
-      }
+      student();
     </script>
   </body>
 </html>
