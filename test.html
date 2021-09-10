@@ -36,45 +36,29 @@
     <button class="unbind">unbind</button>
 
     <script>
-      function sortNamesByLength(names) {
-        var buckets = [];
-
-        for (let firstName of names) {
-          if (buckets[firstName.length] == null) {
-            buckets[firstName.length] = [];
-          }
-          buckets[firstName.length].push(firstName);
-        }
-
-        // a block to narrow the scope
-        {
-          let sortedNames = [];
-
-          for (let bucket of buckets) {
-            if (bucket) {
-              // sort each bucket alphanumerically
-              bucket.sort();
-
-              // append the sorted names to our
-              // running list
-              sortedNames = [...sortedNames, ...bucket];
-            }
-          }
-
-          return sortedNames;
+      if (true) {
+        function ask() {
+          console.log("Am I called?");
         }
       }
 
-      sortNamesByLength([
-        "Sally",
-        "Suzy",
-        "Frank",
-        "John",
-        "Jennifer",
-        "Scott",
-      ]);
-      // [ "John", "Suzy", "Frank", "Sally",
-      //   "Scott", "Jennifer" ]
+      if (true) {
+        function ask() {
+          console.log("Or what about me?");
+        }
+      }
+
+      for (let i = 0; i < 5; i++) {
+        function ask() {
+          console.log("Or is it one of these?");
+        }
+      }
+
+      ask();
+
+      function ask() {
+        console.log("Wait, maybe, it's this one?");
+      }
     </script>
   </body>
 </html>
