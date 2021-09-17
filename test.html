@@ -36,23 +36,22 @@
     <button class="unbind">unbind</button>
 
     <script>
-      var students = [
-        { id: 14, name: "Kyle" },
-        { id: 73, name: "Suzy" },
-        { id: 112, name: "Frank" },
-        { id: 6, name: "Sarah" },
-      ];
-
-      function getFirstStudent() {
-        return function firstStudent() {
+      function storeStudentInfo(id, name, grade) {
+        return function getInfo(whichValue) {
           debugger
-          return students[0].name;
+          // warning:
+          //   using `eval(..)` is a bad idea!
+          var val = eval(whichValue);
+          return val;
         };
       }
 
-      var student = getFirstStudent();
+      var info = storeStudentInfo(73, "Suzy", 87);
 
-      student();
+      info("name");
+      // Suzy
+
+      info("grade");
     </script>
   </body>
 </html>
