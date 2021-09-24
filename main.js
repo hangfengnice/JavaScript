@@ -1,21 +1,23 @@
-let p1 = new Promise(function(resolve, reject) {
-  resolve(42);
-});
+function isEven(int) {
+  if (int === 0) {
+    return true
+  } else if (int === 1) {
+    return false
+  }
 
-let p2 = new Promise(function(resolve, reject) {
-  setTimeout(() => {
-    reject(42);
-  }, 200);
-  
-});
+  if (int > 0) {
+    return isEven(int -2)
+  } else {
+    return isEven(int + 2)
+  }
+}
 
-let p3 = new Promise(function(resolve, reject) {
-  reject(44);
-});
-
-let p4 = Promise.all([p1, p2, p3]);
-
-p4.catch(function(value) {
-  console.log(Array.isArray(value))   // false
-  console.log(value);                 // 43
-});
+function countBs (str, char = 'B') {
+  let count = 0
+  for(let i = 0; i < str.length; i ++) {
+    if (str[i] === char) {
+      count ++
+    }
+  }
+  return count
+}
