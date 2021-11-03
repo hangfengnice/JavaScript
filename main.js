@@ -1,23 +1,23 @@
-function isEven(int) {
-  if (int === 0) {
-    return true
-  } else if (int === 1) {
-    return false
-  }
+var minDistance = function (word1, word2) {
+  const m = word1.length,
+    n = word2.length;
 
-  if (int > 0) {
-    return isEven(int -2)
-  } else {
-    return isEven(int + 2)
-  }
-}
+  const dp = new Array(m + 1).fill(0).map(() => new Array(n + 1).fill(0));
 
-function countBs (str, char = 'B') {
-  let count = 0
-  for(let i = 0; i < str.length; i ++) {
-    if (str[i] === char) {
-      count ++
+  for (let i = 1; i <= m; i++) {
+    const c1 = word1[i - 1];
+
+    for (let j = 1; j <= n; j++) {
+      const c2 = word2[j - 1];
+
+      if (c1 === c2) {
+        dp[i][j] = dp[i - 1][j - 1] + 1;
+      } else {
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+      }
     }
   }
-  return count
-}
+  const lcs = dp[m][n];
+
+  return m - lcs + n - lcs;
+};
