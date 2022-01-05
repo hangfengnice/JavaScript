@@ -1,23 +1,55 @@
-var minDistance = function (word1, word2) {
-  const m = word1.length,
-    n = word2.length;
+// function LazyMan(name) {
+//   this.tasks = [];
 
-  const dp = new Array(m + 1).fill(0).map(() => new Array(n + 1).fill(0));
+//   var self = this;
 
-  for (let i = 1; i <= m; i++) {
-    const c1 = word1[i - 1];
+//   var fn = (function (name) {
+//     return function () {
+//       console.log("Hi! this is " + name + "!");
+//       self.next();
+//     };
+//   })(name);
+//   this.tasks.push(fn);
 
-    for (let j = 1; j <= n; j++) {
-      const c2 = word2[j - 1];
+//   setTimeout(() => {
+//     this.next();
+//   }, 0);
+// }
 
-      if (c1 === c2) {
-        dp[i][j] = dp[i - 1][j - 1] + 1;
-      } else {
-        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
-      }
-    }
-  }
-  const lcs = dp[m][n];
+// LazyMan.prototype.next = function () {
+//   var fn = this.tasks.shift();
+//   fn && fn();
+// };
 
-  return m - lcs + n - lcs;
-};
+// LazyMan.prototype.eat = function (name) {
+//   var fn = () => {
+//     console.log("Eat " + name + "~");
+//     this.next();
+//   };
+//   this.tasks.push(fn);
+//   return this;
+// };
+
+// LazyMan.prototype.sleep = function (time) {
+//   var fn = () => {
+//     setTimeout(() => {
+//       console.log("Wake up after " + time + "s!");
+//       this.next();
+//     }, time * 1000);
+//   };
+//   this.tasks.push(fn);
+//   return this;
+// };
+
+// LazyMan.prototype.sleepFirst = function (time) {
+//   var fn = () => {
+//     setTimeout(() => {
+//       console.log("Wake up after " + time + "s!");
+//       this.next();
+//     }, time * 1000);
+//   };
+//   this.tasks.unshift(fn);
+//   return this;
+// };
+
+// new LazyMan('hf').sleepFirst(2).eat('hh').sleep(5).eat('f')
