@@ -3,6 +3,7 @@ const {shellSort} = require('./shellSort')
 const { selectionSort, selectionSortBetter } = require("./selectionSort");
 const {bubbleSort} = require('./bubbleSort')
 const {mergeSort, mergeSortBU} = require('./mergeSort')
+const {quickSort, quickSort2, quickSort3warys} = require('./quickSort')
 
 function generateRandomArray(n, l = 0, r = n) {
   let arr = [];
@@ -41,14 +42,17 @@ function testSort(callback, arr) {
   console.assert(isSorted(arr), `${name}: 排序错误`);
 }
 
-// let arr = generateRandomArray(50000);
-let arr = generateNearlyOrderedArray(5000)
+let arr = generateRandomArray(100000, 1, 3);
+// let arr = generateNearlyOrderedArray(1000000, 3)
 let arr1 = arr.slice();
 let arr2 = arr.slice()
 let arr3 = arr.slice()
 let arr4 = arr.slice()
 let arr5 = arr.slice()
 let arr6 = arr.slice()
+let arr7 = arr.slice()
+let arr8 = arr.slice()
+let arr9 = arr.slice()
 
 // testSort(selectionSort, arr);
 // testSort(selectionSortBetter, arr1)
@@ -57,4 +61,7 @@ testSort(insertSort, arr2);
 // testSort(shellSort, arr4)
 // testSort(mergeSort, arr5)
 testSort(mergeSortBU, arr6)
+// testSort(quickSort, arr7)
+// testSort(quickSort2, arr8)
+testSort(quickSort3warys, arr9)
 
