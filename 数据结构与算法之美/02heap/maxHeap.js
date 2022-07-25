@@ -23,13 +23,35 @@ class MaxHeap {
       k = k >> 1;
     }
   }
+  shiftDown(k) {
+    let { count, data } = this;
+    while (2 * k <= count) {
+      let j = 2 * k;
+      if (j + 1 <= count && data[j + 1] > data[j]) {
+        j = j + 1;
+      }
+      if (data[k] >= data[j]) {
+        break;
+      }
+      [data[k], data[j]] = [data[j], data[k]];
+      k = j;
+    }
+  }
+  extractMax() {
+    if (!this.count) return;
+    let result = this.data[1];
+    this.data[1] = this.data.pop();
+    this.count--;
+    this.shiftDown(1);
+    return result;
+  }
   print() {
     let n = this.count;
     let max_level = 0;
     let number_per_level = 1;
     let { count, data } = this;
 
-    while (n > 0) {
+    while (n >= 0) {
       max_level += 1;
       n -= number_per_level;
       number_per_level *= 2;
@@ -37,12 +59,12 @@ class MaxHeap {
 
     let max_level_number = 2 ** (max_level - 1);
     let cur_tree_max_level_number = max_level_number;
+    // debugger
 
     let index = 1;
     for (let level = 0; level < max_level; level++) {
-      let line1 = new Array(max_level_number * 3 - 1).fill(' ')
+      let line1 = new Array(max_level_number * 3 - 1).fill(" ");
       let cur_level_number = Math.min(count - 2 ** level + 1, 2 ** level);
-      let isLeft = true;
       for (
         let index_cur_level = 0;
         index_cur_level < cur_level_number;
@@ -52,15 +74,13 @@ class MaxHeap {
           data[index],
           line1,
           index_cur_level,
-          cur_tree_max_level_number * 3 - 1,
-          isLeft
+          cur_tree_max_level_number * 3 - 1
         );
-        isLeft = !isLeft;
       }
-      console.log(line1.join(''));
+      console.log(line1.join(""));
       if (level == max_level - 1) break;
 
-      let line2 = new Array(max_level_number * 3 - 1).fill(' ');
+      let line2 = new Array(max_level_number * 3 - 1).fill(" ");
       for (
         let index_cur_level = 0;
         index_cur_level < cur_level_number;
@@ -71,23 +91,16 @@ class MaxHeap {
           index_cur_level,
           cur_tree_max_level_number * 3 - 1
         );
-      console.log(line2.join(''));
+      console.log(line2.join(""));
       cur_tree_max_level_number = cur_tree_max_level_number >> 1;
     }
   }
 }
 
-function putNumberInLine(num, line, index_cur_level, cur_tree_width, isLeft) {
+function putNumberInLine(num, line, index_cur_level, cur_tree_width) {
   let sub_tree_width = (cur_tree_width - 1) / 2;
   let offset = index_cur_level * (cur_tree_width + 1) + sub_tree_width;
-  console.log(line, 'line');
-  if (num >= 10) {
-    line[offset + 0] =  num / 10;
-    line[offset + 1] =  (num % 10);
-  } else {
-    if (isLeft) line[offset + 0] =  num;
-    else line[offset + 1] =  num;
-  }
+  line[offset] = num;
 }
 
 function putBranchInLine(line, index_cur_level, cur_tree_width) {
@@ -101,13 +114,14 @@ function putBranchInLine(line, index_cur_level, cur_tree_width) {
     sub_sub_tree_width;
 
   line[offset_left + 1] = "/";
-  line[offset_right + 0] = "\\";
+  line[offset_right] = "\\";
 }
 
 let heap = new MaxHeap();
 
-for (let i = 0; i < 15; i++) {
+for (let i = 0; i < 50; i++) {
   heap.insert(Math.floor(Math.random() * 100));
 }
-console.log(heap.data);
-heap.print();
+for(let i = 0; i < 50; i ++) {
+  console.log(heap.extractMax());
+}
