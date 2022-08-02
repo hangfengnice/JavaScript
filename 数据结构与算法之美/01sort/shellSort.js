@@ -5,12 +5,13 @@ function shellSort(arr) {
   while (h < n / 3) {
     h = 3 * h + 1;
   }
+
   while (h >= 1) {
     for (let i = h; i < n; i++) {
       let e = arr[i];
 
       let j;
-      for (let j = i; j >= h && arr[j - h] > e; j -= h) {
+      for (j = i; j >= h && arr[j - h] > e; j -= h) {
         arr[j] = arr[j - h];
       }
       arr[j] = e;
@@ -18,4 +19,5 @@ function shellSort(arr) {
     h = Math.floor(h / 3);
   }
 }
-exports.shellSort = shellSort
+
+exports.shellSort = shellSort;
