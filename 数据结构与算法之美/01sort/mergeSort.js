@@ -42,8 +42,8 @@ function mergeSort(arr) {
 
 function mergeSortBU(arr) {
   let n = arr.length;
-
   let aux = [];
+  [1, 2, 3, 4]
   for (let i = 1; i <= n; i += i) {
     for (let j = 0; j + i < n; j += i + i) {
       let mid = j + i - 1;
