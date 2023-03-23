@@ -1,416 +1,3 @@
-// function renderer(vnode, container) {
-//   if (typeof vnode.tag === 'string') {
-//     // 说明 vnode 描述的是标签元素
-//     mountElement(vnode, container)
-//   } else if (typeof vnode.tag === 'object') {
-//     // 说明 vnode 描述的是组件
-//     mountComponent(vnode, container)
-//   }
-// }
-// function mountComponent(vnode, container) {
-//   const subtree = vnode.tag.render()
-//   renderer(subtree, container)
-// }
-// function mountElement(vnode, container) {
-//   // 使用 vnode.tag 作为标签名称创建 DOM 元素
-//   const el = document.createElement(vnode.tag)
-//   // 遍历 vnode.props，将属性、事件添加到 DOM 元素
-//   for (const key in vnode.props) {
-//     if (/^on/.test(key)) {
-//       // 如果 key 以 on 开头，说明它是事件
-//       el.addEventListener(
-//         key.substr(2).toLowerCase(), // 事件名称 onClick ---> click
-//         vnode.props[key] // 事件处理函数
-//       )
-//     }
-//   }
-
-//   // 处理 children
-//   if (typeof vnode.children === 'string') {
-//     // 如果 children 是字符串，说明它是元素的文本子节点
-//     el.appendChild(document.createTextNode(vnode.children))
-//   } else if (Array.isArray(vnode.children)) {
-//     // 递归地调用 renderer 函数渲染子节点，使用当前元素 el 作为挂载点
-//     vnode.children.forEach((child) => renderer(child, el))
-//   }
-
-//   // 将元素添加到挂载点下
-//   container.appendChild(el)
-// }
-
-// // 存储副作用函数的桶
-// const bucket = new WeakMap()
-
-// const ITERATE_KEY = Symbol()
-// const MAP_KEY_ITERATE_KEY = Symbol()
-
-// const mutableInstrumentations = {
-//   add(key) {
-//     const target = this.raw
-//     const res = target.add(key)
-//     const hadKey = target.has(key)
-//     if (!hadKey) {
-//       trigger(target, key, 'ADD')
-//     }
-//     return res
-//   },
-//   delete(key) {
-//     const target = this.raw
-//     const res = target.add(key)
-//     const hadKey = target.delete(key)
-//     if (hadKey) {
-//       trigger(target, key, 'DELETE')
-//     }
-//     return res
-//   },
-//   get(key) {
-//     const target = this.raw
-//     const had = target.has(key)
-//     track(target, key)
-//     if (had) {
-//       const res = target.get(key)
-//       return typeof res === 'object' ? reactive(res) : res
-//     }
-//   },
-//   set(key, value) {
-//     const target = this.raw
-//     const had = target.has(key)
-//     const oldValue = target.get(key)
-//     const rawValue = value.raw || value
-
-//     target.set(key, rawValue)
-
-//     if (!had) {
-//       trigger(target, key, 'ADD')
-//     } else if (
-//       oldValue !== value ||
-//       (oldValue === oldValue && value === value)
-//     ) {
-//       trigger(target, key, 'SET')
-//     }
-//   },
-//   forEach(callback, thisArg) {
-//     const wrap = (val) => (typeof val === 'object' ? reactive(val) : val)
-//     const target = this.raw
-//     track(target, ITERATE_KEY)
-//     target.forEach((v, k) => {
-//       callback.call(thisArg, wrap(v), wrap(k), this)
-//     })
-//   },
-//   [Symbol.iterator]: iterationMethod,
-//   entries: iterationMethod,
-//   values: valuesIterationMethod,
-//   keys: keysIterationMethod,
-// }
-// function iterationMethod() {
-//   const target = this.raw
-//   const itr = target[Symbol.iterator]()
-//   const wrap = (val) => (typeof val === 'object' && val ? reactive(val) : val)
-
-//   track(target, ITERATE_KEY)
-//   return {
-//     next() {
-//       const { value, done } = itr.next()
-//       return {
-//         value: value ? [wrap(value[0]), wrap(value[1])] : value,
-//         done,
-//       }
-//     },
-//     [Symbol.iterator]() {
-//       return this
-//     },
-//   }
-// }
-// function valuesIterationMethod() {
-//   const target = this.raw
-//   const itr = target.values()
-//   const wrap = (val) => (typeof val === 'object' && val ? reactive(val) : val)
-
-//   track(target, ITERATE_KEY)
-//   return {
-//     next() {
-//       const { value, done } = itr.next()
-//       return {
-//         value: wrap(value),
-//         done,
-//       }
-//     },
-//     [Symbol.iterator]() {
-//       return this
-//     },
-//   }
-// }
-// function keysIterationMethod() {
-//   const target = this.raw
-//   const itr = target.keys()
-//   const wrap = (val) => (typeof val === 'object' && val ? reactive(val) : val)
-
-//   track(target, MAP_KEY_ITERATE_KEY)
-//   return {
-//     next() {
-//       const { value, done } = itr.next()
-//       return {
-//         value: wrap(value),
-//         done,
-//       }
-//     },
-//     [Symbol.iterator]() {
-//       return this
-//     },
-//   }
-// }
-// // 对原始数据的代理
-// function createReactive(data, isShallow = false, isReadonly = false) {
-//   return new Proxy(data, {
-//     // 拦截读取操作
-//     get(target, key, receiver) {
-//       // console.log(target, key, receiver, 'target key receiver')
-//       if (key === 'raw') {
-//         return target
-//       }
-//       if (key === 'size') {
-//         track(target, ITERATE_KEY)
-//         return Reflect.get(target, key, target)
-//       }
-//       if (
-//         Object.keys(mutableInstrumentations).includes(key) ||
-//         typeof key === 'symbol'
-//       ) {
-//         return Reflect.get(
-//           mutableInstrumentations,
-//           key,
-//           mutableInstrumentations
-//         )
-//       }
-
-//       if (Array.isArray(target) && arrayInstrumentatins.hasOwnProperty(key)) {
-//         return Reflect.get(arrayInstrumentatins, key, receiver)
-//       }
-//       if (!isReadonly && typeof key !== 'symbol') {
-//         track(target, key)
-//       }
-//       const res = Reflect.get(target, key, receiver)
-//       if (isShallow) {
-//         return res
-//       }
-//       if (typeof res === 'object' && res !== null) {
-//         return isReadonly ? readonly(res) : reactive(res)
-//       }
-//       return res
-//     },
-//     // 拦截设置操作
-//     set(target, key, newVal, receiver) {
-//       if (isReadonly) {
-//         console.warn(`属性${key} 是只读的`)
-//         return true
-//       }
-//       const oldValue = target[key]
-//       const type = Array.isArray(target)
-//         ? Number(key) < target.length
-//           ? 'SET'
-//           : 'ADD'
-//         : Object.prototype.hasOwnProperty.call(target, key)
-//         ? 'SET'
-//         : 'ADD'
-//       // 设置属性值
-//       const res = Reflect.set(target, key, newVal, receiver)
-//       if (target === receiver.raw) {
-//         if (
-//           oldValue !== newVal &&
-//           (oldValue === oldValue || newVal === newVal)
-//         ) {
-//           trigger(target, key, type, newVal)
-//         }
-//       }
-//       return res
-//     },
-//     has(target, key) {
-//       track(target, key)
-//       return Reflect.has(target, key)
-//     },
-//     ownKeys(target) {
-//       track(target, Array.isArray(target) ? 'length' : ITERATE_KEY)
-//       return Reflect.ownKeys(target)
-//     },
-//     deleteProperty(target, key) {
-//       if (isReadonly) {
-//         console.warn(`属性${key} 是只读的`)
-//         return true
-//       }
-//       const hadKey = Object.prototype.hasOwnProperty.call(target, key)
-//       const res = Reflect.deleteProperty(target, key)
-
-//       if (res && hadKey) {
-//         trigger(target, key, 'DELETE')
-//       }
-//       return res
-//     },
-//   })
-// }
-// const originMethod = Array.prototype.includes
-
-// const arrayInstrumentatins = {}
-// ;['includes', 'indexOf', 'lastIndexOf'].forEach((method) => {
-//   const originMethod = Array.prototype[method]
-//   arrayInstrumentatins[method] = function (...args) {
-//     let res = originMethod.apply(this, args)
-
-//     if (res === false || res === -1) {
-//       res = originMethod.apply(this.raw, args)
-//     }
-//     return res
-//   }
-// })
-
-// let shouldTrack = true
-
-// ;['push', 'pop', 'shift', 'unshift', 'splice'].forEach((method) => {
-//   const originMethod = Array.prototype[method]
-
-//   arrayInstrumentatins[method] = function (...args) {
-//     shouldTrack = false
-//     let res = originMethod.apply(this, args)
-//     shouldTrack = true
-//     return res
-//   }
-// })
-// const reactiveMap = new Map()
-// function reactive(data) {
-//   const existionProxy = reactiveMap.get(data)
-//   if (existionProxy) return existionProxy
-//   const proxy = createReactive(data)
-//   reactiveMap.set(data, proxy)
-//   return proxy
-// }
-// function shallowReactive(data) {
-//   return createReactive(data, true)
-// }
-// function readonly(data) {
-//   return createReactive(data, false, true)
-// }
-// function shallowReadonly(data) {
-//   return createReactive(data, true, true)
-// }
-// function track(target, key) {
-//   if (!activeEffect || !shouldTrack) return target[key]
-//   let depsMap = bucket.get(target)
-
-//   if (!depsMap) {
-//     bucket.set(target, (depsMap = new Map()))
-//   }
-
-//   let deps = depsMap.get(key)
-//   if (!deps) {
-//     depsMap.set(key, (deps = new Set()))
-//   }
-
-//   deps.add(activeEffect)
-//   activeEffect.deps.push(deps)
-// }
-// function trigger(target, key, type, newVal) {
-//   const depsMap = bucket.get(target)
-//   if (!depsMap) return
-
-//   const effects = depsMap.get(key)
-//   const iterateEffects = depsMap.get(ITERATE_KEY)
-//   const effectToRun = new Set()
-
-//   if (Array.isArray(target) && key === 'length') {
-//     depsMap.forEach((effects, key) => {
-//       if (key >= newVal) {
-//         effects &&
-//           effects.forEach((effectFn) => {
-//             if (effectFn !== activeEffect) {
-//               effectToRun.add(effectFn)
-//             }
-//           })
-//       }
-//     })
-//   }
-
-//   if (type === 'ADD' && Array.isArray(target)) {
-//     const lengthEffects = depsMap.get('length')
-
-//     lengthEffects &&
-//       lengthEffects.forEach((effectFn) => {
-//         if (effectFn !== activeEffect) {
-//           effectToRun.add(effectFn)
-//         }
-//       })
-//   }
-//   effects &&
-//     effects.forEach((effectFn) => {
-//       if (effectFn !== activeEffect) {
-//         effectToRun.add(effectFn)
-//       }
-//     })
-
-//   if (
-//     (type === 'ADD' || type === 'DELETE') &&
-//     Object.prototype.toString.call(target) === '[object Map]'
-//   ) {
-//     const iterateEffects = depsMap.get(MAP_KEY_ITERATE_KEY)
-//     iterateEffects &&
-//       iterateEffects.forEach((effectFn) => {
-//         if (effectFn !== activeEffect) {
-//           effectToRun.add(effectFn)
-//         }
-//       })
-//   }
-
-//   if (
-//     type === 'ADD' ||
-//     type === 'DELETE' ||
-//     (type === 'SET' &&
-//       Object.prototype.toString.call(target) === '[object Map]')
-//   ) {
-//     iterateEffects &&
-//       iterateEffects.forEach((effectFn) => {
-//         if (effectFn !== activeEffect) {
-//           effectToRun.add(effectFn)
-//         }
-//       })
-//   }
-
-//   effectToRun &&
-//     effectToRun.forEach((effectFn) => {
-//       if (effectFn.options.scheduler) {
-//         effectFn.options.scheduler(effectFn)
-//       } else {
-//         effectFn()
-//       }
-//     })
-// }
-
-// let activeEffect
-// const effectStack = []
-
-// function effect(fn, options = {}) {
-//   const effectFn = () => {
-//     cleanup(effectFn)
-//     activeEffect = effectFn
-//     effectStack.push(effectFn)
-//     const res = fn()
-//     effectStack.pop()
-//     activeEffect = effectStack[effectStack.length - 1]
-//     return res
-//   }
-//   effectFn.options = options
-//   effectFn.deps = []
-
-//   if (!options.lazy) {
-//     effectFn()
-//   }
-//   return effectFn
-// }
-// function cleanup(effectFn) {
-//   for (let i = 0; i < effectFn.deps.length; i++) {
-//     const deps = effectFn.deps[i]
-//     deps.delete(effectFn)
-//   }
-//   effectFn.deps.length = []
-// }
-
 const queue = new Set()
 const p = Promise.resolve()
 
@@ -427,145 +14,7 @@ function queueJob(job) {
   })
 }
 
-// function computed(getter) {
-//   let value
-//   let dirty = true
-//   const effectFn = effect(getter, {
-//     lazy: true,
-//     scheduler() {
-//       if (!dirty) {
-//         dirty = true
-//         trigger(obj, 'value')
-//       }
-//     },
-//   })
-
-//   const obj = {
-//     get value() {
-//       if (dirty) {
-//         value = effectFn()
-//         dirty = false
-//       }
-//       track(obj, 'value')
-//       return value
-//     },
-//   }
-
-//   return obj
-// }
-
-// function watch(source, cb) {
-//   let getter
-//   if (typeof source === 'function') {
-//     getter = source
-//   } else {
-//     getter = () => traverse(source)
-//   }
-//   let oldValue, newValue
-//   const job = () => {
-//     newValue = effectFn()
-//     cb(newValue, oldValue)
-//     oldValue = newValue
-//   }
-//   const effectFn = effect(getter, {
-//     lazy: true,
-//     scheduler: () => {
-//       if (options.flush === 'post') {
-//         const p = Promise.resolve()
-//         p.then(job)
-//       } else {
-//         job()
-//       }
-//     },
-//   })
-//   if (options.immediate) {
-//     job()
-//   } else {
-//     oldValue = effectFn()
-//   }
-// }
-
-// function traverse(value, seen = new Set()) {
-//   if (typeof value !== 'object' || value === null || seen.has(value)) return
-//   seen.add(value)
-
-//   for (const k in value) {
-//     traverse(value[k], seen)
-//   }
-
-//   return value
-// }
-
-// // 原始值
-
-// function ref(val) {
-//   const wrapper = {
-//     value: val,
-//   }
-
-//   Object.defineProperty(wrapper, '__v_isRef', {
-//     value: true,
-//   })
-
-//   return reactive(wrapper)
-// }
-
-// function toRef(obj, key) {
-//   const wrapper = {
-//     get value() {
-//       return obj[key]
-//     },
-//     set value(val) {
-//       // console.log('here')
-//       obj[key] = val
-//     },
-//   }
-//   Object.defineProperty(wrapper, '__v_isRef', {
-//     value: true,
-//   })
-
-//   return wrapper
-// }
-
-// function toRefs(obj) {
-//   const ret = {}
-
-//   for (const key in obj) {
-//     ret[key] = toRef(obj, key)
-//   }
-//   return ret
-// }
-
-// function proxyRefs(target) {
-//   return new Proxy(target, {
-//     get(target, key, receiver) {
-//       const value = Reflect.get(target, key, receiver)
-
-//       return value.__v_isRef ? value.value : value
-//     },
-//     set(target, key, newValue, receiver) {
-//       const value = target[key]
-//       if (value.__v_isRef) {
-//         value.value = newValue
-//         return true
-//       }
-//       return Reflect.set(target, key, newValue, receiver)
-//     },
-//   })
-// }
-
 const { effect, ref, reactive } = VueReactivity
-
-// function renderer(domString, container) {
-//   container.innerHTML = domString
-// }
-
-// let count = ref(1)
-// effect(() => {
-//   renderer(`<h1>${count.value}</h1>`, document.getElementById('app'))
-// })
-
-// count.value++
 
 function createRenderer(options) {
   const {
@@ -1023,43 +472,322 @@ function tokenize(str) {
 }
 
 function parse(str) {
-  const tokens = tokenize(str)
-  const root = {
+  const context = {
+    source: str,
+    mode: TextModes.DATA,
+    advanceBy(num) {
+      context.source = context.source.slice(num)
+    },
+    advanceSpaces() {
+      const match = /^[\t\r\n\f ]+/.exec(context)
+      if (match) {
+        context.advanceBy(match[0].length)
+      }
+    },
+  }
+  const nodes = parseChildren(context, [])
+  return {
     type: 'Root',
-    children: [],
+    children: nodes,
   }
-
-  const elementStack = [root]
-
-  while (tokens.length) {
-    const parent = elementStack[elementStack.length - 1]
-
-    const t = tokens[0]
-
-    switch (t.type) {
-      case 'tag':
-        const elementNode = {
-          type: 'Element',
-          tag: t.name,
-          children: [],
+}
+function parseChildren(context, ancestors) {
+  let nodes = []
+  const { mode, source } = context
+  while (!isEnd(context, ancestors)) {
+    let node
+    if (mode === TextModes.DATA || mode === TextModes.RCDATA) {
+      if (mode === TextModes.DATA && source[0] === '<') {
+        if (source[1] === '!') {
+          if (source.startsWith('<!--')) {
+            node = parseComment(context)
+          } else if (source.startsWith('<![CDATA[')) {
+            node = parseCDATA(context, ancestors)
+          }
+        } else if (source[1] === '/') {
+          console.error('无效的结束标签')
+          continue
+        } else if (/[a-z]/i.test(source[1])) {
+          node = parseElement(context, ancestors)
         }
-        parent.children.push(elementNode)
-        elementStack.push(elementNode)
-        break
-      case 'text':
-        const textNode = {
-          type: 'Text',
-          content: t.content,
-        }
-        parent.children.push(textNode)
-        break
-      case 'tagEnd':
-        elementStack.pop()
-        break
+      } else if (context.source.startsWith('{{')) {
+        node = parseInterpolation(context)
+      }
     }
-    tokens.shift()
+    if (!node) {
+      node = parseText(context)
+    }
+
+    nodes.push(node)
   }
-  return root
+  return nodes
+}
+function isEnd(context, ancestors) {
+  if (!context.source) return true
+  for (let i = ancestors.length - 1; i >= 0; i--) {
+    if (context.source.startsWith(`</${ancestors[i].tag}`)) {
+      return true
+    }
+  }
+  // const parent = ancestors[ancestors.length - 1]
+}
+function parseElement(context, ancestors) {
+  const element = parseTag(context)
+
+  if (element.isSelfClosing) return element
+  if (element.tag === 'textarea' || element.tag === 'title') {
+    context.mode = TextModes.RCDATA
+  } else if (/style|xmp|iframe|noembed|noframes|noscript/.test(element.tag)) {
+    context.mode = TextModes.RAWTEXT
+  } else {
+    context.mode = TextModes.DATA
+  }
+
+  ancestors.push(element)
+
+  element.children = parseChildren(context, ancestors)
+
+  ancestors.pop()
+
+  if (context.source.startsWith(`</${element.tag}`)) {
+    parseTag(context, 'end')
+  } else {
+    console.error(`${element.tag} 标签缺少闭合标签`)
+  }
+
+  return element
+}
+function parseTag(context, type = 'start') {
+  const { advanceBy, advanceSpaces } = context
+
+  const match =
+    type === 'start'
+      ? /^<([a-z][^\t\r\n\f />]*)/i.exec(context.source)
+      : /^<\/([a-z][^\t\r\n\f />]*)/i.exec(context.source)
+
+  const tag = match[1]
+  advanceBy(match[0].length)
+
+  advanceSpaces()
+
+  const props = parseAttributes(context)
+
+  const isSelfClosing = context.source.startsWith('/>')
+
+  advanceBy(isSelfClosing ? 2 : 1)
+  return {
+    type: 'Element',
+    tag,
+    props,
+    children: [],
+    isSelfClosing,
+  }
+}
+function parseAttributes(context) {
+  const { advanceBy, advanceSpaces } = context
+  const props = []
+
+  while (!context.source.startsWith('>') && !context.source.startsWith('/>')) {
+    const match = /^[^\t\r\n\f />][^\t\r\n\f />=]*/.exec(context.source)
+
+    const name = match[0]
+    advanceBy(name.length)
+    advanceSpaces()
+
+    advanceBy(1)
+    advanceSpaces()
+
+    let value = ''
+
+    const quote = context.source[0]
+
+    const isQuoted = quote === '"' || quote === "'"
+
+    if (isQuoted) {
+      advanceBy(1)
+      const endQuoteIndex = context.source.indexOf(quote)
+
+      if (endQuoteIndex > -1) {
+        value = context.source.slice(0, endQuoteIndex)
+        advanceBy(value.length)
+        advanceBy(1)
+      } else {
+        console.error('缺失引号')
+      }
+    } else {
+      const match = /^[^\t\r\n\f />]+/.exec(context.source)
+      if (match) {
+        value = match[0]
+        advanceBy(value.length)
+      }
+    }
+    advanceSpaces()
+
+    props.push({
+      type: 'Attribute',
+      name,
+      value,
+    })
+  }
+  return props
+}
+
+function parseText(context) {
+  let endIndex = context.source.length
+  const ltIndex = context.source.indexOf('<')
+
+  const delimiterIndex = context.source.indexOf('{{')
+
+  if (ltIndex > -1 && ltIndex < endIndex) {
+    endIndex = ltIndex
+  }
+
+  if (delimiterIndex > -1 && delimiterIndex < endIndex) {
+    endIndex = delimiterIndex
+  }
+  const content = context.source.slice(0, endIndex)
+
+  context.advanceBy(content.length)
+
+  return {
+    type: 'Text',
+    content: decodeHtml(content),
+  }
+}
+function decodeHtml(rawText, asAttr = false) {
+  let offset = 0
+  const end = rawText.length
+
+  let decodeText = ''
+  let maxCRNameLength = 0
+
+  function advance(length) {
+    offset += length
+    rawText = rawText.slice(length)
+  }
+
+  while (offset < end) {
+    const head = /&(?:#x?)?/i.exec(rawText)
+
+    if (!head) {
+      const remaining = end - offset
+
+      decodeText += rawText.slice(0, remaining)
+
+      advance(remaining)
+      break
+    }
+
+    decodeText += rawText.slice(0, head.index)
+
+    advance(head.index)
+
+    if (head[0] === '&') {
+      let name = ''
+      let value
+
+      if (/[0-9a-z]/i.test(rawText[1])) {
+        if (!maxCRNameLength) {
+          maxCRNameLength = Object.keys(namedCharacterReferences).reduce(
+            (max, name) => Math.max(max, name.length),
+            0
+          )
+        }
+
+        for (let length = maxCRNameLength; !value && length > 0; --length) {
+          name = rawText.substr(1, length)
+
+          value = namedCharacterReferences[name]
+        }
+
+        if (value) {
+          const semi = name.endsWith(';')
+          if (
+            asAttr &&
+            !semi &&
+            /[=a-z0-9]/i.test(rawText[name.length + 1] || '')
+          ) {
+            decodeText += '&' + name
+          } else {
+            decodeText += value
+            advance(1 + name.length)
+          }
+        } else {
+          decodeText += '&' + name
+          advance(1 + name.length)
+        }
+      } else {
+        decodeText += '&'
+        advance(1)
+      }
+    } else {
+      const hex = head[0] === '&#x'
+      const pattern = hex ? /^&#x([0-9a-f]+);?/i : /^&#([0-9]+);?/
+      // 最终，body[1] 的值就是 Unicode 码点
+      const body = pattern.exec(rawText)
+
+      if (body) {
+        const cp = parseInt(body[1], hex ? 16 : 10)
+
+        if (cp === 0) {
+          cp = 0xfffd
+        } else if (cp > 0x10ffff) {
+          cp = 0xfffd
+        } else if (cp >= 0xd800 && cp <= 0xdfff) {
+          cp = 0xfffd
+        } else if ((cp >= 0xfdd0 && cp <= 0xfdef) || (cp & 0xfffe) === 0xfffe) {
+        } else if (
+          (cp >= 0x01 && cp <= 0x08) ||
+          cp === 0x0b ||
+          (cp >= 0x0d && cp <= 0x1f) ||
+          (cp >= 0x7f && cp <= 0x9f)
+        ) {
+          cp = CCR_REPLACEMENTS[cp] || cp
+        }
+        decodedText += String.fromCodePoint(cp)
+        // 消费掉整个数字字符引用的内容
+        advance(body[0].length)
+      } else {
+        decodedText += head[0]
+        advance(head[0].length)
+      }
+    }
+  }
+  return decodeText
+}
+function parseInterpolation(context) {
+  context.advanceBy('{{'.length)
+
+  closeIndex = context.source.indexOf('}}')
+
+  if (closeIndex < 0) {
+    console.error('')
+  }
+
+  const content = context.source.slice(0, closeIndex)
+  context.advanceBy(content.length)
+  context.advanceBy('}}'.length)
+
+  return {
+    type: 'Interpolation',
+    content: {
+      type: 'Expression',
+      content: decodeHtml(content),
+    },
+  }
+}
+function parseComment(context) {
+  context.advanceBy('<!--'.length)
+  closeIndex = context.source.indexOf('-->')
+  const content = context.source.slice(0, closeIndex)
+
+  context.advanceBy(content.length)
+
+  context.advanceBy('-->'.length)
+  return {
+    type: 'Comment',
+    content,
+  }
 }
 function dump(node, indent = 0) {
   const type = node.type
@@ -1080,10 +808,13 @@ function dump(node, indent = 0) {
 
 function traverseNode(ast, context) {
   context.currentNode = ast
-  // const currentNode = ast
+  const exitFns = []
   const transforms = context.nodeTransforms
   for (let i = 0; i < transforms.length; i++) {
-    transforms[i](context.currentNode, context)
+    const onExit = transforms[i](context.currentNode, context)
+    if (onExit) {
+      exitFns.push(onExit)
+    }
     if (!context.currentNode) return
   }
   const children = context.currentNode.children
@@ -1095,12 +826,15 @@ function traverseNode(ast, context) {
       traverseNode(children[i], context)
     }
   }
+  let i = exitFns.length
+  while (i--) {
+    exitFns[i]()
+  }
 }
 
-function transfrom(ast) {
+function transform(ast) {
   const context = {
     currentNode: null,
-    childIndex: 0,
     parent: null,
     replaceNode(node) {
       context.parent.children[context.childIndex] = node
@@ -1113,29 +847,279 @@ function transfrom(ast) {
         context.currentNode = null
       }
     },
-    nodeTransforms: [transformElement, transformText],
+    nodeTransforms: [transformRoot, transformElement, transformText],
   }
   traverseNode(ast, context)
   dump(ast)
+  return ast
 
   function transformElement(node) {
-    if (node.type === 'Element' && node.tag === 'p') {
-      node.tag = 'h1'
+    // if (node.type === 'Element' && node.tag === 'p') {
+    //   node.tag = 'h1'
+    // }
+    return () => {
+      if (node.type !== 'Element') return
+
+      const CallExp = createCallExpression('h', [createStringLiteral(node.tag)])
+
+      node.children.length === 1
+        ? CallExp.arguments.push(node.children[0].jsNode)
+        : CallExp.arguments.push(
+            createArrayExpression(node.children.map((c) => c.jsNode))
+          )
+      node.jsNode = CallExp
     }
   }
   function transformText(node, context) {
     if (node.type === 'Text') {
-      context.replaceNode({
-        type: 'Element',
-        tag: 'span',
-      })
+      // context.replaceNode({
+      //   type: 'Element',
+      //   tag: 'span',
+      // })
       // context.removeNode()
       // node.content = node.content.repeat(2)
+
+      node.jsNode = createStringLiteral(node.content)
+    }
+  }
+}
+const CallExp = {
+  type: 'CallEXpression',
+  callee: {
+    type: 'Identifier',
+    name: 'h',
+    arguments: [],
+  },
+}
+const Str = {
+  type: 'StringLiteral',
+  value: 'div',
+}
+const Arr = {
+  type: 'ArrayExpression',
+  elements: [],
+}
+
+function createStringLiteral(value) {
+  return {
+    type: 'StringLiteral',
+    value,
+  }
+}
+function createIdentifier(name) {
+  return {
+    type: 'Identifier',
+    name,
+  }
+}
+function createArrayExpression(elements) {
+  return {
+    type: 'ArrayExpression',
+    elements,
+  }
+}
+function createCallExpression(callee, arguments) {
+  return {
+    type: 'CallExpression',
+    callee: createIdentifier(callee),
+    arguments,
+  }
+}
+function transformRoot(node) {
+  return () => {
+    if (node.type !== 'Root') return
+
+    const vnodeJSAST = node.children[0].jsNode
+
+    node.jsNode = {
+      type: 'FunctionDecl',
+      id: {
+        type: 'Identifier',
+        name: 'render',
+      },
+      params: [],
+      body: [
+        {
+          type: 'ReturnStatement',
+          return: vnodeJSAST,
+        },
+      ],
     }
   }
 }
 
-const root = parse(`<div><p>Vue</p><p>Template</p></div>`)
+function generate(node) {
+  const context = {
+    code: '',
+    push(code) {
+      context.code += code
+    },
+    currentIndent: 0,
+    newline() {
+      context.code += '\n' + `  `.repeat(context.currentIndent)
+    },
+    indent() {
+      context.currentIndent++
+      context.newline()
+    },
+    deIndent() {
+      context.currentIndent--
+      context.newline()
+    },
+  }
+  genNode(node, context)
+
+  return context.code
+
+  function genNode(node, context) {
+    switch (node.type) {
+      case 'FunctionDecl':
+        genFunctionDecl(node, context)
+        break
+      case 'ReturnStatement':
+        genReturnStatement(node, context)
+        break
+      case 'CallExpression':
+        genCallExpression(node, context)
+        break
+      case 'StringLiteral':
+        genStringLiteral(node, context)
+        break
+      case 'ArrayExpression':
+        genArrayExpression(node, context)
+        break
+    }
+  }
+  function genFunctionDecl(node, context) {
+    const { push, indent, deIndent } = context
+
+    push(`function ${node.id.name} `)
+    push(`(`)
+    genNodeList(node.params, context)
+    push(`) `)
+    push(`{`)
+    indent()
+    node.body.forEach((n) => genNode(n, context))
+    deIndent()
+    push(`}`)
+  }
+
+  function genNodeList(nodes, context) {
+    const { push } = context
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i]
+      genNode(node, context)
+      if (i < nodes.length - 1) {
+        push(', ')
+      }
+    }
+  }
+
+  function genArrayExpression(node, context) {
+    const { push } = context
+    push('[')
+    genNodeList(node.elements, context)
+    push(']')
+  }
+
+  function genReturnStatement(node, context) {
+    const { push } = context
+    push(`return `)
+    genNode(node.return, context)
+  }
+  function genStringLiteral(node, context) {
+    const { push } = context
+    push(`'${node.value}'`)
+  }
+  function genCallExpression(node, context) {
+    const { push } = context
+
+    const { callee, arguments: args } = node
+    push(`${callee.name}(`)
+    genNodeList(args, context)
+    push(`)`)
+  }
+}
+
+const TextModes = {
+  DATA: 'DATA',
+  RCDATA: 'RCDATA',
+  RAWTEXT: 'RAWTEXT',
+  CDATA: 'CDATA',
+}
+const namedCharacterReferences = {
+  gt: '>',
+  'gt;': '>',
+  lt: '<',
+  'lt;': '<',
+  ltcc: '⪦',
+  'ltcc;': '⪦',
+}
+
+const CCR_REPLACEMENTS = {
+  0x80: 0x20ac,
+  0x82: 0x201a,
+  0x83: 0x0192,
+  0x84: 0x201e,
+  0x85: 0x2026,
+  0x86: 0x2020,
+  0x87: 0x2021,
+  0x88: 0x02c6,
+  0x89: 0x2030,
+  0x8a: 0x0160,
+  0x8b: 0x2039,
+  0x8c: 0x0152,
+  0x8e: 0x017d,
+  0x91: 0x2018,
+  0x92: 0x2019,
+  0x93: 0x201c,
+  0x94: 0x201d,
+  0x95: 0x2022,
+  0x96: 0x2013,
+  0x97: 0x2014,
+  0x98: 0x02dc,
+  0x99: 0x2122,
+  0x9a: 0x0161,
+  0x9b: 0x203a,
+  0x9c: 0x0153,
+  0x9e: 0x017e,
+  0x9f: 0x0178,
+}
+
+let root = parse('<div><!-- comments --></div>')
 console.log(root, 'root')
 
-transfrom(root)
+// function compile(template) {
+//   let ast = parse(template)
+
+//   transform(ast)
+//   console.log(ast, 'ast')
+//   const code = generate(ast.jsNode)
+//   console.log(code, 'code')
+// }
+
+// compile(`<div><p>Vue</p><p>Template</p></div>`)
+
+// function render () {
+//   return h( 'div', [h( 'p',  'Vue'), h( 'p',  'Template')])
+// }
+
+// function render () {
+//   return h('div', [h('p', 'Vue'), h('p', 'Template')])
+// }
+
+function createVNode(tag, props, children) {
+  const key = props && props.key
+  props && delete props.key
+  return { tag, props, children, key }
+}
+
+function render() {
+  return createVNode(
+    'div',
+    {
+      id: 'foo',
+    },
+    [createVNode('p', { class: 'bar' }, text, PatchFlags.TEXT)]
+  )
+}
