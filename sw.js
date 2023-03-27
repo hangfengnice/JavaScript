@@ -1108,10 +1108,15 @@ console.log(root, 'root')
 //   return h('div', [h('p', 'Vue'), h('p', 'Template')])
 // }
 
-function createVNode(tag, props, children) {
+function createVNode(tag, props, children, flags) {
   const key = props && props.key
   props && delete props.key
-  return { tag, props, children, key }
+  const vnode = { tag, props, children, key }
+
+  if (typeof flags !== 'undefined' && currentDynamicChildren) {
+    currentDynamicChildren.push(vnode)
+  }
+  return vnode
 }
 
 function render() {
@@ -1122,4 +1127,40 @@ function render() {
     },
     [createVNode('p', { class: 'bar' }, text, PatchFlags.TEXT)]
   )
+}
+
+const dynamicChildrenStack = []
+
+let currentDynamicChildren = null
+
+function openBlock() {
+  dynamicChildrenStack.push((currentDynamicChildren = []))
+}
+
+function closeBlock() {
+  currentDynamicChildren = dynamicChildrenStack.pop()
+}
+
+// 使用快速排序对数组进行排序
+function quickSort(arr) {
+  if (arr.length <= 1) {
+    return arr
+  }
+  let midIndex = Math.floor(arr.length / 2)
+  let midValue = arr.splice(midIndex, 1)[0]
+  let left = []
+  let right = []
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < midValue) {
+      left.push(arr[i])
+    } else {
+      right.push(arr[i])
+    }
+  }
+  return quickSort(left).concat(midValue, quickSort(right))
+}
+
+// 生成一个随机数
+function randomNum(min, max) {
+  return Math.floor(Math.random() * (max - min) + min)
 }
