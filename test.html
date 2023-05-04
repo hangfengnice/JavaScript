@@ -1,88 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Markdown Editor</title>
-    <script src="https://unpkg.com/vue"></script>
-    <script src="https://unpkg.com/marked@0.3.6"></script>
-    <script src="https://unpkg.com/lodash@4.16.0"></script>
-    <style>
-      html,
-      body,
-      #editor {
-        margin: 0;
-        height: 100%;
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-        color: #333;
-      }
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-      textarea,
-      #editor div {
-        display: inline-block;
-        width: 49%;
-        height: 100%;
-        vertical-align: top;
-        box-sizing: border-box;
-        padding: 0 20px;
-      }
-
-      textarea {
-        border: none;
-        border-right: 1px solid #ccc;
-        resize: none;
-        outline: none;
-        background-color: #f6f6f6;
-        font-size: 14px;
-        font-family: 'Monaco', courier, monospace;
-        padding: 20px;
-      }
-
-      code {
-        color: #f66;
-      }
-    </style>
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
   <body>
-    <script src="./minheap.js"></script>
-    <script src="./schedule.js"></script>
+    <div id="root"></div>
     <script>
-      // 模拟函数的执行
-      const sleep = (delay) => {
-        for (let start = Date.now(); Date.now() - start <= delay; ) {}
+      function MyApp() {
+        return <h1>Hello, world!</h1>
       }
 
-      unstable_scheduleCallback(3, () => {
-        console.log(1)
-      })
-
-      unstable_scheduleCallback(
-        3,
-        () => {
-          console.log(2)
-          sleep(10)
-        },
-        {
-          delay: 10,
-        }
-      )
-
-      unstable_scheduleCallback(
-        3,
-        () => {
-          console.log(3)
-        },
-        {
-          delay: 10,
-        }
-      )
-
-      unstable_scheduleCallback(3, () => {
-        console.log(4)
-        sleep(10)
-      })
-
-      unstable_scheduleCallback(3, () => {
-        console.log(5)
-      })
+      const container = document.getElementById('root')
+      const root = ReactDOM.createRoot(container)
+      console.log(MyApp, 'MyApp')
+      debugger
+      root.render(<MyApp />)
     </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this page for starting a new React project with JSX:
+      https://react.dev/learn/start-a-new-react-project
+
+      Read this page for adding React with JSX to an existing project:
+      https://react.dev/learn/add-react-to-an-existing-project
+    -->
   </body>
 </html>

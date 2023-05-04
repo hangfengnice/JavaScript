@@ -6,29 +6,160 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      .footer {
-        height: 50px;
-        cursor: progress;
-      }
-      .footer > p {
-        position: absolute;
-        left: 0;
-        right: 0;
-        text-align: center;
-        padding: 15px 0;
-        background-color: #a0b3d6;
-        outline: 9999px solid #a0b3d6;
-        clip: rect(0 9999px 9999px 0);
+      div {
+        height: 100px;
+        width: 100px;
+        background: linear-gradient(30deg, red 50%, skyblue 50%);
       }
     </style>
   </head>
   <body>
-    <p>&#x202E; ok ni</p>
+    <div></div>
 
+    <!-- <div class="bg-cover"></div>
+    <div class="bg-contain"></div>
+     -->
     <script>
-      // console.log(400 - document.getElementById('in').clientWidth)
+      class TreeSet {
+        constructor(comparator) {
+          this.set = new Set()
+          this.comparator = comparator || ((a, b) => a - b)
+          this.array = []
+        }
+
+        add(item) {
+          if (!this.set.has(item)) {
+            this.set.add(item)
+            this.array.push(item)
+            this.array.sort(this.comparator)
+          }
+        }
+
+        delete(item) {
+          if (this.set.has(item)) {
+            this.set.delete(item)
+            this.array.splice(this.array.indexOf(item), 1)
+          }
+        }
+
+        has(item) {
+          return this.set.has(item)
+        }
+
+        get size() {
+          return this.set.size
+        }
+
+        toArray() {
+          return [...this.array]
+        }
+
+        pollFirst() {
+          const item = this.array.shift()
+          this.set.delete(item)
+          return item
+        }
+
+        pollLast() {
+          const item = this.array.pop()
+          this.set.delete(item)
+          return item
+        }
+      }
+
+      var DinnerPlates = function (capacity) {
+        this.capacity = capacity
+        this.stack = []
+        this.top = []
+        this.poppedPos = new TreeSet()
+      }
+
+      DinnerPlates.prototype.push = function (val) {
+        if (this.poppedPos.size === 0) {
+          const pos = this.stack.length
+          this.stack.push(val)
+
+          if (pos % this.capacity === 0) {
+            this.top.push(0)
+          } else {
+            const stackPos = this.top.length - 1
+            const stackTop = this.top[stackPos]
+            this.top.splice(stackPos, 1, stackTop + 1)
+          }
+        } else {
+          const pos = this.poppedPos.pollFirst()
+          this.stack.splice(pos, 1, val)
+          const index = Math.floor(pos / this.capacity)
+          const stackTop = this.top[index]
+          this.top.splice(index, 1, stackTop + 1)
+        }
+      }
+
+      DinnerPlates.prototype.pop = function () {
+        while (
+          this.stack.length !== 0 &&
+          this.poppedPos.has(this.stack.length - 1)
+        ) {
+          this.stack.splice(this.stack.length - 1, 1)
+          const pos = this.poppedPos.pollLast()
+          if (pos % this.capacity === 0) {
+            this.top.splice(this.top.length - 1, 1)
+          }
+        }
+
+        if (this.stack.length === 0) {
+          return -1
+        } else {
+          const pos = this.stack.length - 1
+          const val = this.stack[pos]
+
+          this.stack.splice(pos, 1)
+
+          const index = this.top.length - 1
+          if (pos % this.capacity === 0) {
+            this.top.splice(index, 1)
+          } else {
+            this.top.splice(index, 1, index - 1)
+          }
+          return val
+        }
+      }
+
+      DinnerPlates.prototype.popAtStack = function (index) {
+        if (index >= this.top.length) {
+          return -1
+        }
+        const stackTop = this.top[index]
+        if (stackTop < 0) {
+          return -1
+        }
+        this.top.splice(index, 1, stackTop - 1)
+        const pos = index * this.capacity + stackTop
+        this.poppedPos.add(pos)
+        return this.stack[pos]
+      }
+      let D = new DinnerPlates(2)
+      D.push(1)
+      D.push(2)
+      D.push(3)
+      D.push(4)
+      D.push(5)
+
+      D.popAtStack(0) // 返回 2。栈的现状为：      4
+      D.push(20) // 栈的现状为：  20  4
+      D.push(21) // 栈的现状为：  20  4 21
+      D.popAtStack(0) // 返回 20。栈的现状为：       4 21
+      D.popAtStack(2) // 返回 21。栈的现状为：       4
+      D.pop() // 返回 5。栈的现状为：        4
+      D.pop() // 返回 4。栈的现状为：
+      D.pop() // 返回 3。栈的现状为：
+      D.pop() // 返回 1。现在没有栈。
+      D.pop() // 返回 -1。仍然没有栈。
     </script>
   </body>
 </html>
 <!-- <img src="https://demo.cssworld.cn/images/common/l/zxx.jpg" /> -->
+<!-- <img class="img" src="https://demo.cssworld.cn/images/common/m/1.jpg" /> -->
+
 <!-- <img class="img" src="https://demo.cssworld.cn/images/common/l/1.jpg" /> -->
+<!-- <img class="img" src="https://demo.cssworld.cn/new/images/loading.png" /> -->
