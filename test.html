@@ -3,34 +3,67 @@
   <head>
     <meta charset="UTF-8" />
     <title>Hello World</title>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <!-- <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-    <!-- Don't use this in production: -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> -->
+    <style>
+      p::first-line {
+        color: blue;
+      }
+      #text {
+        color: green !important;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <p id="text">文字</p>
+
     <script>
-      function MyApp() {
-        return <h1>Hello, world!</h1>
-      }
+      // function MyApp() {
+      //   return <h1>Hello, world!</h1>
+      // }
 
-      const container = document.getElementById('root')
-      const root = ReactDOM.createRoot(container)
-      console.log(MyApp, 'MyApp')
-      debugger
-      root.render(<MyApp />)
+      // const container = document.getElementById('root')
+      // const root = ReactDOM.createRoot(container)
+      // console.log(MyApp, 'MyApp')
+      // debugger
+      // root.render(<MyApp />)
     </script>
-    <!--
-      Note: this page is a great way to try React but it's not suitable for production.
-      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
 
-      Read this page for starting a new React project with JSX:
-      https://react.dev/learn/start-a-new-react-project
+    <script>
+      var countTime = function (time) {
+        let res = 0
+        const dfs = (arr, pos) => {
+          if (pos === arr.length) {
+            if (check(arr)) {
+              res++
+            }
+            return
+          }
 
-      Read this page for adding React with JSX to an existing project:
-      https://react.dev/learn/add-react-to-an-existing-project
-    -->
+          if (arr[pos] === '?') {
+            for (let i = 0; i < 10; i++) {
+              arr[pos] = String.fromCharCode(48 + i)
+              dfs(arr, pos + 1)
+              // arr[pos] = '?'
+            }
+          } else {
+            dfs(arr, pos + 1)
+          }
+        }
+        const arr = [...time]
+        dfs(arr, 0)
+        return res
+        function check(arr) {
+          const hh = (arr[0].charCodeAt() - 48) * 10 + arr[1].charCodeAt() - 48
+          const mm = (arr[3].charCodeAt() - 48) * 10 + arr[4].charCodeAt() - 48
+          return hh < 24 && mm < 60
+        }
+      }
+      let count = countTime('0?:0?')
+
+      console.log(count, 'count')
+    </script>
   </body>
 </html>
