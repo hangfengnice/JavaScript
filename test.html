@@ -32,38 +32,33 @@
     </script>
 
     <script>
-      var countTime = function (time) {
-        let res = 0
-        const dfs = (arr, pos) => {
-          if (pos === arr.length) {
-            if (check(arr)) {
-              res++
-            }
-            return
+      var numTilePossibilities = function (tiles) {
+        const count = new Map()
+        for (let t of tiles) {
+          count.set(t, (count.get(t) || 0) + 1)
+        }
+
+        const tile = new Set(tiles)
+        const n = tiles.length
+
+        return dfs(0) - 1
+
+        function dfs(i) {
+          if (i === n) {
+            return 1
           }
 
-          if (arr[pos] === '?') {
-            for (let i = 0; i < 10; i++) {
-              arr[pos] = String.fromCharCode(48 + i)
-              dfs(arr, pos + 1)
-              // arr[pos] = '?'
+          let res = 1
+          for (let t of tile) {
+            if (count.get(t) > 0) {
+              count.set(t, count.get(t) - 1)
+              res += dfs(i + 1)
+              count.set(t, count.get(t) + 1)
             }
-          } else {
-            dfs(arr, pos + 1)
           }
-        }
-        const arr = [...time]
-        dfs(arr, 0)
-        return res
-        function check(arr) {
-          const hh = (arr[0].charCodeAt() - 48) * 10 + arr[1].charCodeAt() - 48
-          const mm = (arr[3].charCodeAt() - 48) * 10 + arr[4].charCodeAt() - 48
-          return hh < 24 && mm < 60
+          return res
         }
       }
-      let count = countTime('0?:0?')
-
-      console.log(count, 'count')
     </script>
   </body>
 </html>
