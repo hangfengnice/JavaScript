@@ -1,35 +1,22 @@
-var sortArry = function (nums) {
-  quickSort(nums, 0, nums.length - 1);
-  return nums;
+var oddString = function (words) {
+  let diff0 = get(words[0])
+  let diff1 = get(words[1])
 
-  function quickSort(nums, left, right) {
-    if (left >= right) {
-      return;
-    }
-    let pivot = partition(nums, left, right);
-    quickSort(nums, left, pivot - 1);
-    quickSort(nums, pivot + 1, right);
-  }
-
-  function partition(nums, left, right) {
-    let povit = nums[left];
-
-    let j = left;
-    for (let i = left + 1; i <= right; i++) {
-      if (nums[i] < povit) {
-        j++;
-        let temp = nums[j];
-        nums[j] = nums[i];
-        nums[i] = temp;
+  if (diff0 === diff1) {
+    for (let i = 2; i < words.length; i++) {
+      if (diff0 !== get(words[i])) {
+        return words[i]
       }
     }
-    nums[left] = nums[j];
-    nums[j] = povit;
-    return j;
   }
-};
 
+  return diff0 === get(words[2]) ? words[1] : words[0]
 
-let res = sortArry([1, 3, 2, 7, 6, 5])
-
-console.log(res, 'res')
+  function get(word) {
+    let diff = new Array(word.length - 1)
+    for (let i = 0; i + 1 < word.length; i++) {
+      diff[i] = word.charCodeAt(i + 1) - word.charCodeAt(i)
+    }
+    return diff.toString()
+  }
+}
