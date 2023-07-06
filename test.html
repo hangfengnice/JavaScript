@@ -1,64 +1,202 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Hello World</title>
-    <!-- <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> -->
+    <meta charset="utf-8" />
+    <title>vue-happy-scroll</title>
+    <link rel="stylesheet" href="./happy-scroll.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="./sw.js"></script>
     <style>
-      p::first-line {
-        color: blue;
+      * {
+        margin: 0;
+        padding: 0;
       }
-      #text {
-        color: green !important;
+
+      html,
+      body,
+      #app {
+        height: 100%;
+        width: 100%;
+      }
+
+      #app {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        flex-direction: column;
+      }
+
+      .buttons {
+        margin-bottom: 10px;
+      }
+
+      .container {
+        width: 300px;
+        height: 280px;
+        background: #f6f6f6;
+        padding: 20px;
+        border: 1px solid #4fc08d;
+        white-space: nowrap;
+      }
+
+      .text-box {
+        display: inline-block;
+      }
+      .text-box > li {
+        font-size: 14px;
+        line-height: 28px;
+      }
+      .text-box > li:nth-child(odd) {
+        background-color: #eee;
+      }
+      .happy-scroll {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .happy-scroll-strip--vertical {
+        position: absolute;
+        right: 0px;
+        top: 0;
+        height: 100%;
+      }
+      .happy-scroll-strip--vertical .happy-scroll-bar {
+        background-color: rgba(51, 51, 51, 0.2);
+        border-radius: 7px;
+        width: 6px;
+        height: 0;
+        -webkit-transition: width 0.4s ease, height 0.6s ease;
+        transition: width 0.4s ease, height 0.6s ease;
+      }
+      .happy-scroll-strip--horizontal {
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        width: 100%;
+      }
+      .happy-scroll-strip--horizontal .happy-scroll-bar {
+        background-color: rgba(51, 51, 51, 0.2);
+        border-radius: 7px;
+        height: 6px;
+        width: 0;
+        -webkit-transition: height 0.4s ease, width 0.6s ease;
+        transition: height 0.4s ease, width 0.6s ease;
+      }
+      /* 在webkit内核下将滚动条隐藏，Firefox下采用容器覆盖的机制 */
+      .happy-scroll-container::-webkit-scrollbar {
+        display: none;
+      }
+      .happy-scroll-container {
+        overflow: auto;
+      }
+
+      .happy-scroll-container .happy-scroll-content {
+        /* 解决横向滚动差 20px 的问题 */
+        display: inline-block;
       }
     </style>
   </head>
   <body>
-    <p id="text">文字</p>
-
+    <div id="app">
+      <div class="buttons">
+        <el-button @click="length++">增加1条</el-button>
+        <el-button @click="length+=10">增加10条</el-button>
+        <el-button @click="length > 0 && length--">减少1条</el-button>
+        <el-button @click="scrollTop+=10">向下滚动10px</el-button>
+        <el-button @click="scrollTop > 0 && (scrollTop-=10)">
+          向上滚动10px
+        </el-button>
+        <a
+          href="https://github.com/tangdaohai/vue-happy-scroll"
+          target="_black"
+        >
+          <el-button type="success">GitHub</el-button>
+        </a>
+      </div>
+      <div>当前Top: {{scrollTop}}</div>
+      <div class="container">
+        <happy-scroll
+          size="6"
+          :min-length-v="0.15"
+          left
+          :scroll-left.sync="scrollLeft"
+          :scroll-top.sync="scrollTop"
+          bigger-move-h="start"
+          smaller-move-h="end"
+          @vertical-start="start"
+          @vertical-end="end"
+          color="rgba(79, 192, 141, .7)"
+          resize
+        >
+          <ul class="text-box">
+            <li>
+              回答 -
+              北岛。诗中展现了悲愤之极的冷峻，以坚定的口吻表达了对暴力世界的怀疑。
+            </li>
+            <li v-for="index in length">{{text[index % text.length]}}</li>
+          </ul>
+        </happy-scroll>
+      </div>
+    </div>
     <script>
-      // function MyApp() {
-      //   return <h1>Hello, world!</h1>
-      // }
-
-      // const container = document.getElementById('root')
-      // const root = ReactDOM.createRoot(container)
-      // console.log(MyApp, 'MyApp')
-      // debugger
-      // root.render(<MyApp />)
-    </script>
-
-    <script>
-      var numTilePossibilities = function (tiles) {
-        const count = new Map()
-        for (let t of tiles) {
-          count.set(t, (count.get(t) || 0) + 1)
-        }
-
-        const tile = new Set(tiles)
-        const n = tiles.length
-
-        return dfs(0) - 1
-
-        function dfs(i) {
-          if (i === n) {
-            return 1
+      new Vue({
+        el: '#app',
+        data: function () {
+          return {
+            hideHorizontal: true,
+            length: 12,
+            scrollTop: 0,
+            scrollLeft: 0,
+            text: [
+              '卑鄙是卑鄙者的通行证，',
+              '高尚是高尚者的墓志铭。',
+              '看吧，在那镀金的天空中，',
+              '飘满了死者弯曲的倒影。',
+              '冰川纪过去了，',
+              '为什么到处都是冰凌？',
+              '好望角发现了，',
+              '为什么死海里千帆相竞？',
+              '我来到这个世界上，',
+              '只带着纸、绳索和身影，',
+              '为了在审判之前，',
+              '宣读那些被判决了的声音：',
+              '告诉你吧，世界，',
+              '我——不——相——信！',
+              '纵使你脚下有一千名挑战者，',
+              '那就把我算做第一千零一名。',
+              '我不相信天是蓝的，',
+              '我不相信雷的回声；',
+              '我不相信梦是假的，',
+              '我不相信死无报应。',
+              '如果海洋注定要决堤，',
+              '就让所有的苦水都注入我心中；',
+              '如果陆地注定要上升，',
+              '就让人类重新选择生存的峰顶。',
+              '新的转机和闪闪的星斗，',
+              '正在缀满没有遮拦的天空，',
+              '那是五千年的象形文字，',
+              '那是未来人们凝视的眼睛。',
+              '🗣',
+            ],
           }
-
-          let res = 1
-          for (let t of tile) {
-            if (count.get(t) > 0) {
-              count.set(t, count.get(t) - 1)
-              res += dfs(i + 1)
-              count.set(t, count.get(t) + 1)
-            }
-          }
-          return res
-        }
-      }
+        },
+        methods: {
+          start(offset) {
+            this.$message.success('到头部了')
+          },
+          end(offset) {
+            this.$message.success('到尾部了')
+          },
+        },
+      })
     </script>
   </body>
 </html>
