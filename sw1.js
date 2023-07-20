@@ -1,17 +1,21 @@
-var maximumEvenSplit = function (finalSum) {
-  const res = []
-  if (finalSum % 2 > 0) {
-    return res
+var minFallingPathSum = function (matrix) {
+  const n = matrix.length
+  const dp = new Array(n).fill(0).map(() => new Array(n).fill(0))
+
+  dp[0] = [...matrix[0]]
+
+  for (let i = 1; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      let mn = dp[i - 1][j]
+
+      if (j > 0) {
+        mn = Math.min(mn, dp[i - 1][j - 1])
+      }
+      if (j < n - 1) {
+        mn = Math.min(mn, dp[i - 1][j + 1])
+      }
+      dp[i][j] = mn + matrix[i][j]
+    }
   }
-  debugger
-  for (let i = 2; i <= finalSum; i += 2) {
-    res.push(i)
-    finalSum -= i
-  }
-  res[res.length - 1] += finalSum
-  return res
+  return Math.min(...dp[n - 1])
 }
-
-let res = maximumEvenSplit(4)
-
-console.log(res, 'res')
