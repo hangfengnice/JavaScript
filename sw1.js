@@ -1,21 +1,12 @@
-var minFallingPathSum = function (matrix) {
-  const n = matrix.length
-  const dp = new Array(n).fill(0).map(() => new Array(n).fill(0))
+var maxSubarraySumCircular = function (nums) {
+  const n = nums.length
+  const queue = []
 
-  dp[0] = [...matrix[0]]
+  let pre = nums[0], res = nums[0]
 
-  for (let i = 1; i < n; i++) {
-    for (let j = 0; j < n; j++) {
-      let mn = dp[i - 1][j]
+  queue.push([0, pre])
 
-      if (j > 0) {
-        mn = Math.min(mn, dp[i - 1][j - 1])
-      }
-      if (j < n - 1) {
-        mn = Math.min(mn, dp[i - 1][j + 1])
-      }
-      dp[i][j] = mn + matrix[i][j]
-    }
+  for(let i = 1; i < 2 * n; i ++) {
+    
   }
-  return Math.min(...dp[n - 1])
 }
