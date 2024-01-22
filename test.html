@@ -5,10 +5,154 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      .bg {
+        background: linear-gradient(10deg, #fff, #000);
+        width: 100px;
+        height: 100px;
+      }
+      .g-container {
+      }
+      ul {
+        display: flex;
+      }
+      li {
+        padding-left: 30px;
+      }
+      .g-container::before {
+        content: '';
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        width: 100px;
+        background: linear-gradient(90deg, transparent, #fff);
+      }
+    </style>
   </head>
   <body>
-    <script src="./sw1.js"></script>
+    <div class="bg"></div>
+
+    <div class="g-container">
+      <ul>
+        <li>Button</li>
+        <li>Button</li>
+        <li>Button</li>
+        <li>Button</li>
+        <li>Button</li>
+        <li>Button</li>
+      </ul>
+    </div>
+
+    <input id="file" type="file" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+    <script>
+      let input = document.getElementById('file')
+
+      const ArrayBufferToWordArray = (arrayBuffer) => {
+        const u8 = new Uint8Array(arrayBuffer, 0, arrayBuffer.byteLength)
+        const len = u8.length
+        const words = []
+        for (let i = 0; i < len; i += 1) {
+          words[i >>> 2] |= (u8[i] & 0xff) << (24 - (i % 4) * 8)
+        }
+        return CryptoJS.lib.WordArray.create(words, len)
+      }
+
+      const WordArrayToArrayBuffer = (wordArray) => {
+        const { words } = wordArray
+        const { sigBytes } = wordArray
+        const u8 = new Uint8Array(sigBytes)
+        for (let i = 0; i < sigBytes; i += 1) {
+          const byte = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff
+          u8[i] = byte
+        }
+        return u8
+      }
+
+      const AESEncData = (data) => {
+        const encrypt = CryptoJS.AES.encrypt(
+          data,
+          CryptoJS.enc.Utf8.parse('0123456789abcdef'),
+          {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7,
+          }
+        )
+        const arrayBuffer = WordArrayToArrayBuffer(encrypt.ciphertext)
+        return arrayBuffer
+      }
+
+      input.addEventListener('change', (e) => {
+        const { files } = e.target
+        let file = files[0]
+
+        const reader = new FileReader()
+
+        reader.readAsArrayBuffer(file)
+
+        reader.onload = function () {
+          let { result } = this
+
+          let first = CryptoJS.lib.WordArray.create(result)
+
+          result = CryptoJS.AES.encrypt(
+            CryptoJS.lib.WordArray.create(result).toString(),
+            CryptoJS.enc.Utf8.parse('0123456789abcdef'),
+            {
+              mode: CryptoJS.mode.ECB,
+              padding: CryptoJS.pad.Pkcs7,
+            }
+          ).toString()
+
+          console.log(result, 'result')
+
+          result = CryptoJS.AES.decrypt(
+            result,
+            CryptoJS.enc.Utf8.parse('0123456789abcdef'),
+            {
+              mode: CryptoJS.mode.ECB,
+            }
+          ).toString(CryptoJS.enc.Utf8)
+
+          let word = CryptoJS.enc.Hex.parse(result)
+
+          function CryptJsWordArrayToUint8Array(wordArray) {
+            const l = wordArray.sigBytes
+            const words = wordArray.words
+            const result = new Uint8Array(l)
+            var i = 0 /*dst*/,
+              j = 0 /*src*/
+            while (true) {
+              // here i is a multiple of 4
+              if (i == l) break
+              var w = words[j++]
+              result[i++] = (w & 0xff000000) >>> 24
+              if (i == l) break
+              result[i++] = (w & 0x00ff0000) >>> 16
+              if (i == l) break
+              result[i++] = (w & 0x0000ff00) >>> 8
+              if (i == l) break
+              result[i++] = w & 0x000000ff
+            }
+            return result
+          }
+
+          result = CryptJsWordArrayToUint8Array(word)
+
+          let blob = new Blob([result])
+          let href = window.URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.style.display = 'none'
+          link.href = href
+          link.download = file.name
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+        }
+      })
+    </script>
+    <!-- <script src="./sw1.js"></script> -->
   </body>
 </html>
-
-教材答案 https://www.sohu.com/a/633726264_500680
