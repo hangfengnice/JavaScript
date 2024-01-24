@@ -1,218 +1,29 @@
-let data = {
-  code: 200,
-  msg: null,
-  data: {
-    modelCd: 'SUPPLIER_SEND_NOTICE',
-    modelName: 'SUPPLIER_SEND_NOTICE',
-    nodes: [
-      {
-        id: null,
-        modelCd: 'SUPPLIER_SEND_NOTICE',
-        modelName: 'SUPPLIER_SEND_NOTICE',
-        nodeId: 'node1',
-        nodeName: '制单',
-        nodeOrder: 1,
-        callbackType: null,
-        callbackUrl: null,
-        callbackClass: null,
-        callbackMethod: null,
-        insertUserName: null,
-        insertDateTime: null,
-        updateUserName: null,
-        updateDateTime: null,
-        signFlag: false,
-        checkFlag: true,
-        properties: [
-          {
-            modelCd: 'SUPPLIER_SEND_NOTICE',
-            modelName: 'SUPPLIER_SEND_NOTICE',
-            nodeId: 'node1',
-            nodeName: '制单',
-            type: 'string',
-            name: '',
-            key: 'handleUserName',
-            variable: '${operateUserName}',
-          },
-          {
-            modelCd: 'SUPPLIER_SEND_NOTICE',
-            modelName: 'SUPPLIER_SEND_NOTICE',
-            nodeId: 'node1',
-            nodeName: '制单',
-            type: 'string',
-            name: '',
-            key: 'applyStatus',
-            variable: '3',
-          },
-          {
-            modelCd: 'SUPPLIER_SEND_NOTICE',
-            modelName: 'SUPPLIER_SEND_NOTICE',
-            nodeId: 'node1',
-            nodeName: '制单',
-            type: 'string',
-            name: '',
-            key: 'handlerUrl',
-            variable:
-              '/depart/department-budget/department-budget-breakdown-add?type=modify&applyId={applyId}',
-          },
-        ],
-        users: [
-          {
-            id: null,
-            tenantId: '1',
-            personCode: null,
-            personName: null,
-            userName: 'admin',
-            fullName: '超级管理员',
-            password: null,
-            userType: null,
-            userLevel: null,
-            empNum: null,
-            phone: null,
-            email: null,
-            otherAccount: null,
-            lastPassword: null,
-            effectiveStartDate: null,
-            effectiveEndDate: null,
-            lastLoginIp: null,
-            lastLoginPort: null,
-            lastLoginTime: null,
-            lastLoginDevice: null,
-            headPhoto: null,
-            parentId: null,
-            parentName: null,
-            refereesId: null,
-            refereesName: null,
-            status: null,
-            insertUserName: null,
-            insertProgramCd: null,
-            insertDatetime: null,
-            updateUserName: null,
-            updateProgramCd: null,
-            updateDatetime: null,
-            insertFullName: null,
-            updateFullName: null,
-            source: null,
-            remarks: null,
-            lastLoginOutTime: null,
-            companyName: '管理员机构',
-            companyCode: '2210',
-            organizeName: '管理员机构',
-            organizeCode: '3022440738',
-            positionName: null,
-            jobName: null,
-            householdAddress: null,
-          },
-        ],
-      },
-      {
-        id: null,
-        modelCd: 'SUPPLIER_SEND_NOTICE',
-        modelName: 'SUPPLIER_SEND_NOTICE',
-        nodeId: 'node2',
-        nodeName: '收货单位确认',
-        nodeOrder: 2,
-        callbackType: null,
-        callbackUrl: null,
-        callbackClass: null,
-        callbackMethod: null,
-        insertUserName: null,
-        insertDateTime: null,
-        updateUserName: null,
-        updateDateTime: null,
-        signFlag: false,
-        checkFlag: true,
-        properties: [
-          {
-            modelCd: 'SUPPLIER_SEND_NOTICE',
-            modelName: 'SUPPLIER_SEND_NOTICE',
-            nodeId: 'node2',
-            nodeName: '收货单位确认',
-            type: 'string',
-            name: '单据状态',
-            key: 'applyStatus',
-            variable: '1',
-          },
-          {
-            modelCd: 'SUPPLIER_SEND_NOTICE',
-            modelName: 'SUPPLIER_SEND_NOTICE',
-            nodeId: 'node2',
-            nodeName: '收货单位确认',
-            type: 'string',
-            name: '待办链接',
-            key: 'handlerUrl',
-            variable:
-              '/depart/department-budget/department-budget-breakdown-review?applyId={applyId}',
-          },
-          {
-            modelCd: 'SUPPLIER_SEND_NOTICE',
-            modelName: 'SUPPLIER_SEND_NOTICE',
-            nodeId: 'node2',
-            nodeName: '收货单位确认',
-            type: 'string',
-            name: '自动审批标识（默认为空时自动审批 ，1不自动）',
-            key: 'autoComplete',
-            variable: '1',
-          },
-          {
-            modelCd: 'SUPPLIER_SEND_NOTICE',
-            modelName: 'SUPPLIER_SEND_NOTICE',
-            nodeId: 'node2',
-            nodeName: '收货单位确认',
-            type: 'string',
-            name: '',
-            key: 'handleUserName',
-            variable: 'WORKFLOW_PARAM_receive_user_name',
-          },
-        ],
-        users: [
-          {
-            id: null,
-            tenantId: '1',
-            personCode: null,
-            personName: null,
-            userName: 'zhangsan',
-            fullName: '物流管理员',
-            password: null,
-            userType: null,
-            userLevel: null,
-            empNum: null,
-            phone: null,
-            email: null,
-            otherAccount: null,
-            lastPassword: null,
-            effectiveStartDate: null,
-            effectiveEndDate: null,
-            lastLoginIp: null,
-            lastLoginPort: null,
-            lastLoginTime: null,
-            lastLoginDevice: null,
-            headPhoto: null,
-            parentId: null,
-            parentName: null,
-            refereesId: null,
-            refereesName: null,
-            status: null,
-            insertUserName: null,
-            insertProgramCd: null,
-            insertDatetime: null,
-            updateUserName: null,
-            updateProgramCd: null,
-            updateDatetime: null,
-            insertFullName: null,
-            updateFullName: null,
-            source: null,
-            remarks: null,
-            lastLoginOutTime: null,
-            companyName: null,
-            companyCode: '2222',
-            organizeName: null,
-            organizeCode: '2222101217',
-            positionName: null,
-            jobName: null,
-            householdAddress: null,
-          },
-        ],
-      },
-    ],
-  },
+var maximumSumOfHeights = function (maxHeights) {
+  const n = maxHeights.length
+  let res = 0
+  for (let i = 0; i < n; i++) {
+    let pre = maxHeights[i],
+      sum = maxHeights[i]
+
+    console.log(pre, sum, 'pre sum')
+
+    for (let j = i - 1; j >= 0; j--) {
+      per = Math.min(pre, maxHeights[j])
+      sum += pre
+    }
+
+    let suf = maxHeights[i]
+
+    for (let j = i + 1; j < n; j++) {
+      suf = Math.min(suf, maxHeights[j])
+
+      sum += suf
+    }
+
+    res = Math.max(sum, res)
+  }
+
+  return res
 }
+
+console.log(maximumSumOfHeights([5, 3, 4, 1, 1]))
