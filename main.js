@@ -1,29 +1,50 @@
 var maximumSumOfHeights = function (maxHeights) {
   const n = maxHeights.length
-  let res = 0
+  const prefix = new Array(n).fill(0)
+  const suffix = new Array(n).fill(0)
+
+  const stack1 = []
+  const stack2 = []
+
   for (let i = 0; i < n; i++) {
-    let pre = maxHeights[i],
-      sum = maxHeights[i]
-
-    console.log(pre, sum, 'pre sum')
-
-    for (let j = i - 1; j >= 0; j--) {
-      per = Math.min(pre, maxHeights[j])
-      sum += pre
+    while (
+      stack1.length &&
+      maxHeights[i] < maxHeights[stack1[stack1.length - 1]]
+    ) {
+      stack1.pop()
     }
 
-    let suf = maxHeights[i]
+    if (!stack1.length) {
+      prefix[i] = (i + 1) * maxHeights[i]
+    } else {
+      let last = stack1[stack1.length - 1]
 
-    for (let j = i + 1; j < n; j++) {
-      suf = Math.min(suf, maxHeights[j])
+      perfix[i] = prefix[last] + (i - last) * maxHeights[i]
+    }
+    stack1.push(i)
+  }
 
-      sum += suf
+  let res = 0
+
+  for (let i = n - 1; i >= 0; i--) {
+    while (
+      stack2.length &&
+      maxHeights[i] < maxHeights[stack2[stack2.length - 1]]
+    ) {
+      stack2.pop()
     }
 
-    res = Math.max(sum, res)
+    if (!stack2.length) {
+      suffix[i] = (n - i) * maxHeights[i]
+    } else {
+      let last = stack2[stack2.length - 1]
+
+      suffix[i] = suffix[last] + (last - i) * maxHeights[i]
+    }
+    stack2.push(i)
+
+    res = Math.max(res, prefix[i] + suffix[i] - maxHeights[i])
   }
 
   return res
 }
-
-console.log(maximumSumOfHeights([5, 3, 4, 1, 1]))
