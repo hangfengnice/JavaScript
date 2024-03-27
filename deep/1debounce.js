@@ -1,12 +1,10 @@
 var count = 1
 var container = document.getElementById('container')
 
-
 function getUserAction() {
-  console.log(this, 'this');
-  container.textContent = count ++
+  console.log(this, 'this')
+  container.textContent = count++
 }
-
 
 function debounce(func, wait, immediate) {
   var timeout, result
@@ -45,29 +43,3 @@ container.onmousemove = setUser
 document.getElementById('btn').addEventListener('click', function () {
   setUser.canceled()
 })
-
-
-function debounce (func, wait, immediate) {
-  var result, timeout
-
-  var debounced = function () {
-    var args = arguments
-    var context = this
-
-    if (timeout) clearTimeout(timeout)
-
-    if (immediate) {
-      var callNow = !timeout
-
-      timeout = setTimeout(() => {
-        clearTimeout(timeout)
-        timeout = null
-      }, wait)
-      if (callNow) result = func.apply(context, args)
-    } else {
-      timeout = setTimeout(() => {
-        func.apply(context, args)
-      }, wait);
-    }
-  }
-}
