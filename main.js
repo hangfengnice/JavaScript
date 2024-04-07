@@ -6,11 +6,15 @@ function getUserAction(event) {
   container.innerHTML = count++
 }
 
-container.onmousemove = throttle(getUserAction, 1000, true)
+container.onmousemove = throttle(getUserAction, 1000, {})
 
-function throttle(func, wait) {
+function throttle(func, wait, options) {
   var timeout, context, args, result
   var previous = 0
+
+  if (!options) {
+    options = {}
+  }
 
   var later = function () {
     previous = +new Date()
