@@ -6,22 +6,24 @@
       body {
         height: 100vh;
       }
-    </style>
-
-    <script>
-      function showCoords(evt) {
-        alert(
-          'clientX value: ' +
-            evt.clientX +
-            '\n' +
-            'clientY value: ' +
-            evt.clientY +
-            '\n'
-        )
+      video {
+        border: 1px solid;
       }
-    </script>
+    </style>
   </head>
-  <body onmousedown="showCoords(event)">
-    <p>To display the mouse coordinates click anywhere on the page.</p>
+  <body>
+    <div></div>
+
+    <video
+      src="rtsp://10.99.1.23:1196/03752162186131760101?DstCode=01&ServiceType=1&ClientType=1&StreamID=1&SrcTP=2&DstTP=2&SrcPP=1&DstPP=1&MediaTransMode=0&BroadcastType=0&SV=1&Token=rlW/Boo/1Tn4UZaDw3qttB50uQ5Sxt1KrYt357i367A=&DomainCode=9d17f94112ec47a59b5cb5c1da80abb8&UserId=26&"
+    ></video>
+
+    <video
+      src="rtsp://10.99.1.23:1196/03752162186131760101?DstCode=01&ServiceType=1&ClientType=1&StreamID=1&SrcTP=2&DstTP=2&SrcPP=1&DstPP=1&MediaTransMode=0&BroadcastType=0&SV=3&Token=csSS3bjRnptJPPwE902i/ZIm6nD5UziPCKJOtF4re7c=&DomainCode=9d17f94112ec47a59b5cb5c1da80abb8&UserId=26&"
+    ></video>
+
+    <video
+      src="blob:https://www.bilibili.com/b29575dd-ac49-4012-98b9-1a099b80f465"
+    ></video>
   </body>
 </html>
