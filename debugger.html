@@ -10,20 +10,36 @@
         border: 1px solid;
       }
     </style>
+
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
   </head>
   <body>
-    <div></div>
-
     <video
-      src="rtsp://10.99.1.23:1196/03752162186131760101?DstCode=01&ServiceType=1&ClientType=1&StreamID=1&SrcTP=2&DstTP=2&SrcPP=1&DstPP=1&MediaTransMode=0&BroadcastType=0&SV=1&Token=rlW/Boo/1Tn4UZaDw3qttB50uQ5Sxt1KrYt357i367A=&DomainCode=9d17f94112ec47a59b5cb5c1da80abb8&UserId=26&"
+      id="video"
+      controls
+      src="http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8"
     ></video>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/hls.js/1.5.18/hls.js"></script>
 
-    <video
-      src="rtsp://10.99.1.23:1196/03752162186131760101?DstCode=01&ServiceType=1&ClientType=1&StreamID=1&SrcTP=2&DstTP=2&SrcPP=1&DstPP=1&MediaTransMode=0&BroadcastType=0&SV=3&Token=csSS3bjRnptJPPwE902i/ZIm6nD5UziPCKJOtF4re7c=&DomainCode=9d17f94112ec47a59b5cb5c1da80abb8&UserId=26&"
-    ></video>
+    <script>
+      // const video = document.getElementById('video')
+      // // const hlsUrl = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'
 
-    <video
-      src="blob:https://www.bilibili.com/b29575dd-ac49-4012-98b9-1a099b80f465"
-    ></video>
+      // // const hlsUrl =
+      // //   'https://h5.gateway.zjcloud.com:51442/live/7520668559859449857_8_0_f40b5e5177564d5283a5ef33b5654220/hls.m3u8?auth_key=1750130556-472663358309ea81198e5d6827b4e97b-cdb2e55defe77bc506da0a94cbb964cd48fadec6be6779ac92ecae06cda0396426ca0600bd79996138112c747cf61cfdcd3c363f59fac18e84168b929c009f2caf62c66bff76628cdea66fe24be2f2f37fbddb43d719ebd2d773dc45e7ae81fb45de831af2420713ba22407a76705f1bb90423ade4ce8f41decdad3663cd42d8a246364a56157640f0f48df41c4707dceac568c66633e2a9141f04496d0e060f8fae5a095b1d1ac21605815ac269a4f5a58f4a687730028656b947a997165f8c00fe933dbb8f778ee4785b649195a74259ab2e6e6990a6ea8d162006b248b2bfae8be832d90aa5203811cac9b05c649665cccbfd6a82233c7fcac635ec083dea3a6363bc1781a0080f7bafb54f84b4768806bd18a234eb866f04c64aa94f40a75d261d77cc6e1b7bd31de8db3e243c04&enable_audio=0'
+
+      // const hlsUrl =
+      //   'http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8'
+      // if (Hls.isSupported()) {
+      //   console.log('he')
+
+      //   const hls = new Hls()
+      //   hls.loadSource(hlsUrl)
+      //   hls.attachMedia(video)
+      // } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      //   video.src = hlsUrl // Safari 原生支持
+      // }
+    </script>
   </body>
 </html>
