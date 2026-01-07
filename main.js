@@ -1,6 +1,15 @@
-{
-  "webcamId": "7520668559859449857",
-  "sectionContextId": "615851053",
-  "startTime": 1751545162000,
-  "endTime": 1751552562000
+function isDivisible(...arr) {
+  //Write your code here
+  console.log(arr, 'arr')
+
+  let first = arr[0]
+  let other = arr.slice(1)
+
+  if (other.some((key) => first % key)) {
+    return false
+  }
+  return true
 }
+
+let s = isDivisible(6, 2, 3)
+console.log(s, 's')
