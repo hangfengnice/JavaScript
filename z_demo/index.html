@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="checkbox" checked />
+
+    <img
+      id="myImage"
+      src="https://unpkg.com/@vbenjs/static-source@0.1.7/source/avatar-v1.webp"
+      crossorigin="anonymous"
+      style="display: none"
+    />
+
+    <button id="open">选择并写文件</button>
+    <button id="dir">选择目录</button>
+
+    <script>
+      document.getElementById('open').onclick = async () => {
+        const [handle] = await window.showOpenFilePicker({
+          types: [
+            {
+              description: 'Text',
+              accept: { 'text/plain': ['.txt'] },
+            },
+          ],
+        })
+
+        const writable = await handle.createWritable()
+        await writable.write('Hello World from Browser')
+        await writable.close()
+
+        alert('写入成功')
+      }
+
+      document.getElementById('dir').onclick = async () => {
+        const dirHandle = await window.showDirectoryPicker()
+        for await (const entry of dirHandle.values()) {
+          console.log(entry.kind, entry.name)
+        }
+      }
+    </script>
+
+    <script>
+      // let db
+
+      // const request = indexedDB.open('MyDatabase', 2)
+
+      // request.onupgradeneeded = (e) => {
+      //   db = e.target.result
+
+      //   if (!db.objectStoreNames.contains('files')) {
+      //     const store = db.createObjectStore('files', {
+      //       keyPath: 'id',
+      //       autoIncrement: true,
+      //     })
+      //     store.createIndex('by_type', 'type', { unique: false })
+      //   }
+      // }
+
+      // request.onsuccess = (e) => {
+      //   db = e.target.result
+
+      //   const tx = db.transaction('files', 'readwrite')
+      //   const store = tx.objectStore('files')
+
+      //   store.put({
+      //     type: 'image',
+      //     content: '1', // Blob / File
+      //     timestamp: Date.now(),
+      //   })
+
+      //   tx.oncomplete = () => {
+      //     console.log('数据写入成功')
+      //   }
+
+      //   tx.onerror = () => {
+      //     console.error('事务失败')
+      //   }
+      // }
+
+      // request.onerror = () => {
+      //   console.error('数据库打开失败')
+      // }
+
+      // 类型转换陷阱
+      // localStorage.setItem('number', 123)
+      // console.log(typeof localStorage.getItem('number')) // "string"
+      // // 容量测试（5MB理论值）
+      // const testData = new Array(5 * 1024 * 1024).fill('a').join('')
+      // try {
+      //   localStorage.setItem('stressTest', testData)
+      // } catch (e) {
+      //   console.error('存储超出限制:', e)
+      // }
+
+      // let input = document.querySelector('input')
+
+      // console.log(typeof input.getAttribute('checked'), 'attr')
+      // console.log(input.checked, 'value')
+      // input.addEventListener('change', () => {
+      //   console.log(typeof input.getAttribute('checked'), 'attr')
+      //   console.log(input.checked, 'value')
+      // })
+
+      // const img = document.getElementById('myImage')
+
+      // img.onload = () => {
+      //   console.log('load')
+      // }
+    </script>
+  </body>
+</html>
