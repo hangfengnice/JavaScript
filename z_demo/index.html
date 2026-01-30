@@ -1,116 +1,33 @@
 <!doctype html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <!-- <link rel="stylesheet" href="legacy-style.css" /> -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.8.3/jquery.js"></script>
   </head>
   <body>
-    <input type="checkbox" checked />
+    <div class="old-header">...</div>
 
-    <img
-      id="myImage"
-      src="https://unpkg.com/@vbenjs/static-source@0.1.7/source/avatar-v1.webp"
-      crossorigin="anonymous"
-      style="display: none"
-    />
+    <ai-assistant></ai-assistant>
 
-    <button id="open">选择并写文件</button>
-    <button id="dir">选择目录</button>
+    <script src="ai-assistant.js"></script>
 
     <script>
-      document.getElementById('open').onclick = async () => {
-        const [handle] = await window.showOpenFilePicker({
-          types: [
-            {
-              description: 'Text',
-              accept: { 'text/plain': ['.txt'] },
-            },
-          ],
+      console.log(document, 'docum')
+
+      // jQuery 监听组件抛出的事件
+      $(document).ready(function () {
+        // 这里的事件监听依然丝滑
+        $('ai-assistant').on('new-question', function (e) {
+          // 注意：jQuery 的 event 对象封装了一层，原生的 detail 在 originalEvent 里
+          console.log(e, 'e')
+
+          var question = e.originalEvent.detail.question
+          console.log('老页面收到了 AI 提问：', question)
+
+          // 这里可以调用老系统的 API
+          // $.ajax(...)
         })
-
-        const writable = await handle.createWritable()
-        await writable.write('Hello World from Browser')
-        await writable.close()
-
-        alert('写入成功')
-      }
-
-      document.getElementById('dir').onclick = async () => {
-        const dirHandle = await window.showDirectoryPicker()
-        for await (const entry of dirHandle.values()) {
-          console.log(entry.kind, entry.name)
-        }
-      }
-    </script>
-
-    <script>
-      // let db
-
-      // const request = indexedDB.open('MyDatabase', 2)
-
-      // request.onupgradeneeded = (e) => {
-      //   db = e.target.result
-
-      //   if (!db.objectStoreNames.contains('files')) {
-      //     const store = db.createObjectStore('files', {
-      //       keyPath: 'id',
-      //       autoIncrement: true,
-      //     })
-      //     store.createIndex('by_type', 'type', { unique: false })
-      //   }
-      // }
-
-      // request.onsuccess = (e) => {
-      //   db = e.target.result
-
-      //   const tx = db.transaction('files', 'readwrite')
-      //   const store = tx.objectStore('files')
-
-      //   store.put({
-      //     type: 'image',
-      //     content: '1', // Blob / File
-      //     timestamp: Date.now(),
-      //   })
-
-      //   tx.oncomplete = () => {
-      //     console.log('数据写入成功')
-      //   }
-
-      //   tx.onerror = () => {
-      //     console.error('事务失败')
-      //   }
-      // }
-
-      // request.onerror = () => {
-      //   console.error('数据库打开失败')
-      // }
-
-      // 类型转换陷阱
-      // localStorage.setItem('number', 123)
-      // console.log(typeof localStorage.getItem('number')) // "string"
-      // // 容量测试（5MB理论值）
-      // const testData = new Array(5 * 1024 * 1024).fill('a').join('')
-      // try {
-      //   localStorage.setItem('stressTest', testData)
-      // } catch (e) {
-      //   console.error('存储超出限制:', e)
-      // }
-
-      // let input = document.querySelector('input')
-
-      // console.log(typeof input.getAttribute('checked'), 'attr')
-      // console.log(input.checked, 'value')
-      // input.addEventListener('change', () => {
-      //   console.log(typeof input.getAttribute('checked'), 'attr')
-      //   console.log(input.checked, 'value')
-      // })
-
-      // const img = document.getElementById('myImage')
-
-      // img.onload = () => {
-      //   console.log('load')
-      // }
+      })
     </script>
   </body>
 </html>
