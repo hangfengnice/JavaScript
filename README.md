@@ -20,3 +20,7 @@ http-server -c-1
 ## 跨域
 
 1.
+
+## tools:
+
+quicklink 检测视口（Viewport）内的链接，自动给它们加上prefetch。
