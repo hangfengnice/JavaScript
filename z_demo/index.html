@@ -1,33 +1,34 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <!-- <link rel="stylesheet" href="legacy-style.css" /> -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.8.3/jquery.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
   </head>
   <body>
-    <div class="old-header">...</div>
-
-    <ai-assistant></ai-assistant>
-
-    <script src="ai-assistant.js"></script>
+    <script src="./render.js"></script>
 
     <script>
-      console.log(document, 'docum')
+      const proxy = reactive(
+        new Map([
+          ['key1', 1],
+          ['key2', 2],
+        ]),
+      )
 
-      // jQuery 监听组件抛出的事件
-      $(document).ready(function () {
-        // 这里的事件监听依然丝滑
-        $('ai-assistant').on('new-question', function (e) {
-          // 注意：jQuery 的 event 对象封装了一层，原生的 detail 在 originalEvent 里
-          console.log(e, 'e')
-
-          var question = e.originalEvent.detail.question
-          console.log('老页面收到了 AI 提问：', question)
-
-          // 这里可以调用老系统的 API
-          // $.ajax(...)
-        })
+      effect(() => {
+        for (let [key, value] of proxy) {
+          console.log(key, value, 'key value')
+        }
       })
+
+      proxy.set('key3', 3)
+
+      // let p1 = reactive(new Set([1, 2, 3]))
+      // effect(() => {
+      //   console.log('set size:', p1.size)
+      // })
+      // p1.add(4)
     </script>
   </body>
 </html>
