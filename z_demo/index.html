@@ -6,29 +6,85 @@
     <title>Document</title>
   </head>
   <body>
-    <script src="./render.js"></script>
+    <!-- <script src="./render.js"></script> -->
+    <script src="./reactivity.global.js"></script>
 
     <script>
-      const proxy = reactive(
-        new Map([
-          ['key1', 1],
-          ['key2', 2],
-        ]),
-      )
+      function createRenderer(options) {
+        const { createElement, setElementText, insert } = options
 
-      effect(() => {
-        for (let [key, value] of proxy) {
-          console.log(key, value, 'key value')
+        function patch(n1, n2, container) {
+          if (!n1) {
+            mountElement(n2, container)
+          } else {
+            // updateElement(n1, n2, container)
+          }
         }
-      })
+        function mountElement(vnode, container) {
+          const el = (vnode.el = createElement(vnode.type))
 
-      proxy.set('key3', 3)
+          if (vnode.props) {
+            for (const key in vnode.props) {
+              const value = vnode.props[key]
+              el.setAttribute(key, value)
+            }
+          }
 
-      // let p1 = reactive(new Set([1, 2, 3]))
+          if (typeof vnode.children === 'string') {
+            setElementText(el, vnode.children)
+          } else if (Array.isArray(vnode.children)) {
+            vnode.children.forEach((child) => {
+              patch(null, child, el)
+            })
+          }
+          insert(el, container)
+        }
+        function render(vnode, container) {
+          if (vnode) {
+            patch(container._vnode || null, vnode, container)
+          } else {
+            if (container._vnode) {
+              container.innerHTML = ''
+            }
+          }
+          container._vnode = vnode
+        }
+
+        return {
+          render,
+        }
+      }
+
+      const vnode = {
+        type: 'h1',
+        props: {
+          id: 'hello',
+        },
+        children: 'Hello World',
+      }
+      const renderer = createRenderer({
+        createElement(tag) {
+          return document.createElement(tag)
+        },
+        setElementText(el, text) {
+          el.textContent = text
+        },
+        insert(el, parent, anchor = null) {
+          parent.insertBefore(el, anchor)
+        },
+      }).render
+
+      renderer(vnode, document.body)
+
+      const { reactive, effect, ref } = VueReactivity
+
+      // const count = ref(1)
+
       // effect(() => {
-      //   console.log('set size:', p1.size)
+      //   renderer(`<div>count: ${count.value}</div>`, document.body)
       // })
-      // p1.add(4)
+
+      // count.value++
     </script>
   </body>
 </html>

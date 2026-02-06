@@ -112,28 +112,133 @@ const mutableInstrumentations = {
       callback.call(thisArg, wrap(v), wrap(k), this)
     })
   },
-  [Symbol.iterator]() {
-    const target = this.raw
-    const itr = target[Symbol.iterator]()
+  [Symbol.iterator]: iterationMethod,
+  entries: iterationMethod,
+  values: valuesIterationMethod,
+  keys: keysIterationMethod,
+}
+const MAP_KEY_ITERATE_KEY = Symbol()
+function keysIterationMethod() {
+  const target = this.raw
+  const itr = target.keys()
 
-    const wrap = (val) =>
-      typeof val == 'object' && val !== null ? reactive(val) : val
+  const wrap = (val) =>
+    typeof val == 'object' && val !== null ? reactive(val) : val
 
-    track(target, ITERATE_KEY)
+  track(target, MAP_KEY_ITERATE_KEY)
 
-    return {
-      next() {
-        const { value, done } = itr.next()
+  return {
+    next() {
+      const { value, done } = itr.next()
 
-        return {
-          value: value ? [wrap[value[0]], wrap[value[1]]] : value,
-          done,
-        }
-      },
-    }
-  },
+      return {
+        value: wrap(value),
+        done,
+      }
+    },
+    [Symbol.iterator]() {
+      return this
+    },
+  }
+}
+function valuesIterationMethod() {
+  const target = this.raw
+  const itr = target.values()
+
+  const wrap = (val) =>
+    typeof val == 'object' && val !== null ? reactive(val) : val
+
+  track(target, ITERATE_KEY)
+
+  return {
+    next() {
+      const { value, done } = itr.next()
+
+      return {
+        value: wrap(value),
+        done,
+      }
+    },
+    [Symbol.iterator]() {
+      return this
+    },
+  }
 }
 
+function iterationMethod() {
+  const target = this.raw
+  const itr = target[Symbol.iterator]()
+
+  const wrap = (val) =>
+    typeof val == 'object' && val !== null ? reactive(val) : val
+
+  track(target, ITERATE_KEY)
+
+  return {
+    next() {
+      const { value, done } = itr.next()
+
+      return {
+        value: value ? [wrap(value[0]), wrap(value[1])] : value,
+        done,
+      }
+    },
+    [Symbol.iterator]() {
+      return this
+    },
+  }
+}
+
+function ref(val) {
+  const wrapper = {
+    value: val,
+  }
+  Object.defineProperty(wrapper, '__v_isRef', {
+    value: true,
+  })
+  return reactive(wrapper)
+}
+
+function toRef(obj, key) {
+  const wrapper = {
+    get value() {
+      return obj[key]
+    },
+    set value(newVal) {
+      obj[key] = newVal
+    },
+  }
+  Object.defineProperty(wrapper, '__v_isRef', {
+    value: true,
+  })
+  return wrapper
+}
+
+function toRefs(obj) {
+  const ret = {}
+  for (const key in obj) {
+    ret[key] = toRef(obj, key)
+  }
+  return ret
+}
+
+function proxyRefs(obj) {
+  return new Proxy(obj, {
+    get(target, key, receiver) {
+      const res = Reflect.get(target, key, receiver)
+      return res.__v_isRef ? res.value : res
+    },
+    set(target, key, newVal, receiver) {
+      const res = Reflect.get(target, key, receiver)
+      if (res.__v_isRef) {
+        res.value = newVal
+        return true
+      } else {
+        return Reflect.set(target, key, newVal, receiver)
+      }
+    },
+  })
+}
 function createReactive(obj, isShallow = false, isReadonly = false) {
   return new Proxy(obj, {
     get(target, key, receiver) {
@@ -148,7 +253,7 @@ function createReactive(obj, isShallow = false, isReadonly = false) {
         return Reflect.get(target, 'size', target)
       }
 
-      return mutableInstrumentations[key]
+      // return mutableInstrumentations[key]
 
       if (
         Array.isArray(target) &&
@@ -239,6 +344,19 @@ function trigger(target, key, type, newVal) {
   if (!depsMap) return true
 
   const effectsToRun = new Set()
+
+  if (
+    (type === 'ADD' || type === 'DELETE') &&
+    Object.prototype.toString.call(target) == '[object Map]'
+  ) {
+    const iterateEffects = depsMap.get(MAP_KEY_ITERATE_KEY)
+    iterateEffects &&
+      iterateEffects.forEach((effectFn) => {
+        if (effectFn != activeEffect) {
+          effectsToRun.add(effectFn)
+        }
+      })
+  }
 
   if (
     type === 'ADD' ||
@@ -468,13 +586,13 @@ const vnode = {
   ],
 }
 
-function renderer(vnode, container) {
-  if (typeof vnode.tag === 'string') {
-    mountElement(vnode, container)
-  } else if (typeof vnode.tag === 'object') {
-    mountComponent(vnode, container)
-  }
-}
+// function renderer(vnode, container) {
+//   if (typeof vnode.tag === 'string') {
+//     mountElement(vnode, container)
+//   } else if (typeof vnode.tag === 'object') {
+//     mountComponent(vnode, container)
+//   }
+// }
 
 function mountComponent(vnode, container) {
   const component = vnode.tag
