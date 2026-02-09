@@ -2,85 +2,77 @@
 
 本文件为 Claude Code (claude.ai/code) 提供在此仓库中工作的指导。
 
-## 仓库结构
+## 仓库概述
 
-这是一个个人 JavaScript 学习资料和示例仓库。目录结构包括：
+这是一个个人 **JavaScript 学习资料和示例仓库**，主要用于学习笔记和实验性代码的存放。仓库不是生产应用项目，而是学习资源集合。
 
-- **`todo-app/`** - React + TypeScript + Vite 应用（唯一有构建脚本的活动项目）
-- **`01 javascript 基础/`** - JavaScript 基础（类型、类型判断、数组、Symbol）
-- **`02 css/`** - CSS 笔记（flexbox、文本省略）
+## 目录结构
+
+### 核心学习目录
+
+- **`01 javascript 基础/`** - JavaScript 基础知识点
+  - `01 基本类型/` - 数据类型相关
+  - `02类型判断/` - typeof/instanceof 等
+  - `03 查找值/` - 数组查找方法
+  - `04 数组的方法/` - 数组 API
+  - `05 手写题/` - 常见手写实现（如 Promise.all、深拷贝等）
+  - `06 symbol/` - Symbol 类型
+
+- **`02 css/`** - CSS 笔记
+  - flexbox 布局、文本省略等问题
+
 - **`03 http/`** - HTTP 协议笔记
+
 - **`06 手写/`** - 手写实现（可能是 polyfill/工具函数）
-- **`z_demo/`** - 实验性示例（Vue3 响应式探索）
-- **`vue3/`** - Vue 3 编译和优化笔记
-- **`设计模式/`** - 设计模式
+
+- **`vue3/`** - Vue 3 编译和优化笔记（`01 编译/` 子目录）
+
+- **`设计模式/`** - 设计模式学习笔记
+
 - **`数据结构与算法之美/`** - 数据结构与算法
-- **`deep/`, `alike/`, `prompts/`** - 各种笔记和提示词
+  - 包含排序、堆、队列等章节（按数字编号组织）
 
-## todo-app (React + TypeScript + Vite)
+### 实验性代码
 
-### 开发命令
+- **`z_demo/`** - 实验性示例和探索
+  - `reactivity.global.js` - Vue 3 响应式系统完整构建产物（包含 reactive、effect、ref、computed 等）
+  - `render.js` - 自定义渲染器实现
+  - `index.html` - 演示页面（测试自定义渲染器和 vnode 补丁）
+
+### 其他目录
+
+- **`linux/`** - Linux 命令和终端学习笔记
+  - `README.md` - 基础命令速查（echo、ls、vim、grep、wc 等）
+  - `juejin-linux-basics.md` - 场景驱动的终端上手指南
+
+- **`git/`** - Git 相关笔记
+
+- **`prompts/`** - AI 提示词模板
+  - `vue2.md` - Vue 2 高性能组件生成 Prompt（包含性能约束、响应式约束等）
+
+- **`deep/`**、`alike/`** - 各种技术笔记
+
+- **`AI/`**、`deepseek/`**、`calude/`** - AI 工具相关笔记
+
+- **`mac/`** - macOS 相关
+
+- **`design/`** - 设计相关（样式配置等）
+
+## 本地开发
+
+如需在浏览器中查看 HTML 文件：
 
 ```bash
-cd todo-app
-npm run dev          # 启动开发服务器 (http://localhost:5173)
-npm run build        # 生产环境构建 (tsc -b && vite build)
-npm run lint         # 运行 ESLint
-npm run preview      # 本地预览生产构建
+# 启动本地服务器（端口 8088）
+http-server -c-1 -p 8088 -o
 ```
-
-### 架构
-
-待办事项应用采用 **组件化架构**，使用 **Context 进行状态管理**：
-
-- **`src/App.tsx`** - 主应用组件，包含 `AppContent` 和待办事项状态逻辑
-  - 使用 `useLocalStorage` hook 进行数据持久化
-  - 待办操作：`addTodo`、`toggleTodo`、`deleteTodo`、`clearCompleted`
-
-- **`src/contexts/LanguageContext.tsx`** - 国际化上下文（中文/英文）
-  - `LanguageProvider` 包裹整个应用
-  - `useLanguage()` hook 通过 `t(key)` 函数访问翻译
-
-- **`src/hooks/useLocalStorage.ts`** - 自定义 hook，实现 localStorage 与状态同步
-
-- **组件** (`src/components/`)：
-  - `Header.tsx` - 应用头部，带语言切换
-  - `InputArea.tsx` - 待办输入，带优先级选择器
-  - `TodoList.tsx` - 待办事项列表
-  - `TodoItem.tsx` - 单个待办事项
-  - `Footer.tsx` - 活跃计数和清除已完成按钮
-
-### 核心类型
-
-```typescript
-type Priority = 'high' | 'medium' | 'low';
-
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-  priority: Priority;
-}
-```
-
-### 翻译键
-
-添加新的 UI 文本时，需要在 `LanguageContext.tsx` 中同时添加 `zh` 和 `en` 键：
-- `app.*` - 头部文本
-- `input.*` - 输入区和优先级标签
-- `empty.*` - 空状态消息
-- `footer.*` - 底部操作
-
-## z_demo (Vue3 响应式探索)
-
-此目录包含探索 Vue 3 响应式系统的实验代码：
-- `reactivity.global.js` - Vue 响应式系统（reactive、effect、ref）
-- `render.js` - 自定义渲染器实现
-- `index.html` - 测试自定义渲染器和 vnode 补丁的演示页面
 
 ## 工作注意事项
 
-- 文档和提交信息主要使用中文
-- 本仓库主要是**学习资源**，非生产应用
-- React/TypeScript 相关工作集中在 `todo-app/`
-- 其他目录为学习笔记，修改前请先阅读
+1. **文档语言** - 文档和提交信息主要使用中文
+
+2. **仓库性质** - 本仓库主要是**学习资源**，非生产应用。大多数文件是笔记性质的 markdown 文档
+
+3. **修改原则** - 学习笔记目录修改前请先阅读，理解内容结构后再做调整
+
+4. **z_demo 目录** - 这是实验代码区域，可以用于测试和验证想法
