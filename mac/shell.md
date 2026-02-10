@@ -53,6 +53,8 @@ echo 输出 -->
 
 ### 文件缓存处理
 
+`大杀器` mdfind
+
 ```bash
 # 1. 启动项和守护进程
 ~/Library/LaunchAgents/          # 用户级别的启动代理
@@ -75,6 +77,12 @@ echo 输出 -->
 ~/Library/Containers/           # Sandboxed 应用的容器
 ~/Library/Group Containers/     # 应用组容器
 ```
+
+## Wrap
+
+tab 键补全文件路径 多一个字母是共同的部分 
+
+遇到这样的可以试下其他类似的 已确定不是Bug
 
 ## 在同一个窗口内：折叠所有子文件夹
 
