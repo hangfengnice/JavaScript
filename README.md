@@ -25,4 +25,4 @@ git
 
 Shell 配置
 
-
+前端开发 (FE)、计算机基础 (Base)、AI/工具 (AI/Tools)、个人随笔 (Memo)

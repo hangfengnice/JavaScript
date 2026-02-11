@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>超级马里奥冒险</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        .game-wrapper {
+            position: relative;
+            padding: 20px;
+            background: linear-gradient(145deg, #1a1a2e, #16213e);
+            border-radius: 24px;
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .game-container {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .ui-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .score-panel, .lives-panel, .level-panel {
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.5) 100%);
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .coin-icon {
+            width: 22px;
+            height: 22px;
+            background: linear-gradient(135deg, #ffd93d 0%, #ff9500 100%);
+            border-radius: 50%;
+            border: 2px solid #e08600;
+            box-shadow: 0 0 10px rgba(255, 200, 0, 0.5), inset 0 -2px 4px rgba(0,0,0,0.2);
+            animation: coinSpin 2s linear infinite;
+        }
+
+        @keyframes coinSpin {
+            0%, 100% { transform: scaleX(1); }
+            50% { transform: scaleX(0.2); }
+        }
+
+        .heart-icon {
+            font-size: 18px;
+            filter: drop-shadow(0 2px 4px rgba(233, 69, 96, 0.5));
+        }
+
+        .game-over-screen, .start-screen, .win-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(15, 12, 41, 0.92);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+        }
+
+        .game-over-screen.hidden, .start-screen.hidden, .win-screen.hidden {
+            display: none;
+        }
+
+        .game-title {
+            font-size: 56px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 50%, #ff6b6b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            animation: titleBounce 2s ease-in-out infinite;
+            text-shadow: none;
+            filter: drop-shadow(0 4px 8px rgba(238, 90, 36, 0.4));
+        }
+
+        @keyframes titleBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-8px) scale(1.02); }
+        }
+
+        .game-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 40px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .start-btn {
+            padding: 18px 60px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow:
+                0 10px 30px rgba(102, 126, 234, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow:
+                0 20px 40px rgba(102, 126, 234, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+        }
+
+        .start-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .controls-info {
+            margin-top: 50px;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: center;
+            line-height: 2;
+            font-size: 14px;
+        }
+
+        .controls-info kbd {
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-family: 'SF Mono', 'Monaco', monospace;
+            font-size: 13px;
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+        .final-score {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffd93d 0%, #ff9500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 30px 0;
+        }
+
+        .final-score span {
+            font-size: 32px;
+            color: rgba(255,255,255,0.7);
+            -webkit-text-fill-color: rgba(255,255,255,0.7);
+        }
+
+        .win-title {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .decorative-mushroom {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: mushroomBounce 2s ease-in-out infinite;
+            filter: drop-shadow(0 10px 20px rgba(238, 90, 36, 0.3));
+        }
+
+        @keyframes mushroomBounce {
+            0%, 100% { transform: translateY(0) rotate(-8deg) scale(1); }
+            50% { transform: translateY(-20px) rotate(8deg) scale(1.05); }
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .game-title.game-over {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-wrapper">
+        <div class="game-container">
+            <canvas id="gameCanvas" width="900" height="500"></canvas>
+
+            <div class="ui-overlay">
+                <div class="score-panel">
+                    <span class="coin-icon"></span>
+                    <span id="score">0</span>
+                </div>
+                <div class="level-panel">
+                    <span class="level-panel">🏔️</span>
+                    <span id="level">1</span>
+                </div>
+                <div class="lives-panel">
+                    <span class="heart-icon">❤️</span>
+                    <span id="lives">3</span>
+                </div>
+            </div>
+
+            <div class="start-screen" id="startScreen">
+                <div class="stars" id="stars"></div>
+                <div class="decorative-mushroom">🍄</div>
+                <div class="game-title">超级马里奥冒险</div>
+                <div class="game-subtitle">Super Mario Adventure</div>
+                <button class="start-btn" onclick="startGame()">开始游戏</button>
+                <div class="controls-info">
+                    <kbd>←</kbd> <kbd>→</kbd> 移动 &nbsp;|&nbsp; <kbd>空格</kbd> / <kbd>↑</kbd> 跳跃<br><br>
+                    收集金币 · 踩扁敌人 · 抵达终点
+                </div>
+            </div>
+
+            <div class="game-over-screen hidden" id="gameOverScreen">
+                <div class="stars" id="starsOver"></div>
+                <div class="decorative-mushroom">💀</div>
+                <div class="game-title game-over">游戏结束</div>
+                <div class="final-score"><span>得分</span> <span id="finalScore">0</span></div>
+                <button class="start-btn" onclick="restartGame()">重新开始</button>
+            </div>
+
+            <div class="win-screen hidden" id="winScreen">
+                <div class="stars" id="starsWin"></div>
+                <div class="decorative-mushroom">🏆</div>
+                <div class="win-title">恭喜通关!</div>
+                <div class="final-score"><span>最终得分</span> <span id="winScore">0</span></div>
+                <button class="start-btn" onclick="restartGame()">再玩一次</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // 创建星星背景
+        function createStars(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = star.style.height = Math.random() * 3 + 1 + 'px';
+                star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
+                star.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(star);
+            }
+        }
+        createStars('stars');
+        createStars('starsOver');
+        createStars('starsWin');
+
+        // 游戏状态
+        let gameRunning = false;
+        let score = 0;
+        let lives = 3;
+        let currentLevel = 1;
+        let cameraX = 0;
+
+        // 输入状态
+        const keys = {};
+
+        // 玩家
+        const player = {
+            x: 50,
+            y: 300,
+            width: 36,
+            height: 44,
+            vx: 0,
+            vy: 0,
+            speed: 5,
+            jumpForce: -14,
+            onGround: false,
+            direction: 1,
+            animFrame: 0
+        };
+
+        const gravity = 0.6;
+        const friction = 0.85;
+
+        // 关卡数据
+        let platforms = [];
+        let coins = [];
+        let enemies = [];
+        let flag = null;
+        let particles = [];
+        let levelWidth = 3600;
+
+        // 粒子系统
+        function addParticle(x, y, color) {
+            for (let i = 0; i < 8; i++) {
+                particles.push({
+                    x: x,
+                    y: y,
+                    vx: (Math.random() - 0.5) * 8,
+                    vy: (Math.random() - 0.5) * 8 - 3,
+                    life: 30,
+                    color: color,
+                    size: Math.random() * 6 + 2
+                });
+            }
+        }
+
+        function updateParticles() {
+            particles = particles.filter(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.2;
+                p.life--;
+                return p.life > 0;
+            });
+        }
+
+        function drawParticles() {
+            particles.forEach(p => {
+                const alpha = p.life / 30;
+                ctx.fillStyle = p.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+                ctx.beginPath();
+                ctx.arc(p.x - cameraX, p.y, p.size * alpha, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        // 初始化关卡
+        function initLevel(level) {
+            platforms = [];
+            coins = [];
+            enemies = [];
+            particles = [];
+
+            // 地面
+            for (let i = 0; i < 120; i++) {
+                platforms.push({
+                    x: i * 40,
+                    y: 450,
+                    width: 40,
+                    height: 50,
+                    type: 'ground'
+                });
+            }
+
+            // 平台生成
+            const platformData = [
+                { x: 200, y: 350, width: 120, height: 32, type: 'brick' },
+                { x: 400, y: 300, width: 80, height: 32, type: 'brick' },
+                { x: 550, y: 250, width: 80, height: 32, type: 'question' },
+                { x: 700, y: 350, width: 150, height: 32, type: 'brick' },
+                { x: 900, y: 280, width: 100, height: 32, type: 'brick' },
+                { x: 1100, y: 320, width: 80, height: 32, type: 'question' },
+                { x: 1250, y: 250, width: 120, height: 32, type: 'brick' },
+                { x: 1450, y: 350, width: 100, height: 32, type: 'brick' },
+                { x: 1600, y: 280, width: 80, height: 32, type: 'brick' },
+                { x: 1750, y: 200, width: 150, height: 32, type: 'brick' },
+                { x: 2000, y: 350, width: 200, height: 32, type: 'brick' },
+                { x: 2250, y: 280, width: 100, height: 32, type: 'question' },
+                { x: 2450, y: 220, width: 120, height: 32, type: 'brick' },
+                { x: 2650, y: 350, width: 150, height: 32, type: 'brick' },
+                { x: 2850, y: 280, width: 100, height: 32, type: 'brick' },
+            ];
+
+            platformData.forEach(p => platforms.push(p));
+
+            // 金币生成
+            const coinPositions = [
+                { x: 230, y: 300 }, { x: 270, y: 300 }, { x: 310, y: 300 },
+                { x: 420, y: 250 }, { x: 580, y: 200 }, { x: 620, y: 200 },
+                { x: 750, y: 300 }, { x: 790, y: 300 }, { x: 930, y: 230 },
+                { x: 1130, y: 270 }, { x: 1290, y: 200 }, { x: 1330, y: 200 },
+                { x: 1480, y: 300 }, { x: 1630, y: 230 }, { x: 1800, y: 150 },
+                { x: 1840, y: 150 }, { x: 2050, y: 300 }, { x: 2090, y: 300 },
+                { x: 2130, y: 300 }, { x: 2280, y: 230 }, { x: 2490, y: 170 },
+                { x: 2700, y: 300 }, { x: 2740, y: 300 }, { x: 2890, y: 230 },
+            ];
+
+            coinPositions.forEach(c => {
+                coins.push({ x: c.x, y: c.y, width: 24, height: 24, collected: false, animOffset: Math.random() * Math.PI * 2 });
+            });
+
+            // 敌人生成
+            const enemyData = [
+                { x: 500, y: 410 },
+                { x: 850, y: 410 },
+                { x: 1200, y: 410 },
+                { x: 1500, y: 410 },
+                { x: 1900, y: 410 },
+                { x: 2200, y: 410 },
+                { x: 2600, y: 410 },
+                { x: 2900, y: 410 },
+            ];
+
+            enemyData.forEach(e => {
+                enemies.push({
+                    x: e.x,
+                    y: e.y,
+                    width: 36,
+                    height: 36,
+                    vx: -1.5,
+                    startX: e.x - 100,
+                    endX: e.x + 100,
+                    alive: true,
+                    animFrame: 0
+                });
+            });
+
+            // 终点旗帜
+            flag = { x: 3200, y: 250, width: 20, height: 200 };
+
+            player.x = 50;
+            player.y = 300;
+            player.vx = 0;
+            player.vy = 0;
+            cameraX = 0;
+        }
+
+        // 绘制渐变背景
+        function drawBackground() {
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#1e3c72');
+            gradient.addColorStop(0.5, '#2a5298');
+            gradient.addColorStop(1, '#7ec8e3');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 绘制太阳
+            const sunGradient = ctx.createRadialGradient(750, 80, 0, 750, 80, 60);
+            sunGradient.addColorStop(0, 'rgba(255, 230, 150, 0.8)');
+            sunGradient.addColorStop(0.5, 'rgba(255, 200, 100, 0.4)');
+            sunGradient.addColorStop(1, 'rgba(255, 180, 80, 0)');
+            ctx.fillStyle = sunGradient;
+            ctx.beginPath();
+            ctx.arc(750, 80, 60, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        // 绘制背景云朵
+        function drawClouds() {
+            const clouds = [
+                { x: 100, y: 60, size: 45 },
+                { x: 380, y: 40, size: 55 },
+                { x: 650, y: 80, size: 40 },
+                { x: 950, y: 50, size: 50 },
+                { x: 1350, y: 70, size: 42 },
+                { x: 1700, y: 45, size: 58 },
+                { x: 2150, y: 85, size: 38 },
+                { x: 2550, y: 65, size: 48 },
+                { x: 2950, y: 75, size: 44 },
+            ];
+
+            clouds.forEach(cloud => {
+                const screenX = cloud.x - cameraX * 0.3;
+                if (screenX > -120 && screenX < canvas.width + 120) {
+                    const gradient = ctx.createRadialGradient(
+                        screenX + cloud.size, cloud.y - 10, 0,
+                        screenX + cloud.size, cloud.y - 10, cloud.size * 1.5
+                    );
+                    gradient.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+                    gradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.7)');
+                    gradient.addColorStop(1, 'rgba(255, 255, 255, 0.3)');
+                    ctx.fillStyle = gradient;
+
+                    ctx.beginPath();
+                    ctx.arc(screenX, cloud.y, cloud.size * 0.6, 0, Math.PI * 2);
+                    ctx.arc(screenX + cloud.size * 0.7, cloud.y - 12, cloud.size * 0.5, 0, Math.PI * 2);
+                    ctx.arc(screenX + cloud.size * 1.3, cloud.y - 5, cloud.size * 0.55, 0, Math.PI * 2);
+                    ctx.arc(screenX + cloud.size * 0.5, cloud.y + 8, cloud.size * 0.4, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+        }
+
+        // 绘制背景山丘
+        function drawHills() {
+            // 后层山丘
+            ctx.fillStyle = 'rgba(76, 175, 80, 0.4)';
+            const backHills = [
+                { x: 0, width: 400, height: 100 },
+                { x: 300, width: 300, height: 70 },
+                { x: 550, width: 450, height: 110 },
+                { x: 900, width: 350, height: 80 },
+                { x: 1150, width: 500, height: 120 },
+                { x: 1600, width: 400, height: 90 },
+                { x: 1950, width: 450, height: 105 },
+                { x: 2350, width: 500, height: 115 },
+                { x: 2800, width: 400, height: 85 },
+            ];
+
+            backHills.forEach(hill => {
+                const screenX = hill.x - cameraX * 0.4;
+                if (screenX > -hill.width && screenX < canvas.width + hill.width) {
+                    ctx.beginPath();
+                    ctx.moveTo(screenX, 450);
+                    ctx.quadraticCurveTo(screenX + hill.width / 2, 450 - hill.height * 1.5, screenX + hill.width, 450);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+            });
+
+            // 前层山丘
+            const frontGradient = ctx.createLinearGradient(0, 300, 0, 450);
+            frontGradient.addColorStop(0, 'rgba(46, 125, 50, 0.8)');
+            frontGradient.addColorStop(1, 'rgba(27, 94, 32, 0.9)');
+            ctx.fillStyle = frontGradient;
+
+            const hills = [
+                { x: 0, width: 300, height: 70 },
+                { x: 220, width: 220, height: 45 },
+                { x: 450, width: 380, height: 85 },
+                { x: 780, width: 280, height: 55 },
+                { x: 1050, width: 420, height: 95 },
+                { x: 1420, width: 320, height: 65 },
+                { x: 1700, width: 370, height: 78 },
+                { x: 2080, width: 420, height: 88 },
+                { x: 2480, width: 320, height: 58 },
+                { x: 2780, width: 380, height: 72 },
+            ];
+
+            hills.forEach(hill => {
+                const screenX = hill.x - cameraX * 0.5;
+                if (screenX > -hill.width && screenX < canvas.width + hill.width) {
+                    ctx.beginPath();
+                    ctx.moveTo(screenX, 450);
+                    ctx.quadraticCurveTo(screenX + hill.width / 2, 450 - hill.height * 1.3, screenX + hill.width, 450);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+            });
+        }
+
+        // 绘制平台
+        function drawPlatforms() {
+            platforms.forEach(p => {
+                const screenX = p.x - cameraX;
+                if (screenX > -50 && screenX < canvas.width + 50) {
+                    if (p.type === 'ground') {
+                        // 地面
+                        const grassGradient = ctx.createLinearGradient(screenX, p.y, screenX, p.y + 15);
+                        grassGradient.addColorStop(0, '#4ade80');
+                        grassGradient.addColorStop(1, '#22c55e');
+                        ctx.fillStyle = grassGradient;
+                        ctx.fillRect(screenX, p.y, p.width, 12);
+
+                        // 草的纹理
+                        ctx.fillStyle = '#86efac';
+                        for (let i = 0; i < p.width; i += 6) {
+                            ctx.beginPath();
+                            ctx.moveTo(screenX + i, p.y);
+                            ctx.lineTo(screenX + i + 3, p.y - 5);
+                            ctx.lineTo(screenX + i + 6, p.y);
+                            ctx.fill();
+                        }
+
+                        // 泥土
+                        const dirtGradient = ctx.createLinearGradient(screenX, p.y + 12, screenX, p.y + p.height);
+                        dirtGradient.addColorStop(0, '#a78bfa');
+                        dirtGradient.addColorStop(1, '#7c3aed');
+                        ctx.fillStyle = dirtGradient;
+                        ctx.fillRect(screenX, p.y + 12, p.width, p.height - 12);
+
+                        // 泥土纹理
+                        ctx.fillStyle = 'rgba(139, 92, 246, 0.3)';
+                        for (let i = 0; i < p.width; i += 15) {
+                            ctx.beginPath();
+                            ctx.arc(screenX + i + Math.random() * 10, p.y + 25 + Math.random() * 15, 3, 0, Math.PI * 2);
+                            ctx.fill();
+                        }
+                    } else if (p.type === 'brick') {
+                        // 砖块阴影
+                        ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                        ctx.fillRect(screenX + 3, p.y + 3, p.width, p.height);
+
+                        // 砖块主体
+                        const brickGradient = ctx.createLinearGradient(screenX, p.y, screenX, p.y + p.height);
+                        brickGradient.addColorStop(0, '#fbbf24');
+                        brickGradient.addColorStop(0.5, '#f59e0b');
+                        brickGradient.addColorStop(1, '#d97706');
+                        ctx.fillStyle = brickGradient;
+                        ctx.fillRect(screenX, p.y, p.width, p.height);
+
+                        // 砖块边框
+                        ctx.strokeStyle = '#b45309';
+                        ctx.lineWidth = 2;
+                        ctx.strokeRect(screenX + 1, p.y + 1, p.width - 2, p.height - 2);
+
+                        // 砖块纹理
+                        ctx.strokeStyle = 'rgba(180, 83, 9, 0.5)';
+                        ctx.lineWidth = 1;
+                        for (let i = 0; i < p.width; i += 20) {
+                            ctx.beginPath();
+                            ctx.moveTo(screenX + i, p.y);
+                            ctx.lineTo(screenX + i, p.y + p.height);
+                            ctx.stroke();
+                        }
+                        for (let j = 0; j < p.height; j += 16) {
+                            ctx.beginPath();
+                            ctx.moveTo(screenX, p.y + j);
+                            ctx.lineTo(screenX + p.width, p.y + j);
+                            ctx.stroke();
+                        }
+                    } else if (p.type === 'question') {
+                        // 问号块阴影
+                        ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                        ctx.fillRect(screenX + 3, p.y + 3, p.width, p.height);
+
+                        // 问号块主体 - 闪烁效果
+                        const flash = Math.sin(Date.now() * 0.003) * 0.3 + 0.7;
+                        const blockGradient = ctx.createLinearGradient(screenX, p.y, screenX, p.y + p.height);
+                        blockGradient.addColorStop(0, `rgba(255, 230, 100, ${flash})`);
+                        blockGradient.addColorStop(0.5, `rgba(255, 200, 50, ${flash})`);
+                        blockGradient.addColorStop(1, `rgba(230, 150, 0, ${flash})`);
+                        ctx.fillStyle = blockGradient;
+                        ctx.fillRect(screenX, p.y, p.width, p.height);
+
+                        // 边框
+                        ctx.strokeStyle = '#b45309';
+                        ctx.lineWidth = 3;
+                        ctx.strokeRect(screenX + 2, p.y + 2, p.width - 4, p.height - 4);
+
+                        // 问号
+                        ctx.fillStyle = '#fff';
+                        ctx.font = 'bold 22px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText('?', screenX + p.width / 2, p.y + p.height / 2 + 2);
+                    }
+                }
+            });
+        }
+
+        // 绘制金币
+        function drawCoins() {
+            coins.forEach(coin => {
+                if (!coin.collected) {
+                    const screenX = coin.x - cameraX;
+                    if (screenX > -30 && screenX < canvas.width + 30) {
+                        const bobble = Math.sin(Date.now() * 0.004 + coin.animOffset) * 4;
+                        const scale = Math.abs(Math.sin(Date.now() * 0.003 + coin.animOffset));
+
+                        // 金币阴影
+                        ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                        ctx.beginPath();
+                        ctx.ellipse(screenX + 12, coin.y + 26, 8 * scale, 4, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // 金币外圈
+                        const coinGradient = ctx.createRadialGradient(
+                            screenX + 12, coin.y + 12 + bobble, 0,
+                            screenX + 12, coin.y + 12 + bobble, 12
+                        );
+                        coinGradient.addColorStop(0, '#fef08a');
+                        coinGradient.addColorStop(0.5, '#fbbf24');
+                        coinGradient.addColorStop(1, '#f59e0b');
+                        ctx.fillStyle = coinGradient;
+                        ctx.beginPath();
+                        ctx.ellipse(screenX + 12, coin.y + 12 + bobble, 10 * scale + 2, 12, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // 金币内圈
+                        ctx.fillStyle = '#fef3c7';
+                        ctx.beginPath();
+                        ctx.ellipse(screenX + 12, coin.y + 12 + bobble, 5 * scale + 1, 8, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // 金币高光
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                        ctx.beginPath();
+                        ctx.ellipse(screenX + 10, coin.y + 8 + bobble, 2, 4, -0.3, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            });
+        }
+
+        // 绘制敌人（栗宝宝）
+        function drawEnemies() {
+            enemies.forEach(enemy => {
+                if (enemy.alive) {
+                    const screenX = enemy.x - cameraX;
+                    if (screenX > -50 && screenX < canvas.width + 50) {
+                        const wobble = Math.sin(enemy.animFrame * 0.15) * 2;
+
+                        // 阴影
+                        ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                        ctx.beginPath();
+                        ctx.ellipse(screenX + 18, enemy.y + 36, 14, 5, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // 身体
+                        const bodyGradient = ctx.createRadialGradient(
+                            screenX + 18, enemy.y + 12, 0,
+                            screenX + 18, enemy.y + 20, 20
+                        );
+                        bodyGradient.addColorStop(0, '#a85c32');
+                        bodyGradient.addColorStop(1, '#6b3d1e');
+                        ctx.fillStyle = bodyGradient;
+                        ctx.beginPath();
+                        ctx.ellipse(screenX + 18, enemy.y + 22 + wobble, 18, 14, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // 头/蘑菇帽
+                        const capGradient = ctx.createRadialGradient(
+                            screenX + 18, enemy.y + 5, 0,
+                            screenX + 18, enemy.y + 10, 18
+                        );
+                        capGradient.addColorStop(0, '#c97d4a');
+                        capGradient.addColorStop(1, '#8b5a2b');
+                        ctx.fillStyle = capGradient;
+                        ctx.beginPath();
+                        ctx.arc(screenX + 18, enemy.y + 10 + wobble, 16, Math.PI, 0);
+                        ctx.closePath();
+                        ctx.fill();
+
+                        // 白色斑点
+                        ctx.fillStyle = '#fde8d6';
+                        ctx.beginPath();
+                        ctx.arc(screenX + 10, enemy.y + 4 + wobble, 5, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.beginPath();
+                        ctx.arc(screenX + 24, enemy.y + 6 + wobble, 4, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // 眼白
+                        ctx.fillStyle = '#fff';
+                        ctx.beginPath();
+                        ctx.ellipse(screenX + 10, enemy.y + 18 + wobble, 7, 8, 0, 0, Math.PI * 2);
+                        ctx.ellipse(screenX + 26, enemy.y + 18 + wobble, 7, 8, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // 瞳孔
+                        ctx.fillStyle = '#1a1a1a';
+                        const lookDir = enemy.vx > 0 ? 3 : -3;
+                        const blink = Math.sin(enemy.animFrame * 0.05) > 0.95 ? 1 : 3;
+                        ctx.beginPath();
+                        ctx.ellipse(screenX + 10 + lookDir, enemy.y + 19 + wobble, 2.5, blink, 0, 0, Math.PI * 2);
+                        ctx.ellipse(screenX + 26 + lookDir, enemy.y + 19 + wobble, 2.5, blink, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // 腿动画
+                        const legOffset = Math.sin(enemy.animFrame * 0.2) * 3;
+                        ctx.fillStyle = '#1a1a1a';
+                        // 左腿
+                        ctx.beginPath();
+                        ctx.ellipse(screenX + 10, enemy.y + 32, 5, 4 + legOffset * 0.3, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                        // 右腿
+                        ctx.beginPath();
+                        ctx.ellipse(screenX + 26, enemy.y + 32, 5, 4 - legOffset * 0.3, 0, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        // 脚
+                        ctx.fillStyle = '#3d2314';
+                        ctx.beginPath();
+                        ctx.ellipse(screenX + 8 - legOffset, enemy.y + 35, 6, 3, 0, 0, Math.PI * 2);
+                        ctx.ellipse(screenX + 28 + legOffset, enemy.y + 35, 6, 3, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+            });
+        }
+
+        // 绘制马里奥
+        function drawMario() {
+            ctx.save();
+            const screenX = player.x - cameraX;
+
+            if (player.direction === -1) {
+                ctx.translate(screenX + player.width, 0);
+                ctx.scale(-1, 1);
+            }
+
+            const drawX = player.direction === -1 ? 0 : screenX;
+            const px = drawX;
+            const py = player.y;
+
+            // 阴影
+            ctx.fillStyle = 'rgba(0,0,0,0.15)';
+            ctx.beginPath();
+            ctx.ellipse(px + 18, py + 44, 14, 4, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 腿/鞋子
+            ctx.fillStyle = '#4a2c0a';
+            const walkCycle = Math.sin(player.animFrame * 0.4) * 3;
+            ctx.beginPath();
+            ctx.ellipse(px + 10, py + 40, 7, 5, walkCycle * 0.1, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(px + 26, py + 40, 7, 5, -walkCycle * 0.1, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 身体 - 红色衬衫
+            const bodyGradient = ctx.createLinearGradient(px, py + 16, px + player.width, py + 32);
+            bodyGradient.addColorStop(0, '#ff6b6b');
+            bodyGradient.addColorStop(1, '#ee5a24');
+            ctx.fillStyle = bodyGradient;
+            ctx.beginPath();
+            ctx.roundRect(px + 4, py + 16, player.width - 8, 18, 4);
+            ctx.fill();
+
+            // 背带裤 - 蓝色
+            ctx.fillStyle = '#2d5aa0';
+            ctx.fillRect(px + 8, py + 26, player.width - 16, 10);
+
+            // 背带裤纽扣
+            ctx.fillStyle = '#fbbf24';
+            ctx.beginPath();
+            ctx.arc(px + 10, py + 28, 2, 0, Math.PI * 2);
+            ctx.arc(px + 26, py + 28, 2, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 头部
+            const headGradient = ctx.createRadialGradient(px + 18, py + 10, 0, px + 18, py + 10, 12);
+            headGradient.addColorStop(0, '#ffecd2');
+            headGradient.addColorStop(1, '#fcb69f');
+            ctx.fillStyle = headGradient;
+            ctx.beginPath();
+            ctx.arc(px + 18, py + 10, 11, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 红色帽子
+            const hatGradient = ctx.createLinearGradient(px + 2, py - 2, px + player.width - 2, py + 8);
+            hatGradient.addColorStop(0, '#ff6b6b');
+            hatGradient.addColorStop(1, '#c0392b');
+            ctx.fillStyle = hatGradient;
+
+            // 帽檐
+            ctx.beginPath();
+            ctx.roundRect(px + 2, py + 4, player.width - 4, 6, 2);
+            ctx.fill();
+
+            // 帽顶
+            ctx.beginPath();
+            ctx.moveTo(px + 4, py + 4);
+            ctx.quadraticCurveTo(px + 18, py - 4, px + 32, py + 4);
+            ctx.lineTo(px + 32, py - 1);
+            ctx.quadraticCurveTo(px + 18, py - 6, px + 4, py - 1);
+            ctx.closePath();
+            ctx.fill();
+
+            // 眼睛
+            ctx.fillStyle = '#1a1a1a';
+            ctx.beginPath();
+            ctx.ellipse(px + 22, py + 9, 3, 4, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 眼睛高光
+            ctx.fillStyle = '#fff';
+            ctx.beginPath();
+            ctx.arc(px + 23, py + 7, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 胡子
+            ctx.fillStyle = '#4a2c0a';
+            ctx.beginPath();
+            ctx.moveTo(px + 14, py + 13);
+            ctx.quadraticCurveTo(px + 18, py + 16, px + 24, py + 13);
+            ctx.lineTo(px + 24, py + 15);
+            ctx.quadraticCurveTo(px + 18, py + 18, px + 14, py + 15);
+            ctx.closePath();
+            ctx.fill();
+
+            // 鼻子
+            ctx.fillStyle = '#fcb69f';
+            ctx.beginPath();
+            ctx.ellipse(px + 26, py + 11, 4, 3, 0.3, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 手臂
+            ctx.fillStyle = '#ff6b6b';
+            ctx.beginPath();
+            ctx.ellipse(px + 2, py + 24, 5, 7, 0.3, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(px + 34, py + 24, 5, 7, -0.3, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 手
+            ctx.fillStyle = '#fcb69f';
+            ctx.beginPath();
+            ctx.arc(px + 3, py + 28, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(px + 33, py + 28, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        // 绘制旗帜
+        function drawFlag() {
+            if (flag) {
+                const screenX = flag.x - cameraX;
+                if (screenX > -50 && screenX < canvas.width + 50) {
+                    // 旗杆阴影
+                    ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                    ctx.fillRect(screenX + 11, flag.y, 4, flag.height);
+
+                    // 旗杆
+                    const poleGradient = ctx.createLinearGradient(screenX + 8, flag.y, screenX + 12, flag.y);
+                    poleGradient.addColorStop(0, '#4ade80');
+                    poleGradient.addColorStop(0.5, '#22c55e');
+                    poleGradient.addColorStop(1, '#16a34a');
+                    ctx.fillStyle = poleGradient;
+                    ctx.fillRect(screenX + 8, flag.y, 4, flag.height);
+
+                    // 旗帜 - 波动效果
+                    const wave = Math.sin(Date.now() * 0.003) * 5;
+                    ctx.fillStyle = '#ef4444';
+                    ctx.beginPath();
+                    ctx.moveTo(screenX + 12, flag.y);
+                    ctx.quadraticCurveTo(screenX + 50 + wave, flag.y + 15, screenX + 12, flag.y + 60);
+                    ctx.quadraticCurveTo(screenX + 30 + wave * 0.5, flag.y + 30, screenX + 12, flag.y);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // 旗帜高光
+                    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                    ctx.beginPath();
+                    ctx.moveTo(screenX + 12, flag.y);
+                    ctx.quadraticCurveTo(screenX + 40 + wave, flag.y + 10, screenX + 12, flag.y + 30);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // 顶部圆球
+                    const ballGradient = ctx.createRadialGradient(
+                        screenX + 10, flag.y, 0,
+                        screenX + 10, flag.y, 10
+                    );
+                    ballGradient.addColorStop(0, '#fde047');
+                    ballGradient.addColorStop(1, '#eab308');
+                    ctx.fillStyle = ballGradient;
+                    ctx.beginPath();
+                    ctx.arc(screenX + 10, flag.y, 9, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // 旗帜底座
+                    ctx.fillStyle = '#16a34a';
+                    ctx.fillRect(screenX + 4, flag.y + flag.height - 5, 12, 8);
+                }
+            }
+        }
+
+        // 碰撞检测
+        function checkCollision(a, b) {
+            return a.x < b.x + b.width &&
+                   a.x + a.width > b.x &&
+                   a.y < b.y + b.height &&
+                   a.y + a.height > b.y;
+        }
+
+        // 更新游戏
+        function update() {
+            if (!gameRunning) return;
+
+            if (keys['ArrowLeft'] || keys['KeyA']) {
+                player.vx = -player.speed;
+                player.direction = -1;
+            } else if (keys['ArrowRight'] || keys['KeyD']) {
+                player.vx = player.speed;
+                player.direction = 1;
+            } else {
+                player.vx *= friction;
+            }
+
+            if ((keys['Space'] || keys['ArrowUp'] || keys['KeyW']) && player.onGround) {
+                player.vy = player.jumpForce;
+                player.onGround = false;
+            }
+
+            player.vy += gravity;
+            player.x += player.vx;
+            player.y += player.vy;
+
+            if (Math.abs(player.vx) > 0.5) player.animFrame++;
+
+            player.onGround = false;
+            platforms.forEach(p => {
+                if (checkCollision(player, p)) {
+                    if (player.vy > 0 && player.y + player.height - player.vy <= p.y + 5) {
+                        player.y = p.y - player.height;
+                        player.vy = 0;
+                        player.onGround = true;
+                    } else if (player.vy < 0 && player.y - player.vy >= p.y + p.height - 5) {
+                        player.y = p.y + p.height;
+                        player.vy = 0;
+                    } else {
+                        if (player.vx > 0) player.x = p.x - player.width;
+                        else if (player.vx < 0) player.x = p.x + p.width;
+                        player.vx = 0;
+                    }
+                }
+            });
+
+            if (player.x < 0) player.x = 0;
+            if (player.x > levelWidth - player.width) player.x = levelWidth - player.width;
+
+            if (player.y > canvas.height) loseLife();
+
+            coins.forEach(coin => {
+                if (!coin.collected && checkCollision(player, coin)) {
+                    coin.collected = true;
+                    score += 100;
+                    addParticle(coin.x + 12, coin.y + 12, 'rgb(251, 191, 36)');
+                    updateUI();
+                }
+            });
+
+            enemies.forEach(enemy => {
+                if (enemy.alive) {
+                    enemy.x += enemy.vx;
+                    enemy.animFrame++;
+
+                    if (enemy.x <= enemy.startX || enemy.x >= enemy.endX) {
+                        enemy.vx *= -1;
+                    }
+
+                    if (checkCollision(player, enemy)) {
+                        if (player.vy > 0 && player.y + player.height < enemy.y + enemy.height / 2 + 10) {
+                            enemy.alive = false;
+                            player.vy = -8;
+                            score += 200;
+                            addParticle(enemy.x + 18, enemy.y + 18, 'rgb(168, 92, 50)');
+                            updateUI();
+                        } else {
+                            loseLife();
+                        }
+                    }
+                }
+            });
+
+            if (flag && checkCollision(player, flag)) winGame();
+
+            const targetCameraX = player.x - canvas.width / 3;
+            cameraX += (targetCameraX - cameraX) * 0.1;
+            if (cameraX < 0) cameraX = 0;
+            if (cameraX > levelWidth - canvas.width) cameraX = levelWidth - canvas.width;
+
+            updateParticles();
+        }
+
+        // 绘制游戏
+        function draw() {
+            drawBackground();
+            drawClouds();
+            drawHills();
+            drawPlatforms();
+            drawCoins();
+            drawEnemies();
+            drawFlag();
+            drawMario();
+            drawParticles();
+        }
+
+        // 游戏循环
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function loseLife() {
+            lives--;
+            updateUI();
+            if (lives <= 0) gameOver();
+            else {
+                player.x = 50;
+                player.y = 300;
+                player.vx = 0;
+                player.vy = 0;
+                cameraX = 0;
+            }
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('gameOverScreen').classList.remove('hidden');
+        }
+
+        function winGame() {
+            gameRunning = false;
+            score += lives * 500;
+            document.getElementById('winScore').textContent = score;
+            document.getElementById('winScreen').classList.remove('hidden');
+        }
+
+        function updateUI() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('lives').textContent = lives;
+            document.getElementById('level').textContent = currentLevel;
+        }
+
+        function startGame() {
+            document.getElementById('startScreen').classList.add('hidden');
+            for (let key in keys) delete keys[key];
+            gameRunning = true;
+            initLevel(currentLevel);
+        }
+
+        function restartGame() {
+            document.getElementById('gameOverScreen').classList.add('hidden');
+            document.getElementById('winScreen').classList.add('hidden');
+            score = 0;
+            lives = 3;
+            currentLevel = 1;
+            updateUI();
+            for (let key in keys) delete keys[key];
+            gameRunning = true;
+            initLevel(currentLevel);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            keys[e.code] = true;
+            if (['Space', 'ArrowUp', 'ArrowDown'].includes(e.code)) e.preventDefault();
+        });
+
+        document.addEventListener('keyup', (e) => keys[e.code] = false);
+
+        initLevel(currentLevel);
+        updateUI();
+        gameLoop();
+    </script>
+</body>
+</html>
