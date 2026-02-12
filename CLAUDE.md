@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-本文件为 Claude Code (claude.ai/code) 提供在此仓库中工作的指导。
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## 仓库概述
 
@@ -8,55 +8,47 @@
 
 ## 目录结构
 
-### 核心学习目录
+目录按序号和中文前缀命名，便于快速定位：
 
-- **`01 javascript 基础/`** - JavaScript 基础知识点
-  - `01 基本类型/` - 数据类型相关
-  - `02类型判断/` - typeof/instanceof 等
-  - `03 查找值/` - 数组查找方法
-  - `04 数组的方法/` - 数组 API
-  - `05 手写题/` - 常见手写实现（如 Promise.all、深拷贝等）
-  - `06 symbol/` - Symbol 类型
+- **`01_fundamentals_基础/`** - JavaScript 核心基础知识（类型系统、异步编程、ES6+ 特性）
 
-- **`02 css/`** - CSS 笔记
-  - flexbox 布局、文本省略等问题
+- **`02_polyfills_手写实现/`** - JavaScript 核心 API 手写实现
+  - 包含 call/apply/bind、Promise、防抖节流、深拷贝、LRU 缓存、柯里化、compose 等
 
-- **`03 http/`** - HTTP 协议笔记
+- **`03_css/`** - CSS 布局、Flexbox、文本省略等样式技巧
 
-- **`06 手写/`** - 手写实现（可能是 polyfill/工具函数）
+- **`04_http/`** - HTTP 协议、浏览器工作原理
 
-- **`vue3/`** - Vue 3 编译和优化笔记（`01 编译/` 子目录）
+- **`05_frameworks_框架/`** - 前端框架学习
+  - `vue3/01 编译/` - Vue 3 编译和优化笔记
 
-- **`设计模式/`** - 设计模式学习笔记
+- **`06_algorithms_算法/`** - 数据结构与算法
+  - `01sort/` - 各种排序算法（冒泡、选择、插入、希尔、归并、快排）
+  - `02heap/` - 堆结构（最小堆、最大堆）
+  - `07/`、`08/`、`11/`、`12/`、`16/`、`28/`、`33/` - LeetCode 题解
+  - `main.html` - 算法可视化演示页面
 
-- **`数据结构与算法之美/`** - 数据结构与算法
-  - 包含排序、堆、队列等章节（按数字编号组织）
+- **`07_patterns_设计模式/`** - 设计模式学习笔记
 
-### 实验性代码
-
-- **`z_demo/`** - 实验性示例和探索
-  - `reactivity.global.js` - Vue 3 响应式系统完整构建产物（包含 reactive、effect、ref、computed 等）
+- **`08_playground_实验场/`** - 实验性代码和 Demo
+  - `reactivity.global.js` - Vue 3 响应式系统完整构建产物
   - `render.js` - 自定义渲染器实现
-  - `index.html` - 演示页面（测试自定义渲染器和 vnode 补丁）
+  - `index.html` - 响应式系统演示页面
+  - `super-mario/` - 超级马里奥游戏实现
 
-### 其他目录
+- **`09_tools_工具/`** - 开发工具
+  - `git/` - Git 相关笔记
+  - `linux/` - Linux 命令和终端学习笔记
+  - `mac/` - macOS 相关
 
-- **`linux/`** - Linux 命令和终端学习笔记
-  - `README.md` - 基础命令速查（echo、ls、vim、grep、wc 等）
-  - `juejin-linux-basics.md` - 场景驱动的终端上手指南
+- **`10_ai/`** - AI 工具和提示词
+  - `01_prompts/` - AI 提示词模板（如 Vue 2 高性能组件生成 Prompt）
+  - `02_claude/` - Claude 相关笔记
+  - `03_deepseek/` - DeepSeek 相关笔记
+  - `04_mcp/` - MCP 相关文档
+  - `05_alike_其他/` - 其他 AI 工具笔记
 
-- **`git/`** - Git 相关笔记
-
-- **`prompts/`** - AI 提示词模板
-  - `vue2.md` - Vue 2 高性能组件生成 Prompt（包含性能约束、响应式约束等）
-
-- **`deep/`**、`alike/`** - 各种技术笔记
-
-- **`AI/`**、`deepseek/`**、`calude/`** - AI 工具相关笔记
-
-- **`mac/`** - macOS 相关
-
-- **`design/`** - 设计相关（样式配置等）
+- **`11_notes_笔记/`** - 个人学习笔记和随笔
 
 ## 本地开发
 
@@ -75,4 +67,4 @@ http-server -c-1 -p 8088 -o
 
 3. **修改原则** - 学习笔记目录修改前请先阅读，理解内容结构后再做调整
 
-4. **z_demo 目录** - 这是实验代码区域，可以用于测试和验证想法
+4. **实验区域** - `08_playground_实验场/` 目录用于测试和验证想法，可随意修改
