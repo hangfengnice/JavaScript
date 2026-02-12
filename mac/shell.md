@@ -78,6 +78,11 @@ echo 输出 -->
 ~/Library/Group Containers/     # 应用组容器
 ```
 
+## 打包当前部分项目
+
+zip -r dist.zip dist/
+zip -r ../dist.zip ./*
+
 ## Wrap
 
 tab 键补全文件路径 多一个字母是共同的部分 

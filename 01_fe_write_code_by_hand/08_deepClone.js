@@ -38,47 +38,47 @@ function createNestedObject(depth, breadth) {
  * @returns {object} 深拷贝后的对象
  */
 function deepCloneIterative(source) {
-  const root = {}
+  const clonedRoot = {}
 
-  // 栈结构：存储待处理的节点
-  const stack = [
+  // 栈结构：存储待处理的节点信息
+  const taskStack = [
     {
-      parent: root,
-      key: undefined,
-      value: source,
+      parentClone: clonedRoot,
+      propertyKey: undefined,
+      originalValue: source,
     },
   ]
 
-  while (stack.length) {
-    const { parent, key, value } = stack.pop()
+  while (taskStack.length) {
+    const { parentClone, propertyKey, originalValue } = taskStack.pop()
 
-    // 确定当前克隆目标的位置
-    let cloneTarget = parent
-    if (typeof key !== 'undefined') {
-      cloneTarget = parent[key] = {}
+    // 确定当前克隆的目标位置
+    let currentClone = parentClone
+    if (typeof propertyKey !== 'undefined') {
+      currentClone = parentClone[propertyKey] = {}
     }
 
-    // 遍历当前对象的所有属性
-    for (let key in value) {
-      if (value.hasOwnProperty(key)) {
-        const item = value[key]
+    // 遍历原对象的所有自有属性
+    for (let key in originalValue) {
+      if (originalValue.hasOwnProperty(key)) {
+        const propertyValue = originalValue[key]
 
-        if (typeof item === 'object' && item !== null) {
-          // 对象类型：压入栈，后续处理
-          stack.push({
-            parent: cloneTarget,
-            key: key,
-            value: item,
+        if (typeof propertyValue === 'object' && propertyValue !== null) {
+          // 对象/数组类型：压入栈，稍后处理
+          taskStack.push({
+            parentClone: currentClone,
+            propertyKey: key,
+            originalValue: propertyValue,
           })
         } else {
-          // 基本类型：直接赋值
-          cloneTarget[key] = item
+          // 基本类型：直接复制
+          currentClone[key] = propertyValue
         }
       }
     }
   }
 
-  return root
+  return clonedRoot
 }
 
 /**
@@ -87,54 +87,54 @@ function deepCloneIterative(source) {
  * @returns {object} 深拷贝后的对象
  */
 function deepCloneWithCircular(source) {
-  // 用 Map 替代数组，查找从 O(n) → O(1)
-  const clonedMap = new Map() // source → target
+  // 使用 Map 记录原对象 → 克隆对象的映射，查找复杂度 O(1)
+  const cloneCache = new Map()
 
-  const root = {}
+  const clonedRoot = {}
 
-  const stack = [
+  const taskStack = [
     {
-      parent: root,
-      key: undefined,
-      value: source,
+      parentClone: clonedRoot,
+      propertyKey: undefined,
+      originalValue: source,
     },
   ]
 
-  while (stack.length) {
-    const { parent, key, value } = stack.pop()
+  while (taskStack.length) {
+    const { parentClone, propertyKey, originalValue } = taskStack.pop()
 
-    // 先检查循环引用：已拷贝则复用，跳过对象创建
-    if (clonedMap.has(value)) {
-      parent[key] = clonedMap.get(value)
+    // 先检查循环引用：如果已克隆过，直接复用
+    if (cloneCache.has(originalValue)) {
+      parentClone[propertyKey] = cloneCache.get(originalValue)
       continue
     }
 
-    // 确定克隆目标位置
-    let cloneTarget = parent
-    if (typeof key !== 'undefined') {
-      cloneTarget = parent[key] = {}
+    // 确定当前克隆的目标位置
+    let currentClone = parentClone
+    if (typeof propertyKey !== 'undefined') {
+      currentClone = parentClone[propertyKey] = {}
     }
 
-    // 记录已拷贝的对象
-    clonedMap.set(value, cloneTarget)
+    // 记录已克隆的对象，避免循环引用导致无限循环
+    cloneCache.set(originalValue, currentClone)
 
-    // 遍历属性
-    for (let key in value) {
-      if (value.hasOwnProperty(key)) {
-        const item = value[key]
+    // 遍历所有自有属性
+    for (let key in originalValue) {
+      if (originalValue.hasOwnProperty(key)) {
+        const propertyValue = originalValue[key]
 
-        if (typeof item === 'object' && item !== null) {
-          stack.push({
-            parent: cloneTarget,
-            key: key,
-            value: item,
+        if (typeof propertyValue === 'object' && propertyValue !== null) {
+          taskStack.push({
+            parentClone: currentClone,
+            propertyKey: key,
+            originalValue: propertyValue,
           })
         } else {
-          cloneTarget[key] = item
+          currentClone[key] = propertyValue
         }
       }
     }
   }
 
-  return root
+  return clonedRoot
 }
