@@ -52,9 +52,3 @@ AI 工具和提示词（Claude、DeepSeek、MCP 等）
 
 ### 📝 11_notes_笔记
 个人学习笔记和随笔
-
----
-
-## Tools
-
-quicklink 检测视口（Viewport）内的链接，自动给它们加上prefetch。
